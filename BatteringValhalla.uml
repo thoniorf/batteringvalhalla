@@ -274,6 +274,7 @@
     </packagedElement>
     <packagedElement xmi:type="uml:Interface" xmi:id="_wGBdAN9hEeS7V9oM-ODQYg" name="IGameWorld"/>
     <packagedElement xmi:type="uml:Class" xmi:id="_9KZ5UN9hEeS7V9oM-ODQYg" name="GameManager">
+      <generalization xmi:id="_0t1OQN9kEeS7V9oM-ODQYg" general="_f_22sN7dEeS5f-HLzdDU5g"/>
       <interfaceRealization xmi:id="__224gN9hEeS7V9oM-ODQYg" client="_9KZ5UN9hEeS7V9oM-ODQYg" supplier="_ri4N8N7dEeS5f-HLzdDU5g" contract="_ri4N8N7dEeS5f-HLzdDU5g"/>
     </packagedElement>
     <profileApplication xmi:id="_gWj28NVPEeSSTd5RiJToyw">

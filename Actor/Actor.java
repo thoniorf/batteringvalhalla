@@ -52,4 +52,8 @@ public abstract class Actor extends AbstractMovableActor {
 		score += 10;
 	}
 
+	public void decrementLive() {
+		live -= 1;
+	}
+
 }

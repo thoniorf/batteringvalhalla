@@ -11,6 +11,7 @@ public class GameFrame extends JFrame {
 
 	public GameFrame(GameWorld world) {
 		super("TestGame");
+
 		this.setVisible(true);
 
 		gp = new GamePanel(world);

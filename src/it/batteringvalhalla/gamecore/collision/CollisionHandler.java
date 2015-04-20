@@ -1,7 +1,5 @@
 package it.batteringvalhalla.gamecore.collision;
 
-import it.thoniorf.entity.GameObject;
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 

@@ -1,28 +1,9 @@
-package it.batteringvalhalla.gamecore.object.actor;
-
-import java.awt.Polygon;
+package Movable;
 
 public interface MovableActor {
-	public Integer getX();
 
-	public void setX(Integer x);
+	public void setDirection(Direction value);
 
-	public Integer getY();
-
-	public void setY(Integer y);
-
-	public Integer getHealth();
-
-	public void setHealth(Integer health);
-
-	public Integer attack();
-
-	public String getSprite();
-
-	public void setHor(Integer hor);
-
-	public void setVer(Integer ver);
-
-	public void update(Polygon border);
+	public Direction getDirection();
 
 }

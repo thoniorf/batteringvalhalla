@@ -1,27 +1,72 @@
-package it.batteringvalhalla.gamecore.object.actor;
+package Actor;
 
-import it.thoniorf.collision.collisionshape.CollisionShape;
+import java.awt.Color;
+import java.awt.Graphics;
 
-public class Actor extends AbstractMovableActor {
+import Movable.AbstractMovableActor;
+import Movable.Direction;
 
-	public Actor(String sprite) {
-		this.health = 100;
-		this.sprite = sprite;
-		this.x = 100;
-		this.y = 100;
-		this.hor = 0;
-		this.ver = 0;
-		this.speed = 5;
-		this.collider = new CollisionShape(this.x, this.y, 20, 20);
-		this.collider.setBounds(this.x, this.y, 20, 20);
+public abstract class Actor extends AbstractMovableActor {
+
+	public static final int width2 = 30;
+	public static final int height2 = 50;
+
+	public Actor(int x, int y, Direction direction) {
+		super(x, y, Direction.stop);
+		this.setHeight(30);
+		this.setWidth(90);
+		this.collider.setBounds(this.x, this.y, width2, height2);
+
 	}
 
-	public Integer getHor() {
-		return hor;
+	private int score;
+
+	@Override
+	public void setScore(int value) {
+		this.score = value;
 	}
 
-	public Integer getVer() {
-		return ver;
+	@Override
+	public int getScore() {
+		return this.score;
+	}
+
+	private int live;
+
+	public void setLive(int value) {
+		this.live = value;
+	}
+
+	public int getLive() {
+		return this.live;
+	}
+
+	public void incrementLive() {
+		if (live == 3) {
+
+			return;
+		}
+
+		live += 1;
+	}
+
+	public void incrementScore() {
+		score += 10;
+	}
+
+	public void decrementLive() {
+		live -= 1;
+	}
+
+	@Override
+	public void paint(Graphics g) {
+
+		super.paint(g);
+		g.setColor(Color.blue);
+		g.fillRect(x + 30, y - 40, width2, height2);
+		g.setColor(Color.GREEN);
+		g.fillRect(x, y, width, height);
+
 	}
 
 }

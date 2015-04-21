@@ -1,30 +1,23 @@
-package it.batteringvalhalla.gamecore.object;
+package gameObject;
 
-import it.thoniorf.collision.collisionshape.CollisionShape;
+import java.awt.Graphics;
+
+import Collision.CollisionShape;
 
 public interface GameObject {
+	public CollisionShape getCollitionShape();
 
-	public void setX(Integer x);
+	public int getX();
 
-	public Integer getX();
+	public int getY();
 
-	public void setY(Integer y);
+	public int getHeight();
 
-	public Integer getY();
+	public int getWidth();
 
-	public void setHeight(Integer height);
+	public void paint(Graphics g);
 
-	public Integer getHeight();
-
-	public void setWidth(Integer width);
-
-	public Integer getWidth();
-
-	public void setCollisionShape(CollisionShape collider);
-
-	public CollisionShape getCollisionShape();
-
-	public void paint();
+	public void postCollition();
 
 	public void update();
 

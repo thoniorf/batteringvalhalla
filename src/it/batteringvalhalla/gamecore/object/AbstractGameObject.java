@@ -1,89 +1,73 @@
-package it.batteringvalhalla.gamecore.object;
+package gameObject;
 
-import it.thoniorf.collision.collisionshape.CollisionShape;
+import java.awt.Graphics;
+
+import Collision.CollisionShape;
 
 public abstract class AbstractGameObject implements GameObject {
 
-	protected Integer x;
-	protected Integer y;
-	protected Integer height;
-	protected Integer width;
+	protected int x;
+	protected int y;
+	protected int height;
+
+	protected int width;
 	protected CollisionShape collider;
 
-	public AbstractGameObject() {
-		// TODO Auto-generated constructor stub
+	public AbstractGameObject(int x, int y) {
+
+		this.x = x;
+		this.y = y;
 	}
 
 	@Override
-	public void setX(Integer x) {
-		// TODO Auto-generated method stub
-
+	public int getX() {
+		return this.x;
 	}
 
 	@Override
-	public Integer getX() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getY() {
+		return this.y;
 	}
 
 	@Override
-	public void setY(Integer y) {
-		// TODO Auto-generated method stub
-
+	public int getHeight() {
+		return this.height;
 	}
 
 	@Override
-	public Integer getY() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getWidth() {
+		return this.width;
+	}
+
+	public void setCollider(CollisionShape value) {
+		this.collider = value;
 	}
 
 	@Override
-	public void setHeight(Integer height) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Integer getHeight() {
-		// TODO Auto-generated method stub
-		return 20;
-	}
-
-	@Override
-	public void setWidth(Integer width) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Integer getWidth() {
-		// TODO Auto-generated method stub
-		return 20;
-	}
-
-	@Override
-	public void setCollisionShape(CollisionShape collider) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public CollisionShape getCollisionShape() {
-		// TODO Auto-generated method stub
+	public CollisionShape getCollitionShape() {
 		return collider;
 	}
 
 	@Override
-	public void paint() {
-		// TODO Auto-generated method stub
+	public void paint(Graphics g) {
 
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 
 	}
 
+	@Override
+	public void postCollition() {
+
+	}
 }

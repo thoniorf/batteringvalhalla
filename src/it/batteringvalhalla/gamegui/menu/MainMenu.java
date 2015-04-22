@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamegui.menu;
 
 import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.GamePanel;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -144,7 +145,7 @@ public class MainMenu extends JPanel {
 				if (enabled)
 					switch (listener(e.getX(), e.getY())) {
 					case 1:
-						// TODO play button event
+						gamemenu = new GamePanel(gameframe)
 						break;
 					case 2:
 						// TODO option button event
@@ -164,7 +165,6 @@ public class MainMenu extends JPanel {
 				super.mouseMoved(e);
 				if (enabled) {
 					motionListener(e.getX(), e.getY(), 1);
-					// repaint();
 				}
 			}
 		});

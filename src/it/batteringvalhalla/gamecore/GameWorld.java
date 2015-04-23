@@ -12,6 +12,8 @@ public class GameWorld {
 	public GameWorld() {
 		objects = new ArrayList<GameObject>();
 		objects.add(new Actor());
+		objects.add(new Actor());
+		objects.get(1).setX(50);
 	}
 
 	public void update() {
@@ -26,8 +28,9 @@ public class GameWorld {
 	}
 
 	public void paint(Graphics g) {
+		g.drawString("World", 10, 10);
 		for (GameObject obj : objects) {
-			((Actor) obj).paint(g);
+			obj.paint(g);
 		}
 
 	}

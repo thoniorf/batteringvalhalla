@@ -1,11 +1,16 @@
 package it.batteringvalhalla.gamecore;
 
+import it.batteringvalhalla.gamecore.collision.CollisionHandler;
+import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.GamePanel;
+
+import java.awt.Rectangle;
 
 public class GameManager implements Runnable {
 
 	GameWorld world;
 	GamePanel panel;
+	CollisionHandler collisiondander;
 	int status;
 
 	public int getStatus() {
@@ -20,24 +25,31 @@ public class GameManager implements Runnable {
 		return world;
 	}
 
-	public GameManager(GamePanel panel) {
-		this.panel = panel;
+	public GameManager(GameFrame gameFrame) {
 		world = new GameWorld();
-		status = 1;
+		collisiondander = new CollisionHandler(new Rectangle(1024, 768));
+		panel = new GamePanel(world);
+		gameFrame.setContentPane(panel);
+		gameFrame.pack();
+		status = 0;
 	}
 
 	@Override
 	public void run() {
 		while (status == 1) {
 			world.update();
+			collisiondander.checkCollisions(world.getObjects());
 			panel.repaint();
 			try {
 				Thread.sleep(60);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void init() {
+		status = 1;
 	}
 
 }

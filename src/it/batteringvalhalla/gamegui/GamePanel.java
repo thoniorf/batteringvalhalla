@@ -1,8 +1,6 @@
 package it.batteringvalhalla.gamegui;
 
-import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.GameWorld;
-import it.batteringvalhalla.gamecore.object.GameObject;
 import it.batteringvalhalla.gamecore.object.actor.Actor;
 
 import java.awt.Dimension;
@@ -14,16 +12,11 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5688948969008792751L;
 	GameWorld world;
-	GameManager gamemanager;
 
-	public GamePanel(GameFrame gameFrame) {
-		super(null);
-		gamemanager = new GameManager(this);
+	public GamePanel(GameWorld world) {
+		super();
+		this.world = world;
 		this.setOpaque(true);
 		this.setPreferredSize(new Dimension(1024, 768));
 		this.setFocusable(true);
@@ -35,26 +28,14 @@ public class GamePanel extends JPanel {
 			public void keyPressed(KeyEvent e) {
 				super.keyPressed(e);
 				if (KeyEvent.VK_UP == e.getKeyCode()) {
-					for (GameObject a : world.getObjects()) {
-						((Actor) a).setVer(2);
-					}
-					System.out.println("UP");
+					((Actor) world.getObjects().get(0)).setVer(-1);
 				} else if (KeyEvent.VK_DOWN == e.getKeyCode()) {
-					for (GameObject a : world.getObjects()) {
-						((Actor) a).setVer(-2);
-					}
-					System.out.println("DOWN");
+					((Actor) world.getObjects().get(0)).setVer(1);
 				}
 				if (KeyEvent.VK_LEFT == e.getKeyCode()) {
-					for (GameObject a : world.getObjects()) {
-						((Actor) a).setHor(2);
-					}
-					System.out.println("LEFT");
+					((Actor) world.getObjects().get(0)).setHor(-1);
 				} else if (KeyEvent.VK_RIGHT == e.getKeyCode()) {
-					for (GameObject a : world.getObjects()) {
-						((Actor) a).setHor(-2);
-					}
-					System.out.println("RIGHT");
+					((Actor) world.getObjects().get(0)).setHor(1);
 				}
 
 			}
@@ -64,13 +45,6 @@ public class GamePanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		gamemanager.getWorld().paint(g);
-
+		world.paint(g);
 	}
-
-	public void start() {
-		gamemanager.setStatus(1);
-		gamemanager.run();
-	}
-
 }

@@ -1,13 +1,13 @@
 package it.batteringvalhalla.gamegui;
 
+import it.batteringvalhalla.gamecore.GameManager;
+
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
 
 public class GameFrame extends JFrame {
-
-	private static final long serialVersionUID = -2319946450620451636L;
 	private Integer screen_width;
 	private Integer screen_height;
 	private Boolean fullscreen;
@@ -60,9 +60,9 @@ public class GameFrame extends JFrame {
 	}
 
 	private void start() {
-		GamePanel panel = new GamePanel(this);
-		this.setContentPane(panel);
-		panel.start();
+		GameManager manager = new GameManager(this);
+		manager.init();
+		manager.run();
 	}
 
 }

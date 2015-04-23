@@ -2,6 +2,7 @@ package it.batteringvalhalla.gamegui;
 
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.object.actor.Actor;
+import it.batteringvalhalla.gamecore.object.actor.Direction;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,6 +13,10 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	GameWorld world;
 
 	public GamePanel(GameWorld world) {
@@ -20,24 +25,48 @@ public class GamePanel extends JPanel {
 		this.setOpaque(true);
 		this.setPreferredSize(new Dimension(1024, 768));
 		this.setFocusable(true);
-		this.requestFocusInWindow();
 		this.setVisible(true);
 
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				super.keyPressed(e);
-				if (KeyEvent.VK_UP == e.getKeyCode()) {
-					((Actor) world.getObjects().get(0)).setVer(-1);
-				} else if (KeyEvent.VK_DOWN == e.getKeyCode()) {
-					((Actor) world.getObjects().get(0)).setVer(1);
-				}
-				if (KeyEvent.VK_LEFT == e.getKeyCode()) {
-					((Actor) world.getObjects().get(0)).setHor(-1);
-				} else if (KeyEvent.VK_RIGHT == e.getKeyCode()) {
-					((Actor) world.getObjects().get(0)).setHor(1);
+
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_UP:
+					((Actor) world.getObjects().get(0))
+							.setDirection(Direction.nord);
+					System.out.println("up");
+
+					break;
+
+				case KeyEvent.VK_DOWN:
+					((Actor) world.getObjects().get(0))
+							.setDirection(Direction.sud);
+
+					break;
+				case KeyEvent.VK_RIGHT:
+					((Actor) world.getObjects().get(0))
+							.setDirection(Direction.est);
+
+					break;
+				case KeyEvent.VK_LEFT:
+					((Actor) world.getObjects().get(0))
+							.setDirection(Direction.ovest);
+
+					break;
+
+				default:
+
+					break;
+
 				}
 
+			}
+
+			@Override
+			public void keyReleased(final KeyEvent e) {
+				((Actor) world.getObjects().get(0))
+						.setDirection(Direction.stop);
 			}
 		});
 	}

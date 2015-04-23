@@ -17,8 +17,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 
-import javafx.scene.shape.Circle;
-
 import javax.swing.JPanel;
 
 //TODO exit menu & option menu

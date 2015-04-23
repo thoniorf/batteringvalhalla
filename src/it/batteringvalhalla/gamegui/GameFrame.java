@@ -8,6 +8,10 @@ import java.awt.HeadlessException;
 import javax.swing.JFrame;
 
 public class GameFrame extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer screen_width;
 	private Integer screen_height;
 	private Boolean fullscreen;

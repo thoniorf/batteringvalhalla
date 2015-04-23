@@ -12,12 +12,12 @@ public class Actor extends AbstractMovableActor {
 
 	public Actor(int x, int y) {
 		super(x, y);
-		collider = new CollisionShape(x, y, width2, height2);
 		setSpeedX(2);
 		setSpeedY(2);
 		setMaxSpeed(16F);
 		setHeight(30);
 		setWidth(90);
+		this.collider = new CollisionShape(x, y, width, height);
 
 	}
 
@@ -62,13 +62,11 @@ public class Actor extends AbstractMovableActor {
 
 	@Override
 	public void paint(Graphics g) {
-
 		super.paint(g);
 		g.setColor(Color.blue);
 		g.fillRect(x + 30, y - 40, width2, height2);
 		g.setColor(Color.GREEN);
 		g.fillRect(x, y, width, height);
-
 	}
 
 }

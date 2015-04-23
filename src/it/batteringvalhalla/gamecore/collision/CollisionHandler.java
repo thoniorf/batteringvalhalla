@@ -11,7 +11,7 @@ public class CollisionHandler {
 
 	public CollisionHandler(Rectangle rect) {
 		quadtree = new QuadTree(0, rect);
-		returnsobjects = null;
+		returnsobjects = new ArrayList<AbstractGameObject>();
 	}
 
 	public void checkCollisions(ArrayList<AbstractGameObject> objects) {
@@ -19,32 +19,26 @@ public class CollisionHandler {
 		for (int i = 0; i < objects.size(); i++) {
 			quadtree.insert(objects.get(i));
 		}
-		returnsobjects = new ArrayList<AbstractGameObject>();
+
 		for (int i = 0; i < objects.size(); i++) {
 			returnsobjects.clear();
 			quadtree.retrieve(returnsobjects, objects.get(i));
-
-			for (int j1 = 0; j1 < returnsobjects.size(); j1++) {
-				for (int j2 = 0; j2 < returnsobjects.size(); j2++) {
-					if (objects.get(j1).getCollitionShape().intersecable()
-							&& j1 != j2
-							&& objects
-									.get(j1)
-									.getCollitionShape()
-									.intersects(
-											returnsobjects.get(j2)
-													.getCollitionShape())) {
-						objects.get(j1).getCollitionShape()
-								.updateCollisionpoint();
-						objects.get(j1).getCollitionShape().beginCollided();
-						returnsobjects.get(j2).getCollitionShape()
-								.updateCollisionpoint();
-						returnsobjects.get(j2).getCollitionShape()
-								.beginCollided();
-					}
+			for (int j = 0; j < returnsobjects.size(); j++) {
+				if (objects.get(i).getCollisionShape().intersecable()
+						&& i != j
+						&& objects
+								.get(i)
+								.getCollisionShape()
+								.intersects(
+										returnsobjects.get(j)
+												.getCollisionShape())) {
+					returnsobjects.get(j).getCollisionShape()
+							.updateCollisionpoint();
+					returnsobjects.get(j).postCollision(objects.get(i));
+					objects.get(i).getCollisionShape().updateCollisionpoint();
+					objects.get(i).postCollision(returnsobjects.get(j));
 				}
 			}
-
 		}
 	}
 }

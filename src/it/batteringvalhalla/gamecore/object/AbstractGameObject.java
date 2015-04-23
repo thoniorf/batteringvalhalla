@@ -9,7 +9,6 @@ public abstract class AbstractGameObject {
 	protected int x;
 	protected int y;
 	protected int height;
-
 	protected int width;
 	protected CollisionShape collider;
 
@@ -47,7 +46,7 @@ public abstract class AbstractGameObject {
 		this.collider = value;
 	}
 
-	public CollisionShape getCollitionShape() {
+	public CollisionShape getCollisionShape() {
 		return collider;
 	}
 
@@ -67,7 +66,7 @@ public abstract class AbstractGameObject {
 
 	}
 
-	public void postCollition() {
+	public void postCollision(AbstractGameObject obj) {
 
 	}
 }

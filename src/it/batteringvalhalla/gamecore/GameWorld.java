@@ -13,7 +13,6 @@ public class GameWorld {
 		objects = new ArrayList<AbstractGameObject>();
 		objects.add(new Actor(200, 300));
 		objects.add(new Actor(400, 500));
-		objects.get(1).setX(50);
 	}
 
 	public void update() {

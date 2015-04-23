@@ -35,8 +35,6 @@ public class GamePanel extends JPanel {
 				case KeyEvent.VK_UP:
 					((Actor) world.getObjects().get(0))
 							.setDirection(Direction.nord);
-					System.out.println("up");
-
 					break;
 
 				case KeyEvent.VK_DOWN:

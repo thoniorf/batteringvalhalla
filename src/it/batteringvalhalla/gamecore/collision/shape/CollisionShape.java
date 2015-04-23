@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamecore.collision.shape;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -71,5 +72,9 @@ public class CollisionShape extends Rectangle {
 		}
 
 		return false;
+	}
+
+	public void paint(Graphics g) {
+		g.fillRect(x, y, 40, 50);
 	}
 }

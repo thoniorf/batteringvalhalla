@@ -104,6 +104,8 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 		}
 
 		move();
+		collider.setLocation(this.x, this.y);
+		collider.downgradeCollisionpoint();
 
 	}
 
@@ -112,4 +114,22 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 		y += (int) speedY;
 	}
 
+	@Override
+	public void postCollision(AbstractGameObject obj) {
+		super.postCollision(obj);
+		System.out.println("Collision");
+		double distobj = Math
+				.sqrt(Math.pow(
+						Math.abs(((Actor) obj).getSpeedX() - obj.getX()), 2)
+						+ Math.pow(Math.abs(((Actor) obj).getSpeedY()
+								- obj.getY()), 2));
+		double dist = Math.sqrt(Math.pow(Math.abs(this.speedX - this.x), 2)
+				+ Math.pow(Math.abs(this.speedY - this.y), 2));
+		if (dist > distobj) {
+			((Actor) obj).setSpeedX(((Actor) obj).getSpeedX() + this.speedX);
+			((Actor) obj).setSpeedY(((Actor) obj).getSpeedY() + this.speedY);
+			this.speedX = 0.9f;
+			this.speedY = 0.9f;
+		}
+	}
 }

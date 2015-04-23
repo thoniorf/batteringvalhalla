@@ -108,8 +108,8 @@ public class QuadTree {
 		}
 	}
 
-	public ArrayList<AbstractGameObject> retrieve(ArrayList<AbstractGameObject> returnshapes,
-			AbstractGameObject shape) {
+	public ArrayList<AbstractGameObject> retrieve(
+			ArrayList<AbstractGameObject> returnshapes, AbstractGameObject shape) {
 		Integer index = getIndex(shape);
 		if (index != -1 && nodes.get(0) != null) {
 			nodes.get(index).retrieve(returnshapes, shape);

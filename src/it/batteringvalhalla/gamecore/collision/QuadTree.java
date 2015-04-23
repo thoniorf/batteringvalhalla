@@ -1,5 +1,7 @@
 package it.batteringvalhalla.gamecore.collision;
 
+import it.batteringvalhalla.gamecore.object.AbstractGameObject;
+
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -9,14 +11,14 @@ public class QuadTree {
 	private final Integer MAX_LEVELS = 5;
 
 	private Integer level;
-	private ArrayList<GameObject> objects;
+	private ArrayList<AbstractGameObject> objects;
 	private Rectangle bounds;
 	private ArrayList<QuadTree> nodes;
 
 	public QuadTree(Integer level, Rectangle bounds) {
 		this.level = level;
 		this.bounds = bounds;
-		objects = new ArrayList<GameObject>();
+		objects = new ArrayList<AbstractGameObject>();
 		this.nodes = new ArrayList<QuadTree>(4);
 		this.nodes.add(null);
 		this.nodes.add(null);
@@ -51,7 +53,7 @@ public class QuadTree {
 				+ subHeight, subWidth, subHeight)));
 	}
 
-	private Integer getIndex(GameObject obj) {
+	private Integer getIndex(AbstractGameObject obj) {
 		Integer index = -1;
 
 		double verticalmidpoint = bounds.getX() + (bounds.getWidth() / 2);
@@ -75,7 +77,7 @@ public class QuadTree {
 		return index;
 	}
 
-	public void insert(GameObject object) {
+	public void insert(AbstractGameObject object) {
 		if (nodes.get(0) != null) {
 			Integer index = getIndex(object);
 
@@ -106,8 +108,8 @@ public class QuadTree {
 		}
 	}
 
-	public ArrayList<GameObject> retrieve(ArrayList<GameObject> returnshapes,
-			GameObject shape) {
+	public ArrayList<AbstractGameObject> retrieve(ArrayList<AbstractGameObject> returnshapes,
+			AbstractGameObject shape) {
 		Integer index = getIndex(shape);
 		if (index != -1 && nodes.get(0) != null) {
 			nodes.get(index).retrieve(returnshapes, shape);

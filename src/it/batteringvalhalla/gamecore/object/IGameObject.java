@@ -1,10 +1,10 @@
-package gameObject;
+/*package it.batteringvalhalla.gamecore.object;
+
+import it.batteringvalhalla.gamecore.collision.shape.CollisionShape;
 
 import java.awt.Graphics;
 
-import Collision.CollisionShape;
-
-public interface GameObject {
+public interface IGameObject {
 	public CollisionShape getCollitionShape();
 
 	public int getX();
@@ -21,4 +21,4 @@ public interface GameObject {
 
 	public void update();
 
-}
+}*/

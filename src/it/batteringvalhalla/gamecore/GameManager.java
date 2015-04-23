@@ -37,6 +37,7 @@ public class GameManager implements Runnable {
 	@Override
 	public void run() {
 		while (status == 1) {
+
 			world.update();
 			collisiondander.checkCollisions(world.getObjects());
 			panel.repaint();

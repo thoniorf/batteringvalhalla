@@ -1,35 +1,35 @@
 package it.batteringvalhalla.gamecore;
 
-import it.batteringvalhalla.gamecore.object.GameObject;
+import it.batteringvalhalla.gamecore.object.AbstractGameObject;
 import it.batteringvalhalla.gamecore.object.actor.Actor;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class GameWorld {
-	ArrayList<GameObject> objects;
+	ArrayList<AbstractGameObject> objects;
 
 	public GameWorld() {
-		objects = new ArrayList<GameObject>();
-		objects.add(new Actor());
-		objects.add(new Actor());
+		objects = new ArrayList<AbstractGameObject>();
+		objects.add(new Actor(200, 300));
+		objects.add(new Actor(400, 500));
 		objects.get(1).setX(50);
 	}
 
 	public void update() {
-		for (GameObject obj : objects) {
+		for (AbstractGameObject obj : objects) {
 			obj.update();
 		}
 
 	}
 
-	public ArrayList<GameObject> getObjects() {
+	public ArrayList<AbstractGameObject> getObjects() {
 		return objects;
 	}
 
 	public void paint(Graphics g) {
 		g.drawString("World", 10, 10);
-		for (GameObject obj : objects) {
+		for (AbstractGameObject obj : objects) {
 			obj.paint(g);
 		}
 

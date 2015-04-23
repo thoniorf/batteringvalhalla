@@ -1,8 +1,8 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
-import it.batteringvalhalla.gamecore.object.GameObject;
+import it.batteringvalhalla.gamecore.object.AbstractGameObject;
 
-public abstract class AbstractMovableActor extends GameObject implements
+public abstract class AbstractMovableActor extends AbstractGameObject implements
 		MovableActor {
 
 	private Direction direction = Direction.stop;

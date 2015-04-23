@@ -1,10 +1,10 @@
-package gameObject;
+package it.batteringvalhalla.gamecore.object;
+
+import it.batteringvalhalla.gamecore.collision.shape.CollisionShape;
 
 import java.awt.Graphics;
 
-import Collision.CollisionShape;
-
-public abstract class AbstractGameObject implements GameObject {
+public abstract class AbstractGameObject {
 
 	protected int x;
 	protected int y;
@@ -19,22 +19,26 @@ public abstract class AbstractGameObject implements GameObject {
 		this.y = y;
 	}
 
-	@Override
 	public int getX() {
 		return this.x;
 	}
 
-	@Override
+	public void setX(int x) {
+		this.x = x;
+	}
+
 	public int getY() {
 		return this.y;
 	}
 
-	@Override
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	public int getHeight() {
 		return this.height;
 	}
 
-	@Override
 	public int getWidth() {
 		return this.width;
 	}
@@ -43,12 +47,10 @@ public abstract class AbstractGameObject implements GameObject {
 		this.collider = value;
 	}
 
-	@Override
 	public CollisionShape getCollitionShape() {
 		return collider;
 	}
 
-	@Override
 	public void paint(Graphics g) {
 
 	}
@@ -61,12 +63,10 @@ public abstract class AbstractGameObject implements GameObject {
 		this.width = width;
 	}
 
-	@Override
 	public void update() {
 
 	}
 
-	@Override
 	public void postCollition() {
 
 	}

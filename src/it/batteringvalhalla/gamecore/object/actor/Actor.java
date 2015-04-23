@@ -1,21 +1,23 @@
-package Actor;
+package it.batteringvalhalla.gamecore.object.actor;
+
+import it.batteringvalhalla.gamecore.collision.shape.CollisionShape;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-import Movable.AbstractMovableActor;
-import Movable.Direction;
-
-public abstract class Actor extends AbstractMovableActor {
+public class Actor extends AbstractMovableActor {
 
 	public static final int width2 = 30;
 	public static final int height2 = 50;
 
-	public Actor(int x, int y, Direction direction) {
-		super(x, y, Direction.stop);
-		this.setHeight(30);
-		this.setWidth(90);
-		this.collider.setBounds(this.x, this.y, width2, height2);
+	public Actor(int x, int y) {
+		super(x, y);
+		collider = new CollisionShape(x, y, width2, height2);
+		setSpeedX(2);
+		setSpeedY(2);
+		setMaxSpeed(16F);
+		setHeight(30);
+		setWidth(90);
 
 	}
 

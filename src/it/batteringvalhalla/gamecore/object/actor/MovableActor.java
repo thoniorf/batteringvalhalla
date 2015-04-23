@@ -1,4 +1,4 @@
-package Movable;
+package it.batteringvalhalla.gamecore.object.actor;
 
 public interface MovableActor {
 

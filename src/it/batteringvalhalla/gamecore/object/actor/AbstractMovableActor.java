@@ -1,15 +1,14 @@
-package Movable;
+package it.batteringvalhalla.gamecore.object.actor;
 
-import gameObject.AbstractGameObject;
+import it.batteringvalhalla.gamecore.object.GameObject;
 
-public abstract class AbstractMovableActor extends AbstractGameObject implements
+public abstract class AbstractMovableActor extends GameObject implements
 		MovableActor {
 
 	private Direction direction = Direction.stop;
 
-	public AbstractMovableActor(int x, int y, Direction direction) {
+	public AbstractMovableActor(int x, int y) {
 		super(x, y);
-		this.direction = direction;
 
 	}
 
@@ -63,6 +62,7 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 		this.direction = direction;
 	}
 
+	@Override
 	public void update() {
 		switch (direction) {
 		case nord:
@@ -75,12 +75,12 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 				speedY += 7.5;
 
 			break;
-		case ovest:
+		case est:
 			if (Math.abs(speedX + 16) <= maxSpeed)
 				speedX += 7.5;
 
 			break;
-		case est:
+		case ovest:
 			if (Math.abs(speedX - 16) <= maxSpeed)
 				speedX -= 7.5;
 
@@ -102,6 +102,8 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 			break;
 
 		}
+
+		move();
 
 	}
 

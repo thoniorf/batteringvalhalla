@@ -1,11 +1,9 @@
-package Actor;
+package it.batteringvalhalla.gamecore.object.actor;
 
-import Movable.Direction;
-
-public abstract class Enemy extends Actor {
+public class Enemy extends Actor {
 
 	public Enemy(int x, int y, Direction direction) {
-		super(x, y, Direction.stop);
+		super(x, y);
 		// speed
 		this.collider.setBounds(this.x, this.y, width, height);
 	}

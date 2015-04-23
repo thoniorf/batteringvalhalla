@@ -47,6 +47,7 @@ public class GameFrame extends JFrame {
 		this.screen_width = 1024;
 		this.screen_height = 768;
 
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResolution(
 				new Dimension(this.screen_width, this.screen_height), true);
 

@@ -28,7 +28,7 @@ public class GameManager implements Runnable {
 	public GameManager(GameFrame gameFrame) {
 		world = new GameWorld();
 		collisiondander = new CollisionHandler(new Rectangle(1024, 768));
-		panel = new GamePanel(world);
+		panel = new GamePanel(world, this);
 		gameFrame.setContentPane(panel);
 		gameFrame.pack();
 		status = 0;
@@ -36,12 +36,19 @@ public class GameManager implements Runnable {
 
 	@Override
 	public void run() {
-		while (status == 1) {
-			world.update();
-			collisiondander.checkCollisions(world.getObjects());
-			panel.repaint();
+		while (true) {
+			while (status == 1) {
+				world.update();
+				collisiondander.checkCollisions(world.getObjects());
+				panel.repaint();
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			try {
-				Thread.sleep(60);
+				Thread.sleep(30);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

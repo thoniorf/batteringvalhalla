@@ -66,34 +66,34 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 	public void update() {
 		switch (direction) {
 		case nord:
-			if (Math.abs(speedY - 16) <= maxSpeed)
-				speedY -= 7.5;
+			if (Math.abs(speedY - 8f) <= maxSpeed)
+				speedY -= 8f;
 
 			break;
 		case sud:
-			if (Math.abs(speedY + 16) <= maxSpeed)
-				speedY += 7.5;
+			if (Math.abs(speedY + 8f) <= maxSpeed)
+				speedY += 8f;
 
 			break;
 		case est:
-			if (Math.abs(speedX + 16) <= maxSpeed)
-				speedX += 7.5;
+			if (Math.abs(speedX + 8f) <= maxSpeed)
+				speedX += 8f;
 
 			break;
 		case ovest:
-			if (Math.abs(speedX - 16) <= maxSpeed)
-				speedX -= 7.5;
+			if (Math.abs(speedX - 8f) <= maxSpeed)
+				speedX -= 8f;
 
 			break;
 		case stop:
 
-			if (Math.abs(speedX - 1) >= 0 && speedX > 0)
+			if (Math.abs(speedX - 0.5) >= 0 && speedX > 0)
 				speedX -= 0.5;
-			if (Math.abs(speedX + 1) >= 0 && speedX < 0)
+			else if (Math.abs(speedX + 0.5) >= 0 && speedX < 0)
 				speedX += 0.5;
-			if (Math.abs(speedY - 1) >= 0 && speedY > 0)
+			if (Math.abs(speedY - 0.5) >= 0 && speedY > 0)
 				speedY -= 0.5;
-			if (Math.abs(speedY + 1) >= 0 && speedY < 0)
+			else if (Math.abs(speedY + 0.5) >= 0 && speedY < 0)
 				speedY += 0.5;
 			break;
 
@@ -117,19 +117,23 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 	@Override
 	public void postCollision(AbstractGameObject obj) {
 		super.postCollision(obj);
-		System.out.println("Collision");
-		double distobj = Math
-				.sqrt(Math.pow(
-						Math.abs(((Actor) obj).getSpeedX() - obj.getX()), 2)
-						+ Math.pow(Math.abs(((Actor) obj).getSpeedY()
-								- obj.getY()), 2));
-		double dist = Math.sqrt(Math.pow(Math.abs(this.speedX - this.x), 2)
-				+ Math.pow(Math.abs(this.speedY - this.y), 2));
+
+		double distobj = Math.sqrt(Math.pow(
+				Math.abs(((Actor) obj).getSpeedX() - obj.getX()), 2.0)
+				+ Math.pow(Math.abs(((Actor) obj).getSpeedY() - obj.getY()),
+						2.0));
+		double dist = Math.sqrt(Math.pow(Math.abs(this.speedX - this.x), 2.0)
+				+ Math.pow(Math.abs(this.speedY - this.y), 2.0));
+
+		((Actor) obj).setSpeedX(((Actor) obj).getSpeedX() + this.speedX);
+		((Actor) obj).setSpeedY(((Actor) obj).getSpeedY() + this.speedY);
+
 		if (dist > distobj) {
-			((Actor) obj).setSpeedX(((Actor) obj).getSpeedX() + this.speedX);
-			((Actor) obj).setSpeedY(((Actor) obj).getSpeedY() + this.speedY);
-			this.speedX = 0.9f;
-			this.speedY = 0.9f;
+			this.speedX += -1 * (this.speedX / 0.5);
+			this.speedY += -1 * (this.speedY / 0.5);
+		} else if (dist == distobj) {
+			this.speedX += -1 * (this.speedX / 0.25);
+			this.speedY += -1 * (this.speedY / 0.25);
 		}
 	}
 }

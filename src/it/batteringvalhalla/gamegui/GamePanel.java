@@ -1,5 +1,6 @@
 package it.batteringvalhalla.gamegui;
 
+import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.object.actor.Actor;
 import it.batteringvalhalla.gamecore.object.actor.Direction;
@@ -18,9 +19,11 @@ public class GamePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	GameWorld world;
+	GameManager manager;
 
-	public GamePanel(GameWorld world) {
+	public GamePanel(GameWorld world, GameManager gameManager) {
 		super();
+		this.manager = gameManager;
 		this.world = world;
 		this.setOpaque(true);
 		this.setPreferredSize(new Dimension(1024, 768));
@@ -53,6 +56,12 @@ public class GamePanel extends JPanel {
 
 					break;
 
+				case KeyEvent.VK_ESCAPE:
+					if (manager.getStatus() == 1)
+						manager.setStatus(0);
+					else
+						manager.setStatus(1);
+					break;
 				default:
 
 					break;
@@ -62,7 +71,7 @@ public class GamePanel extends JPanel {
 			}
 
 			@Override
-			public void keyReleased(final KeyEvent e) {
+			public void keyReleased(KeyEvent e) {
 				((Actor) world.getObjects().get(0))
 						.setDirection(Direction.stop);
 			}

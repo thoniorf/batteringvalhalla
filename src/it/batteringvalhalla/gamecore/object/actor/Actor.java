@@ -14,7 +14,7 @@ public class Actor extends AbstractMovableActor {
 		super(x, y);
 		setSpeedX(2);
 		setSpeedY(2);
-		setMaxSpeed(16F);
+		setMaxSpeed(8f);
 		setHeight(30);
 		setWidth(90);
 		this.collider = new CollisionShape(x, y, width, height);

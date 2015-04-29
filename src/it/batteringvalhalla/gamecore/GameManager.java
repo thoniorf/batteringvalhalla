@@ -25,13 +25,14 @@ public class GameManager implements Runnable {
 		return world;
 	}
 
-	public GameManager(GameFrame gameFrame) {
+	public GameManager() {
 		world = new GameWorld();
 		collisiondander = new CollisionHandler(new Rectangle(1024, 768));
-		panel = new GamePanel(world, this);
-		gameFrame.setContentPane(panel);
-		gameFrame.pack();
 		status = 0;
+	}
+
+	public GamePanel getGamePanel() {
+		return panel;
 	}
 
 	@Override
@@ -55,7 +56,8 @@ public class GameManager implements Runnable {
 		}
 	}
 
-	public void init() {
+	public void init(GameFrame gameframe) {
+		panel = new GamePanel(world, this, gameframe);
 		status = 1;
 	}
 

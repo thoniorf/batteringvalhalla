@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamegui;
 
 import it.batteringvalhalla.gamecore.GameManager;
+import it.batteringvalhalla.gamegui.menu.MainMenu;
 
 import java.awt.Dimension;
 import java.awt.HeadlessException;
@@ -17,6 +18,8 @@ public class GameFrame extends JFrame {
 	private Boolean fullscreen;
 	private Dimension resolution;
 
+	MainMenu main;
+
 	public Dimension getResolution() {
 		return resolution;
 	}
@@ -27,7 +30,6 @@ public class GameFrame extends JFrame {
 		this.setResizable(!fullscreen);
 		this.setPreferredSize(resolution);
 		this.setUndecorated(fullscreen);
-		this.pack();
 	}
 
 	public Boolean getFullscreen() {
@@ -39,23 +41,18 @@ public class GameFrame extends JFrame {
 	}
 
 	private void init() {
-
-	}
-
-	public GameFrame() throws HeadlessException {
 		this.fullscreen = true;
 		this.screen_width = 1024;
 		this.screen_height = 768;
-
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResolution(
 				new Dimension(this.screen_width, this.screen_height), true);
+	}
 
-		this.setTitle("Battering Valhalla");
-
-		this.setLocationRelativeTo(null);
-
+	public GameFrame() throws HeadlessException {
 		this.init();
+		this.setTitle("Battering Valhalla");
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 
 	}
@@ -65,9 +62,24 @@ public class GameFrame extends JFrame {
 	}
 
 	private void start() {
-		GameManager manager = new GameManager(this);
-		manager.init();
-		manager.run();
+		gameStart();
+		/*
+		 * main = new MainMenu(this); this.setContentPane(main); this.pack();
+		 * this.setLocationRelativeTo(null);
+		 */
 	}
 
+	public void gameStart() {
+		GameManager manager = new GameManager();
+		manager.init(this);
+		this.setContentPane(manager.getGamePanel());
+		manager.getGamePanel().updateUI();
+		manager.getGamePanel().requestFocus();
+		System.out.println(manager.getGamePanel().isFocusable());
+		// SwingUtilities.invokeLater(manager);
+		this.pack();
+		this.setLocationRelativeTo(null);
+
+		manager.run();
+	}
 }

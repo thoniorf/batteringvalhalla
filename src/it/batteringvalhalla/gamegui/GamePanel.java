@@ -21,7 +21,8 @@ public class GamePanel extends JPanel {
 	GameWorld world;
 	GameManager manager;
 
-	public GamePanel(GameWorld world, GameManager gameManager) {
+	public GamePanel(GameWorld world, GameManager gameManager,
+			GameFrame gameframe) {
 		super();
 		this.manager = gameManager;
 		this.world = world;
@@ -33,7 +34,6 @@ public class GamePanel extends JPanel {
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_UP:
 					((Actor) world.getObjects().get(0))

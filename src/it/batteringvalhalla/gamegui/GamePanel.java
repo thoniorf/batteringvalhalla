@@ -21,14 +21,13 @@ public class GamePanel extends JPanel {
 	GameWorld world;
 	GameManager manager;
 
-	public GamePanel(GameWorld world, GameManager gameManager,
-			GameFrame gameframe) {
+	public GamePanel() {
 		super();
-		this.manager = gameManager;
-		this.world = world;
+		init();
 		this.setOpaque(true);
 		this.setPreferredSize(new Dimension(1024, 768));
 		this.setFocusable(true);
+		this.setFocusTraversalKeysEnabled(true);
 		this.setVisible(true);
 
 		this.addKeyListener(new KeyAdapter() {
@@ -78,9 +77,18 @@ public class GamePanel extends JPanel {
 		});
 	}
 
+	private void init() {
+		manager = new GameManager(this);
+		world = manager.getWorld();
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		world.paint(g);
+	}
+
+	public GameManager getManager() {
+		return manager;
 	}
 }

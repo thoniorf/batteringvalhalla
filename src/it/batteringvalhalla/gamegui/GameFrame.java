@@ -1,6 +1,5 @@
 package it.batteringvalhalla.gamegui;
 
-import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 
 import java.awt.Dimension;
@@ -9,16 +8,15 @@ import java.awt.HeadlessException;
 import javax.swing.JFrame;
 
 public class GameFrame extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private Integer screen_width;
 	private Integer screen_height;
 	private Boolean fullscreen;
 	private Dimension resolution;
 
-	MainMenu main;
+	private GamePanel game;
+	private MainMenu main;
 
 	public Dimension getResolution() {
 		return resolution;
@@ -63,23 +61,16 @@ public class GameFrame extends JFrame {
 
 	private void start() {
 		gameStart();
-		/*
-		 * main = new MainMenu(this); this.setContentPane(main); this.pack();
-		 * this.setLocationRelativeTo(null);
-		 */
 	}
 
 	public void gameStart() {
-		GameManager manager = new GameManager();
-		manager.init(this);
-		this.setContentPane(manager.getGamePanel());
-		manager.getGamePanel().updateUI();
-		manager.getGamePanel().requestFocus();
-		System.out.println(manager.getGamePanel().isFocusable());
-		// SwingUtilities.invokeLater(manager);
+		game = new GamePanel();
+		this.setContentPane(game);
+		game.updateUI();
+		game.requestFocus();
 		this.pack();
 		this.setLocationRelativeTo(null);
+		game.getManager().run();
 
-		manager.run();
 	}
 }

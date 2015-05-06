@@ -14,6 +14,11 @@ public class GameWorld {
 	Arena arena;
 	Integer enemies;
 	Integer match;
+	Boolean next;
+
+	public Boolean getNext() {
+		return next;
+	}
 
 	public GameWorld() {
 		firstMatch();
@@ -23,7 +28,6 @@ public class GameWorld {
 	public void update() {
 		if (!arena.getEdge().contains(objects.get(0).getX(),
 				objects.get(0).getY())) {
-			System.out.println("Game Over");
 			JOptionPane gameover = new JOptionPane("Game Over ",
 					JOptionPane.QUESTION_MESSAGE);
 			switch (gameover.showConfirmDialog(null, "Retry ?", "Game Over",
@@ -57,21 +61,27 @@ public class GameWorld {
 	}
 
 	public void paint(Graphics g) {
-		arena.paint(g);
-		for (AbstractGameObject obj : objects) {
-			if (((Actor) obj).getLive() != 0) {
-				obj.paint(g);
+		if (!next) {
+			arena.paint(g);
+			for (AbstractGameObject obj : objects) {
+				if (((Actor) obj).getLive() != 0) {
+					obj.paint(g);
+				}
 			}
+		} else {
+			g.drawString("Match:" + match.toString(), 50, 50);
+			next = false;
 		}
-		g.drawString("Match:" + match.toString(), 10, 10);
 	}
 
 	public void nextMatch() {
+		next = true;
 		this.match += 1;
 		init(1, match);
 	}
 
 	public void firstMatch() {
+		next = new Boolean(true);
 		enemies = new Integer(0);
 		match = new Integer(0);
 		arena = new Arena();

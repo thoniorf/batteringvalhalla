@@ -39,10 +39,13 @@ public class GameManager {
 				panel.requestFocus();
 				while (true) {
 					while (status == 1) {
+						panel.getInput();
 						world.update();
 						collisiondander.checkCollisions(world.getObjects());
 						panel.repaint();
 						try {
+							if (world.getNext())
+								Thread.sleep(970);
 							Thread.sleep(30);
 						} catch (InterruptedException e) {
 							e.printStackTrace();

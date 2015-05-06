@@ -4,6 +4,8 @@ import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.object.AbstractGameObject;
 import it.batteringvalhalla.gamecore.object.actor.Actor;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -61,15 +63,16 @@ public class GameWorld {
 	}
 
 	public void paint(Graphics g) {
-		if (!next) {
-			arena.paint(g);
-			for (AbstractGameObject obj : objects) {
-				if (((Actor) obj).getLive() != 0) {
-					obj.paint(g);
-				}
+		arena.paint(g);
+		for (AbstractGameObject obj : objects) {
+			if (((Actor) obj).getLive() != 0) {
+				obj.paint(g);
 			}
-		} else {
-			g.drawString("Match:" + match.toString(), 50, 50);
+		}
+		if (next) {
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("Serif", Font.BOLD, 144));
+			g.drawString("Match:" + match.toString(), 150, 150);
 			next = false;
 		}
 	}

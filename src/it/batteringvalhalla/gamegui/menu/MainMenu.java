@@ -1,7 +1,6 @@
 package it.batteringvalhalla.gamegui.menu;
 
 import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.GamePanel;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -11,23 +10,22 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 
-import javax.swing.JPanel;
+import javafx.scene.shape.Circle;
 
-//TODO exit menu & option menu
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 public class MainMenu extends JPanel {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6276557663423646175L;
-	GameFrame gameframe;
+	private static final long serialVersionUID = -1819144638361253664L;
+	GameFrame frame;
 	Image play;
 	Image play_odd;
 	Image play_draw;
@@ -44,56 +42,45 @@ public class MainMenu extends JPanel {
 	int screenh = 768;
 	boolean enabled = false;
 
-	public MainMenu(GameFrame gameFrame) {
-		super();
-		this.gameframe = gameFrame;
+	public MainMenu(GameFrame frame) {
 		this.enabled = true;
-		this.mediaLoader();
-		this.listenerLoader();
-		this.setFocusable(true);
-		this.setVisible(true);
+		this.frame = frame;
+		try {
+			this.mediaLoader();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		listenerLoader();
 
 	}
 
-	private void mediaLoader() {
+	private void mediaLoader() throws IOException {
 		MediaTracker mt = new MediaTracker(this);
 
-		play = Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						getClass().getResource(
-								"../../assets/gui/menu/icon/play.png"))
+		play = ImageIO.read(
+				this.getClass().getResource(
+						"../../assets/gui/menu/icon/play.png"))
 				.getScaledInstance(200, 212, java.awt.Image.SCALE_SMOOTH);
-		play_odd = Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						getClass().getResource(
-								"../../assets/gui/menu/icon/hover/h_play.png"))
+		play_odd = ImageIO.read(
+				this.getClass().getResource(
+						"../../assets/gui/menu/icon/hover/h_play.png"))
 				.getScaledInstance(200, 212, java.awt.Image.SCALE_SMOOTH);
-		options = Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						getClass().getResource(
-								"../../assets/gui/menu/icon/option.png"))
+		options = ImageIO.read(
+				this.getClass().getResource(
+						"../../assets/gui/menu/icon/option.png"))
 				.getScaledInstance(165, 178, java.awt.Image.SCALE_SMOOTH);
-		options_odd = Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						getClass()
-								.getResource(
-										"../../assets/gui/menu/icon/hover/h_option.png"))
+		options_odd = ImageIO.read(
+				this.getClass().getResource(
+						"../../assets/gui/menu/icon/hover/h_option.png"))
 				.getScaledInstance(165, 178, java.awt.Image.SCALE_SMOOTH);
-		exit = Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						getClass().getResource(
-								"../../assets/gui/menu/icon/exit.png"))
+		exit = ImageIO.read(
+				this.getClass().getResource(
+						"../../assets/gui/menu/icon/exit.png"))
 				.getScaledInstance(139, 149, java.awt.Image.SCALE_SMOOTH);
-		exit_odd = Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						getClass().getResource(
-								"../../assets/gui/menu/icon/hover/h_exit.png"))
+		exit_odd = ImageIO.read(
+				this.getClass().getResource(
+						"../../assets/gui/menu/icon/hover/h_exit.png"))
 				.getScaledInstance(139, 149, java.awt.Image.SCALE_SMOOTH);
 
 		mt.addImage(play, 0);
@@ -132,46 +119,34 @@ public class MainMenu extends JPanel {
 		exit_circle.setCenterX(687 + exit.getWidth(this) / 2);
 		exit_circle.setCenterY((screenh - 84 - 149) + exit.getHeight(this) / 2);
 		exit_circle.setRadius(exit.getHeight(this) / 2);
+
 	}
 
 	private void listenerLoader() {
-		this.addMouseListener(new MouseAdapter() {
-
+		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
+
 				super.mouseReleased(e);
-				if (enabled)
-					switch (listener(e.getX(), e.getY())) {
-					case 1:
-						gamemenu = new GamePanel(gameframe)
-						break;
-					case 2:
-						// TODO option button event
-						break;
-					case 3:
-						// exit.enabled = true;
-						// enabled = false;
-						break;
-					}
-			}
-		});
+				switch (listener(e.getX(), e.getY())) {
+				case 1:
+					frame.gameStart();
+					break;
+				case 2:
+					break;
+				case 3:
+					System.exit(0);
+					break;
+				default:
+					break;
 
-		this.addMouseMotionListener(new MouseMotionAdapter() {
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				super.mouseMoved(e);
-				if (enabled) {
-					motionListener(e.getX(), e.getY(), 1);
 				}
 			}
 		});
-
 	}
 
 	@Override
-	protected void paintComponent(Graphics g) {
-
+	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -210,6 +185,6 @@ public class MainMenu extends JPanel {
 		} else {
 			exit_draw = exit;
 		}
-		repaint();
+		this.repaint();
 	}
 }

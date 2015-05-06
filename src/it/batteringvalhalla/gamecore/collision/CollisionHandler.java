@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamecore.collision;
 
 import it.batteringvalhalla.gamecore.object.AbstractGameObject;
+import it.batteringvalhalla.gamecore.object.actor.Actor;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class CollisionHandler {
 		returnsobjects = new ArrayList<AbstractGameObject>();
 	}
 
-	public void checkCollisions(ArrayList<AbstractGameObject> objects) {
+	public void checkCollisions(ArrayList<AbstractGameObject> arrayList) {
 		/*
 		 * quadtree.clear(); for (int i = 0; i < objects.size(); i++) {
 		 * quadtree.insert(objects.get(i)); }
@@ -33,15 +34,19 @@ public class CollisionHandler {
 		 * } } }
 		 */
 
-		for (int i = 0; i < objects.size(); i++) {
-			for (int j = i + 1; j < objects.size(); j++) {
-				if (objects.get(i).getCollisionShape().intersecable()
-						&& objects.get(j).getCollisionShape().intersecable()
-						&& objects.get(i).getCollisionShape()
-								.intersects(objects.get(j).getCollisionShape())) {
+		for (int i = 0; i < arrayList.size(); i++) {
+			for (int j = i + 1; j < arrayList.size(); j++) {
+				if (((Actor) arrayList.get(i)).getLive() != 0
+						&& arrayList.get(i).getCollisionShape().intersecable()
+						&& arrayList.get(j).getCollisionShape().intersecable()
+						&& arrayList
+								.get(i)
+								.getCollisionShape()
+								.intersects(
+										arrayList.get(j).getCollisionShape())) {
 
-					objects.get(i).getCollisionShape().updateCollisionpoint();
-					objects.get(i).postCollision(objects.get(j));
+					arrayList.get(i).getCollisionShape().updateCollisionpoint();
+					arrayList.get(i).postCollision(arrayList.get(j));
 				}
 			}
 		}

@@ -6,17 +6,20 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class GameFrame extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5257465474614819083L;
 	private Integer screen_width;
 	private Integer screen_height;
 	private Boolean fullscreen;
 	private Dimension resolution;
 
-	private GamePanel game;
-	private MainMenu main;
+	private JPanel panel;
 
 	public Dimension getResolution() {
 		return resolution;
@@ -56,21 +59,31 @@ public class GameFrame extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new GameFrame().start();
+		GameFrame frame = new GameFrame();
+		frame.start();
 	}
 
 	private void start() {
-		gameStart();
+		menuStart();
+	}
+
+	public void menuStart() {
+		panel = new MainMenu(this);
+		this.setContentPane(panel);
+		panel.requestFocus();
+		panel.updateUI();
+		this.pack();
+		this.setLocationRelativeTo(null);
 	}
 
 	public void gameStart() {
-		game = new GamePanel();
-		this.setContentPane(game);
-		game.updateUI();
-		game.requestFocus();
+		panel = new GamePanel(this);
+		this.setContentPane(panel);
+		panel.updateUI();
+		panel.requestFocus();
 		this.pack();
 		this.setLocationRelativeTo(null);
-		game.getManager().run();
+		((GamePanel) panel).getManager().run();
 
 	}
 }

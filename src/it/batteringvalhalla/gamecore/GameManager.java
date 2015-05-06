@@ -5,7 +5,7 @@ import it.batteringvalhalla.gamegui.GamePanel;
 
 import java.awt.Rectangle;
 
-public class GameManager implements Runnable {
+public class GameManager {
 
 	GameWorld world;
 	GamePanel panel;
@@ -31,25 +31,32 @@ public class GameManager implements Runnable {
 		init();
 	}
 
-	@Override
 	public void run() {
-		while (true) {
-			while (status == 1) {
-				world.update();
-				collisiondander.checkCollisions(world.getObjects());
-				panel.repaint();
-				try {
-					Thread.sleep(30);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+		new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				panel.requestFocus();
+				while (true) {
+					while (status == 1) {
+						world.update();
+						collisiondander.checkCollisions(world.getObjects());
+						panel.repaint();
+						try {
+							Thread.sleep(30);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					try {
+						Thread.sleep(30);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-			try {
-				Thread.sleep(30);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+			};
+		}.start();
+
 	}
 
 	public void init() {

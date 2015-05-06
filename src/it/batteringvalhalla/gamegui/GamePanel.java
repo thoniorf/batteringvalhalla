@@ -17,12 +17,14 @@ public class GamePanel extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1568479702061945112L;
+	GameFrame frame;
 	GameWorld world;
 	GameManager manager;
 
-	public GamePanel() {
+	public GamePanel(GameFrame frame) {
 		super();
+		this.frame = frame;
 		init();
 		this.setOpaque(true);
 		this.setPreferredSize(new Dimension(1024, 768));
@@ -30,7 +32,7 @@ public class GamePanel extends JPanel {
 		this.setFocusTraversalKeysEnabled(true);
 		this.setVisible(true);
 
-		this.addKeyListener(new KeyAdapter() {
+		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
@@ -80,6 +82,7 @@ public class GamePanel extends JPanel {
 	private void init() {
 		manager = new GameManager(this);
 		world = manager.getWorld();
+		manager.init();
 	}
 
 	@Override

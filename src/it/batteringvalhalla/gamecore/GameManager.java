@@ -37,6 +37,13 @@ public class GameManager {
 			public void run() {
 				super.run();
 				panel.requestFocus();
+				try {
+					if (world.getNext())
+						Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				while (true) {
 					while (status == 1) {
 						panel.getInput();

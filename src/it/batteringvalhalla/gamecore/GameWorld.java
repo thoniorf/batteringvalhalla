@@ -112,7 +112,6 @@ public class GameWorld {
 				}
 			}
 		}
-		zOrder();
 	}
 
 	private void altPlayer() {
@@ -120,7 +119,7 @@ public class GameWorld {
 		player.setSpeedX(0f);
 	}
 
-	private void zOrder() {
+	public void zOrder() {
 		objects.sort(null);
 	}
 }

@@ -39,7 +39,7 @@ public class GameManager {
 				panel.requestFocus();
 				try {
 					if (world.getNext())
-						Thread.sleep(1000);
+						Thread.sleep(1500);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -47,11 +47,12 @@ public class GameManager {
 					while (status == 1) {
 						panel.getInput();
 						world.update();
+						world.zOrder();
 						collisiondander.checkCollisions(world.getObjects());
 						panel.repaint();
 						try {
 							if (world.getNext())
-								Thread.sleep(970);
+								Thread.sleep(1470);
 							Thread.sleep(30);
 						} catch (InterruptedException e) {
 							e.printStackTrace();

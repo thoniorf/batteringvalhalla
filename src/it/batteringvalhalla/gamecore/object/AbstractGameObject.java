@@ -4,7 +4,8 @@ import it.batteringvalhalla.gamecore.collision.shape.CollisionShape;
 
 import java.awt.Graphics;
 
-public abstract class AbstractGameObject {
+public abstract class AbstractGameObject implements
+		Comparable<AbstractGameObject> {
 
 	protected int x;
 	protected int y;
@@ -68,5 +69,11 @@ public abstract class AbstractGameObject {
 
 	public void postCollision(AbstractGameObject obj) {
 
+	}
+
+	@Override
+	public int compareTo(AbstractGameObject o) {
+
+		return (this.y >= o.y) ? 0 : -1;
 	}
 }

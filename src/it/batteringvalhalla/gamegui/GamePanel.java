@@ -3,7 +3,6 @@ package it.batteringvalhalla.gamegui;
 import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.input.InputHandler;
-import it.batteringvalhalla.gamecore.object.actor.Actor;
 import it.batteringvalhalla.gamecore.object.actor.Direction;
 
 import java.awt.Dimension;
@@ -33,53 +32,6 @@ public class GamePanel extends JPanel {
 		this.setFocusTraversalKeysEnabled(true);
 		this.setVisible(true);
 		inputkey = new InputHandler();
-
-		// addKeyListener(new KeyAdapter() {
-		// @Override
-		// public void keyPressed(KeyEvent e) {
-		// switch (e.getKeyCode()) {
-		// case KeyEvent.VK_UP:
-		// ((Actor) world.getObjects().get(0))
-		// .setDirection(Direction.nord);
-		// break;
-		//
-		// case KeyEvent.VK_DOWN:
-		// ((Actor) world.getObjects().get(0))
-		// .setDirection(Direction.sud);
-		//
-		// break;
-		// case KeyEvent.VK_RIGHT:
-		// ((Actor) world.getObjects().get(0))
-		// .setDirection(Direction.est);
-		//
-		// break;
-		// case KeyEvent.VK_LEFT:
-		// ((Actor) world.getObjects().get(0))
-		// .setDirection(Direction.ovest);
-		//
-		// break;
-		//
-		// case KeyEvent.VK_ESCAPE:
-		// if (manager.getStatus() == 1)
-		// manager.setStatus(0);
-		// else
-		// manager.setStatus(1);
-		// break;
-		// default:
-		//
-		// break;
-		//
-		// }
-		//
-		// }
-		//
-		// @Override
-		// public void keyReleased(KeyEvent e) {
-		// ((Actor) world.getObjects().get(0))
-		// .setDirection(Direction.stop);
-		// }
-		// });
-
 		addKeyListener(inputkey);
 
 	}
@@ -103,28 +55,31 @@ public class GamePanel extends JPanel {
 	public void getInput() {
 		List<Boolean> keys = inputkey.getKeys();
 		Boolean moving = new Boolean(false);
-		if (keys.get(0)) {
-			moving = true;
-			((Actor) world.getObjects().get(0)).setDirection(Direction.nord);
-		}
-		if (keys.get(1)) {
-			moving = true;
-			((Actor) world.getObjects().get(0)).setDirection(Direction.sud);
-		}
-		if (keys.get(2)) {
-			moving = true;
-			((Actor) world.getObjects().get(0)).setDirection(Direction.est);
-		}
-		if (keys.get(3)) {
-			moving = true;
-			((Actor) world.getObjects().get(0)).setDirection(Direction.ovest);
+		if (manager.getStatus() == 1) {
+			if (keys.get(0)) {
+				moving = true;
+				world.getPlayer().setDirection(Direction.nord);
+			}
+			if (keys.get(1)) {
+				moving = true;
+				world.getPlayer().setDirection(Direction.sud);
+			}
+			if (keys.get(2)) {
+				moving = true;
+				world.getPlayer().setDirection(Direction.est);
+			}
+			if (keys.get(3)) {
+				moving = true;
+				world.getPlayer().setDirection(Direction.ovest);
+			}
 		}
 		if (keys.get(4))
-			if (manager.getStatus() == 1)
+			if (manager.getStatus() == 1) {
 				manager.setStatus(0);
-			else
+			} else {
 				manager.setStatus(1);
+			}
 		if (!moving)
-			((Actor) world.getObjects().get(0)).setDirection(Direction.stop);
+			world.getPlayer().setDirection(Direction.stop);
 	}
 }

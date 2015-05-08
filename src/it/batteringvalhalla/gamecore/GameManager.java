@@ -12,23 +12,23 @@ public class GameManager {
 	CollisionHandler collisiondander;
 	int status;
 
-	public int getStatus() {
-		return status;
+	public GameManager(GamePanel panel) {
+		this.panel = panel;
+		this.world = new GameWorld();
+		this.collisiondander = new CollisionHandler(new Rectangle(1024, 768));
+		init();
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public int getStatus() {
+		return status;
 	}
 
 	public GameWorld getWorld() {
 		return world;
 	}
 
-	public GameManager(GamePanel panel) {
-		this.panel = panel;
-		this.world = new GameWorld();
-		this.collisiondander = new CollisionHandler(new Rectangle(1024, 768));
-		init();
+	public void init() {
+		status = 1;
 	}
 
 	public void run() {
@@ -41,7 +41,6 @@ public class GameManager {
 					if (world.getNext())
 						Thread.sleep(1000);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				while (true) {
@@ -58,18 +57,20 @@ public class GameManager {
 							e.printStackTrace();
 						}
 					}
+					panel.getInput();
 					try {
 						Thread.sleep(30);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					// TODO pause menu call
 				}
 			};
 		}.start();
 
 	}
 
-	public void init() {
-		status = 1;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

@@ -2,22 +2,29 @@ package it.batteringvalhalla.gamecore.arena;
 
 import java.awt.Graphics;
 
-import javafx.scene.shape.Circle;
-
 public class Arena {
 
-	private Circle edge;
-
-	public Circle getEdge() {
-		return edge;
-	}
+	int x;
+	int y;
+	int height;
+	int width;
 
 	public Arena() {
-		edge = new Circle(68, 200, 500);
+		x = 120;
+		y = 160;
+		height = 500;
+		width = 800;
 	}
 
 	public void paint(Graphics g) {
-		g.drawOval(68, 200, 500, 500);
+		g.drawRect(x, y, width, height);
+
+	}
+
+	public boolean control(int xa, int ya, int w, int h) {
+
+		return xa + (w / 2) >= x && xa + (w / 2) <= x + width
+				&& ya + (h / 2) >= y && ya + (h / 2) <= y + height;
 
 	}
 

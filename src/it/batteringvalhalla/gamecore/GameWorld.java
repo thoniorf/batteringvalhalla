@@ -8,12 +8,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
 public class GameWorld {
 	ArrayList<AbstractGameObject> objects;
 	Actor player;
+	Random random = new Random();
 
 	public Actor getPlayer() {
 		return player;
@@ -62,6 +64,11 @@ public class GameWorld {
 		next = true;
 		this.match += 1;
 		startMatch(1, match);
+		for (int i = 0; i < objects.size(); i++) {
+			objects.get(i).setX(800 - random.nextInt(500));
+			objects.get(i).setY(500 - random.nextInt(300));
+
+		}
 	}
 
 	public void endGame() {
@@ -82,11 +89,15 @@ public class GameWorld {
 
 	public void paint(Graphics g) {
 		arena.paint(g);
+		g.setColor(Color.PINK);
+		g.setFont(new Font("" + getPlayer().getLive(), Font.ITALIC, 30));
+		g.drawString("Live:" + getPlayer().getLive(), 30, 70);
+
 		for (AbstractGameObject obj : objects) {
-			if (((Actor) obj).getLive() != 0) {
-				obj.paint(g);
-			}
+
+			obj.paint(g);
 		}
+
 		if (next) {
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Serif", Font.BOLD, 144));
@@ -97,20 +108,22 @@ public class GameWorld {
 	}
 
 	public void update() {
-		if (!arena.getEdge().contains(player.getX(), player.getY())) {
+		if (getPlayer().getLive() == 0) {
 			endGame();
 		}
 		if (enemies == 0) {
 			nextMatch();
 		}
 		for (AbstractGameObject obj : objects) {
-			if (((Actor) obj).getLive() != 0) {
-				obj.update();
-				if (!arena.getEdge().contains(obj.getX(), obj.getY())) {
-					((Actor) obj).setLive(0);
-					enemies -= 1;
-				}
+
+			obj.update();
+			if (!arena.control(obj.getX(), obj.getY(), obj.getWidth(),
+					obj.getHeight())) {
+				((Actor) obj).decrementLive();
+				;
+				enemies -= 1;
 			}
+
 		}
 	}
 
@@ -119,7 +132,7 @@ public class GameWorld {
 		player.setSpeedX(0f);
 	}
 
-	public void zOrder() {
-		objects.sort(null);
-	}
+	// public void zOrder() {
+	// objects.sort(null);
+	// }
 }

@@ -1,30 +1,26 @@
 package it.batteringvalhalla.gamecore.arena;
 
+import it.batteringvalhalla.gamecore.collision.shape.CollisionShape;
+
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class Arena {
 
-	int x;
-	int y;
-	int height;
-	int width;
+	private CollisionShape edge;
+
+	public CollisionShape getEdge() {
+		return edge;
+	}
 
 	public Arena() {
-		x = 120;
-		y = 160;
-		height = 500;
-		width = 800;
+		edge = new CollisionShape(50, 150, 918, 518);
 	}
 
 	public void paint(Graphics g) {
-		g.drawRect(x, y, width, height);
-
-	}
-
-	public boolean control(int xa, int ya, int w, int h) {
-
-		return xa + (w / 2) >= x && xa + (w / 2) <= x + width
-				&& ya + (h / 2) >= y && ya + (h / 2) <= y + height;
+		g.setColor(Color.darkGray);
+		g.fillRect((int) edge.getX(), (int) edge.getY(), (int) edge.getWidth(),
+				(int) edge.getHeight());
 
 	}
 

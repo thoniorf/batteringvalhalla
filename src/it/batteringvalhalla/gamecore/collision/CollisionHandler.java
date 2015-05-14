@@ -5,6 +5,7 @@ import it.batteringvalhalla.gamecore.object.actor.Actor;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CollisionHandler {
 	QuadTree quadtree;
@@ -15,7 +16,7 @@ public class CollisionHandler {
 		returnsobjects = new ArrayList<AbstractGameObject>();
 	}
 
-	public void checkCollisions(ArrayList<AbstractGameObject> arrayList) {
+	public void checkCollisions(List<AbstractGameObject> arrayList) {
 		/*
 		 * quadtree.clear(); for (int i = 0; i < objects.size(); i++) {
 		 * quadtree.insert(objects.get(i)); }
@@ -37,6 +38,7 @@ public class CollisionHandler {
 		for (int i = 0; i < arrayList.size(); i++) {
 			for (int j = i + 1; j < arrayList.size(); j++) {
 				if (((Actor) arrayList.get(i)).getLive() != 0
+						&& ((Actor) arrayList.get(j)).getLive() != 0
 						&& arrayList.get(i).getCollisionShape().intersecable()
 						&& arrayList.get(j).getCollisionShape().intersecable()
 						&& arrayList
@@ -46,6 +48,7 @@ public class CollisionHandler {
 										arrayList.get(j).getCollisionShape())) {
 
 					arrayList.get(i).getCollisionShape().updateCollisionpoint();
+					// arrayList.get(j).getCollisionShape().updateCollisionpoint();
 					arrayList.get(i).postCollision(arrayList.get(j));
 				}
 			}

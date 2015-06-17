@@ -39,14 +39,17 @@ public class MainMenu extends JPanel {
 	Image exit_draw;
 	Circle exit_circle;
 	Font font;
+	JPanel op;
 	int screenh = 768;
 	boolean enabled = false;
 
 	public MainMenu(GameFrame frame) {
 		this.enabled = true;
 		this.frame = frame;
+
 		try {
 			this.mediaLoader();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -133,6 +136,8 @@ public class MainMenu extends JPanel {
 					frame.gameStart();
 					break;
 				case 2:
+					frame.opt();
+
 					break;
 				case 3:
 					System.exit(0);
@@ -142,6 +147,7 @@ public class MainMenu extends JPanel {
 
 				}
 			}
+
 		});
 	}
 

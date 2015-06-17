@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamegui.menu;
 
-import java.awt.Color;
+import it.batteringvalhalla.gamegui.GameFrame;
+
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
@@ -24,9 +25,7 @@ public class Option extends JPanel {
 	/**
 	 * 
 	 */
-
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -1370627725870961582L;
 	Image img;
 	Image i;
 	Image tmp;
@@ -40,10 +39,21 @@ public class Option extends JPanel {
 	Circle off_circle;
 	Circle on_circle;
 	Image back;
+	GameFrame frame;
+	Image viki;
+	Image v2;
+	Image vtmp;
+	Circle viki_circle;
 
-	public Option() {
-		setBackground(Color.PINK);
+	public Option(GameFrame frame) throws InterruptedException {
+		super();
+		this.frame = frame;
+		load();
+		listener();
 
+	}
+
+	private void load() throws InterruptedException {
 		MediaTracker mt = new MediaTracker(this);
 
 		img = Toolkit
@@ -51,71 +61,70 @@ public class Option extends JPanel {
 				.getImage(
 						getClass()
 								.getResource(
-										"../../assets/gui/icon/pink_button_sound_on_morgaine1976.png"))
-				.getScaledInstance(900, 900, java.awt.Image.SCALE_SMOOTH);
+										"../../assets/gui/menu/icon/pink_button_sound_on_morgaine1976.png"));
 
 		i = Toolkit
 				.getDefaultToolkit()
 				.getImage(
 						getClass()
 								.getResource(
-										"../../assets/gui/icon/pink_button_sound_off_morgaine1976.png"))
-				.getScaledInstance(900, 900, java.awt.Image.SCALE_SMOOTH);
+										"../../assets/gui/menu/icon/pink_button_sound_off_morgaine1976.png"));
 
-		on = Toolkit
+		on = Toolkit.getDefaultToolkit().getImage(
+				getClass().getResource(
+						"../../assets/gui/menu/icon/bottonon.png"));
+		on2 = Toolkit.getDefaultToolkit().getImage(
+				getClass().getResource(
+						"../../assets/gui/menu/icon/hover/Senzanome.png"));
+
+		off = Toolkit.getDefaultToolkit().getImage(
+				getClass().getResource("../../assets/gui/menu/icon/off.png"));
+
+		off2 = Toolkit.getDefaultToolkit().getImage(
+				getClass().getResource(
+						"../../assets/gui/menu/icon/hover/off2.png"));
+		back = Toolkit.getDefaultToolkit().getImage(
+				getClass().getResource(
+						"../../assets/gui/menu/background/background.png"));
+
+		viki = Toolkit
 				.getDefaultToolkit()
 				.getImage(
 						getClass().getResource(
-								"../../assets/gui/icon/bottonon.png"))
-				.getScaledInstance(900, 900, java.awt.Image.SCALE_SMOOTH);
-
-		on2 = Toolkit
+								"../../assets/gui/menu/icon/di4875BKT.png"))
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+		v2 = Toolkit
 				.getDefaultToolkit()
 				.getImage(
 						getClass().getResource(
-								"../../assets/gui/icon/hover/senzanome.png"))
-				.getScaledInstance(900, 900, java.awt.Image.SCALE_SMOOTH);
+								"../../assets/gui/menu/icon/hover/viki.png"))
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
 
-		off = Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						getClass().getResource("../../assets/gui/icon/off.png"))
-				.getScaledInstance(900, 900, java.awt.Image.SCALE_SMOOTH);
-		off2 = Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						getClass().getResource(
-								"../../assets/gui/icon/hover/off2.png"))
-				.getScaledInstance(900, 900, java.awt.Image.SCALE_SMOOTH);
-		back = Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						getClass()
-								.getResource(
-										"../../assets/gui/menu/background/pngbackground.png"))
-				.getScaledInstance(900, 900, java.awt.Image.SCALE_SMOOTH);
-
-		mt.addImage(img, 0);
-		mt.addImage(i, 1);
-		mt.addImage(on, 2);
-		mt.addImage(on2, 3);
-		mt.addImage(off, 4);
-		mt.addImage(off2, 5);
-		mt.addImage(back, 6);
-
+		mt.addImage(img, 1);
+		mt.addImage(i, 2);
+		mt.addImage(on, 3);
+		mt.addImage(on2, 4);
+		mt.addImage(back, 0);
+		mt.addImage(off, 5);
+		mt.addImage(off2, 6);
+		mt.addImage(viki, 7);
+		mt.addImage(v2, 8);
 		tmp = img;
 		ontmp = on;
 		offtmp = off;
+		vtmp = viki;
+
 		try {
 			mt.waitForAll();
 			this.font = Font.createFont(Font.TRUETYPE_FONT, getClass()
-					.getResourceAsStream("Deutsch.ttf"));
+					.getResourceAsStream("../../assets/gui/fonts/Deutsch.ttf"));
 			GraphicsEnvironment ge = GraphicsEnvironment
 					.getLocalGraphicsEnvironment();
 			ge.registerFont(font);
 		} catch (InterruptedException | FontFormatException | IOException e) {
 			e.printStackTrace();
 		}
+
 		off_circle = new Circle();
 		off_circle.setCenterX(735);
 		off_circle.setCenterY(185);
@@ -126,6 +135,14 @@ public class Option extends JPanel {
 		on_circle.setCenterY(185);
 		on_circle.setRadius(45);
 
+		viki_circle = new Circle();
+		viki_circle.setCenterX(305);
+		viki_circle.setCenterY(550);
+		viki_circle.setRadius(35);
+
+	}
+
+	private void listener() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -147,6 +164,14 @@ public class Option extends JPanel {
 					repaint();
 				}
 
+				if (viki_circle.contains(e.getX(), e.getY())) {
+					viki = v2;
+					repaint();
+				} else {
+					viki = vtmp;
+					repaint();
+				}
+
 			}
 
 		});
@@ -164,9 +189,12 @@ public class Option extends JPanel {
 
 				}
 
+				if (viki_circle.contains(e.getX(), e.getY())) {
+					frame.backMenu();
+				}
+
 			}
 		});
-
 	}
 
 	@Override
@@ -184,6 +212,7 @@ public class Option extends JPanel {
 		g.drawString("Tutorial", 220, 285);
 		g.setFont(new Font(font.getName(), font.getStyle(), 67));
 		g.drawString("Torna al menu'", 380, 580);
+		g.drawImage(viki, 230, 500, 120, 100, null);
 
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);

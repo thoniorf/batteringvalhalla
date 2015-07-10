@@ -53,7 +53,7 @@ public class Option extends JPanel {
 
 	}
 
-	private void load() throws InterruptedException {
+	private void load() {
 		MediaTracker mt = new MediaTracker(this);
 
 		img = Toolkit
@@ -83,9 +83,12 @@ public class Option extends JPanel {
 		off2 = Toolkit.getDefaultToolkit().getImage(
 				getClass().getResource(
 						"../../assets/gui/menu/icon/hover/off2.png"));
-		back = Toolkit.getDefaultToolkit().getImage(
-				getClass().getResource(
-						"../../assets/gui/menu/background/background.png"));
+		back = Toolkit
+				.getDefaultToolkit()
+				.getImage(
+						getClass()
+								.getResource(
+										"../../assets/gui/menu/background/exit_background.png"));
 
 		viki = Toolkit
 				.getDefaultToolkit()

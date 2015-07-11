@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamegui.menu;
 
 import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.sound.Sound;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -14,6 +15,10 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javafx.scene.shape.Circle;
@@ -45,7 +50,7 @@ public class Option extends JPanel {
 	Image vtmp;
 	Circle viki_circle;
 
-	public Option(GameFrame frame) throws InterruptedException {
+	public Option(GameFrame frame) {
 		super();
 		this.frame = frame;
 		load();
@@ -185,11 +190,24 @@ public class Option extends JPanel {
 				if (on_circle.contains(e.getX(), e.getY())) {
 					on();
 
+					write();
+					if (option().equals("0")) {
+						Sound.ok.play();
+
+					} else {
+						Sound.ok.stop();
+					}
 				}
 
 				if (off_circle.contains(e.getX(), e.getY())) {
 					onNo();
+					write1();
+					if (option().equals("0")) {
+						Sound.ok.play();
 
+					} else {
+						Sound.ok.stop();
+					}
 				}
 
 				if (viki_circle.contains(e.getX(), e.getY())) {
@@ -230,6 +248,70 @@ public class Option extends JPanel {
 	void onNo() {
 		img = i;
 		repaint();
+	}
+
+	public void write() {
+		FileWriter w;
+		try {
+
+			w = new FileWriter("options.txt");
+			BufferedWriter bw = new BufferedWriter(w);
+			bw.write("0");
+			bw.flush();
+			bw.close();
+
+		} catch (IOException e) {
+
+		}
+	}
+
+	public void write1() {
+		FileWriter w;
+		try {
+
+			w = new FileWriter("options.txt");
+			BufferedWriter bw = new BufferedWriter(w);
+			bw.write("1");
+			bw.flush();
+			bw.close();
+
+		} catch (IOException e) {
+
+		}
+	}
+
+	public String option() {
+		FileReader r;
+
+		String s;
+
+		String s1 = "0";
+		String s2 = "1";
+
+		try {
+
+			r = new FileReader("options.txt");
+
+			BufferedReader br = new BufferedReader(r);
+
+			s = br.readLine();
+			br.close();
+
+			if (s.equals(s1)) {
+				return s1;
+
+			} else {
+				return s2;
+
+			}
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		}
+		return "";
+
 	}
 
 }

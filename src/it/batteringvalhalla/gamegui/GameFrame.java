@@ -2,6 +2,7 @@ package it.batteringvalhalla.gamegui;
 
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.Option;
+import it.batteringvalhalla.sound.Sound;
 
 import java.awt.Dimension;
 import java.awt.HeadlessException;
@@ -21,6 +22,7 @@ public class GameFrame extends JFrame {
 	private Dimension resolution;
 
 	private JPanel panel;
+	Option o = new Option(this);
 
 	public Dimension getResolution() {
 		return resolution;
@@ -67,6 +69,12 @@ public class GameFrame extends JFrame {
 
 	private void start() {
 		menuStart();
+		if (o.option().equals("0")) {
+			Sound.ok.play();
+
+		} else {
+			Sound.ok.stop();
+		}
 	}
 
 	public void menuStart() {
@@ -78,7 +86,7 @@ public class GameFrame extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 
-	public void gameStart() {
+	public void gameStart() throws InterruptedException {
 		panel = new GamePanel(this);
 		this.setContentPane(panel);
 		panel.updateUI();
@@ -89,7 +97,7 @@ public class GameFrame extends JFrame {
 
 	}
 
-	public void opt() {
+	public void opt() throws InterruptedException {
 		panel = new Option(this);
 
 		this.setContentPane(panel);
@@ -101,7 +109,6 @@ public class GameFrame extends JFrame {
 
 	public void backMenu() {
 		panel = new MainMenu(this);
-
 		this.setContentPane(panel);
 		panel.updateUI();
 		panel.requestFocus();
@@ -109,4 +116,5 @@ public class GameFrame extends JFrame {
 		this.setLocationRelativeTo(null);
 
 	}
+
 }

@@ -109,6 +109,7 @@ public class GameFrame extends JFrame {
 
 	public void backMenu() {
 		panel = new MainMenu(this);
+
 		this.setContentPane(panel);
 		panel.updateUI();
 		panel.requestFocus();

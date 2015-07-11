@@ -133,10 +133,20 @@ public class MainMenu extends JPanel {
 				super.mouseReleased(e);
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
-					frame.gameStart();
+					try {
+						frame.gameStart();
+					} catch (InterruptedException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
 					break;
 				case 2:
-					frame.opt();
+					try {
+						frame.opt();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 
 					break;
 				case 3:

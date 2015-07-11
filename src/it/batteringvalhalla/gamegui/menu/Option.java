@@ -206,6 +206,7 @@ public class Option extends JPanel {
 						Sound.ok.play();
 
 					} else {
+
 						Sound.ok.stop();
 					}
 				}

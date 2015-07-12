@@ -1,4 +1,4 @@
-package it.batteringvalhalla.sound;
+package it.batteringvalhalla.gamegui.sound;
 
 import jaco.mp3.player.MP3Player;
 

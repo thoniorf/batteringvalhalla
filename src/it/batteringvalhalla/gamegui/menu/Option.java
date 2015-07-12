@@ -1,7 +1,7 @@
 package it.batteringvalhalla.gamegui.menu;
 
 import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.sound.Sound;
+import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -53,12 +53,17 @@ public class Option extends JPanel {
 	public Option(GameFrame frame) {
 		super();
 		this.frame = frame;
-		load();
+		try {
+			load();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
 		listener();
 
 	}
 
-	private void load() {
+	private void load() throws IOException {
 		MediaTracker mt = new MediaTracker(this);
 
 		img = Toolkit
@@ -157,29 +162,29 @@ public class Option extends JPanel {
 				if (on_circle.contains(e.getX(), e.getY())) {
 
 					on = on2;
-					repaint();
 
 				} else {
 					on = ontmp;
-					repaint();
+
 				}
 
 				if (off_circle.contains(e.getX(), e.getY())) {
 					off = off2;
-					repaint();
+
 				} else {
 					off = offtmp;
-					repaint();
+
 				}
 
 				if (viki_circle.contains(e.getX(), e.getY())) {
 					viki = v2;
-					repaint();
+
 				} else {
 					viki = vtmp;
-					repaint();
+
 				}
 
+				repaint();
 			}
 
 		});
@@ -243,12 +248,12 @@ public class Option extends JPanel {
 
 	void on() {
 		img = tmp;
-		repaint();
+
 	}
 
 	void onNo() {
 		img = i;
-		repaint();
+
 	}
 
 	public void write() {

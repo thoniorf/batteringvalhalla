@@ -2,7 +2,7 @@ package it.batteringvalhalla.gamegui;
 
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.Option;
-import it.batteringvalhalla.sound.Sound;
+import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Dimension;
 import java.awt.HeadlessException;

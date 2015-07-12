@@ -1,5 +1,6 @@
 package it.batteringvalhalla.gamecore;
 
+import it.batteringvalhalla.gamecore.IA.IAICanMove;
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.object.AbstractGameObject;
 import it.batteringvalhalla.gamecore.object.actor.Actor;
@@ -14,7 +15,9 @@ import javax.swing.JOptionPane;
 
 public class GameWorld {
 	List<AbstractGameObject> objects;
+	List<IAICanMove> npc;
 	Actor player;
+	
 
 	public Actor getPlayer() {
 		return player;
@@ -24,7 +27,7 @@ public class GameWorld {
 	Integer enemies;
 	Integer match;
 	Boolean next;
-
+	
 	public GameWorld() {
 		firstMatch();
 
@@ -36,10 +39,12 @@ public class GameWorld {
 		match = new Integer(0);
 		arena = new Arena();
 		objects = new CopyOnWriteArrayList<AbstractGameObject>();
+		npc= new CopyOnWriteArrayList<IAICanMove>();
 		player = new Actor(200, 300);
 		objects.add(player);
 		altPlayer();
 		startMatch(1, 1);
+		
 	}
 
 	public Boolean getNext() {
@@ -51,10 +56,13 @@ public class GameWorld {
 	}
 
 	public void startMatch(Integer enemies, Integer match) {
+		
 		this.match = match;
 		this.enemies = enemies;
 		for (int i = 0; i < enemies; i++) {
-			objects.add(new Actor(400, 500));
+			Actor tmp=new Actor(400, 500);
+			objects.add(tmp);
+			npc.add(new IAICanMove(tmp,arena));
 		}
 	}
 
@@ -101,6 +109,8 @@ public class GameWorld {
 	}
 
 	public void update() {
+	for(int i=0;i<enemies;i++)	
+		npc.get(i).moveActor();
 		if (!arena.getEdge().contains(player.getX(), player.getY())) {
 			endGame();
 		}

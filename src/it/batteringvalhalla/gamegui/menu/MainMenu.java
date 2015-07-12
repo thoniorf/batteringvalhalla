@@ -12,6 +12,7 @@ import java.awt.MediaTracker;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 
 import javafx.scene.shape.Circle;
@@ -129,7 +130,6 @@ public class MainMenu extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-
 				super.mouseReleased(e);
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
@@ -159,6 +159,14 @@ public class MainMenu extends JPanel {
 			}
 
 		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				super.mouseMoved(e);
+				motionListener(e.getX(), e.getY());
+
+			}
+		});
 	}
 
 	@Override
@@ -186,7 +194,7 @@ public class MainMenu extends JPanel {
 		return 0;
 	}
 
-	public void motionListener(int x, int y, int h) {
+	public void motionListener(int x, int y) {
 		if (play_circle.contains(x, y)) {
 			play_draw = play_odd;
 		} else {
@@ -202,6 +210,6 @@ public class MainMenu extends JPanel {
 		} else {
 			exit_draw = exit;
 		}
-		this.repaint();
+		repaint();
 	}
 }

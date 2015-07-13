@@ -2,6 +2,7 @@ package it.batteringvalhalla.gamegui;
 
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.Option;
+import it.batteringvalhalla.gamegui.sound.FileSound;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Dimension;
@@ -22,11 +23,15 @@ public class GameFrame extends JFrame {
 	private Dimension resolution;
 
 	private JPanel panel;
-	Option o = new Option(this);
 	Sound s;
+	FileSound f;
 
 	public Sound getS() {
 		return s;
+	}
+
+	public FileSound getF() {
+		return f;
 	}
 
 	public Dimension getResolution() {
@@ -56,6 +61,7 @@ public class GameFrame extends JFrame {
 		this.setResolution(
 				new Dimension(this.screen_width, this.screen_height), true);
 		s = new Sound();
+
 	}
 
 	public GameFrame() throws HeadlessException {
@@ -75,12 +81,13 @@ public class GameFrame extends JFrame {
 
 	private void start() {
 		menuStart();
-		if (o.option().equals("0")) {
+		f = new FileSound();
+		if ((f.read()).equals("0")) {
 			s.ok.play();
-
 		} else {
 			s.ok.stop();
 		}
+
 	}
 
 	public void menuStart() {

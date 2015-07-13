@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamegui.menu;
 
 import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.sound.FileSound;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
@@ -15,10 +16,6 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import javafx.scene.shape.Circle;
@@ -50,11 +47,14 @@ public class Option extends JPanel {
 	Image vtmp;
 	Circle viki_circle;
 	Sound s;
+	FileSound f;
 
 	public Option(GameFrame frame) {
 		super();
 		this.frame = frame;
 		s = frame.getS();
+		f = frame.getF();
+
 		try {
 			load();
 		} catch (IOException e) {
@@ -197,8 +197,8 @@ public class Option extends JPanel {
 				if (on_circle.contains(e.getX(), e.getY())) {
 					on();
 
-					write();
-					if (option().equals("0")) {
+					f.write0();
+					if (f.read().equals("0")) {
 						s.ok.play();
 
 					} else {
@@ -208,8 +208,8 @@ public class Option extends JPanel {
 
 				if (off_circle.contains(e.getX(), e.getY())) {
 					onNo();
-					write1();
-					if (option().equals("0")) {
+					f.write1();
+					if (f.read().equals("0")) {
 						s.ok.play();
 
 					} else {
@@ -250,75 +250,13 @@ public class Option extends JPanel {
 
 	void on() {
 		img = tmp;
+		repaint();
 
 	}
 
 	void onNo() {
 		img = i;
-
-	}
-
-	public void write() {
-		FileWriter w;
-		try {
-
-			w = new FileWriter("options.txt");
-			BufferedWriter bw = new BufferedWriter(w);
-			bw.write("0");
-			bw.flush();
-			bw.close();
-
-		} catch (IOException e) {
-
-		}
-	}
-
-	public void write1() {
-		FileWriter w;
-		try {
-
-			w = new FileWriter("options.txt");
-			BufferedWriter bw = new BufferedWriter(w);
-			bw.write("1");
-			bw.flush();
-			bw.close();
-
-		} catch (IOException e) {
-
-		}
-	}
-
-	public String option() {
-		FileReader r;
-
-		String s;
-
-		String s1 = "0";
-		String s2 = "1";
-
-		try {
-
-			r = new FileReader("options.txt");
-
-			BufferedReader br = new BufferedReader(r);
-
-			s = br.readLine();
-			br.close();
-
-			if (s.equals(s1)) {
-				return s1;
-
-			} else {
-				return s2;
-
-			}
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-
-		}
-		return "";
+		repaint();
 
 	}
 

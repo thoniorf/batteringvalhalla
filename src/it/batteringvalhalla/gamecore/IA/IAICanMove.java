@@ -9,7 +9,7 @@ public class IAICanMove extends AbstractEasyIA {
 		super(pg,arena);
 	}
 	public void moveActor(){
-		int next=rnd.nextInt(5);
+		 next=rnd.nextInt(5)+1;
 		//boolean speed=rnd.nextBoolean();
 
 		switch (next) {

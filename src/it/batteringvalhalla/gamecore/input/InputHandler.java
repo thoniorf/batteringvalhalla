@@ -9,19 +9,19 @@ public class InputHandler implements KeyListener {
 
 	List<Boolean> keys;
 
-	public List getKeys() {
-		return keys;
-	}
-
 	public InputHandler() {
 		keys = new CopyOnWriteArrayList<Boolean>();
 		for (int i = 0; i < 5; i++)
 			keys.add(false);
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
+	public void resetKeys() {
+		for (Boolean key : keys)
+			key = false;
+	}
 
+	public List<Boolean> getKeys() {
+		return keys;
 	}
 
 	@Override
@@ -50,6 +50,11 @@ public class InputHandler implements KeyListener {
 			keys.set(3, false);
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			keys.set(4, false);
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
 	}
 
 }

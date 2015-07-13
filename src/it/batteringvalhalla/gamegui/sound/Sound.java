@@ -3,11 +3,19 @@ package it.batteringvalhalla.gamegui.sound;
 import jaco.mp3.player.MP3Player;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 public class Sound {
 
-	public static final MP3Player ok = new MP3Player(new File(
+	public static MP3Player ok;
 
-	"Daddy Yankee - Limbo.mp3"));
-
+	public Sound() {
+		try {
+			ok = new MP3Player(new File(Sound.class.getResource(
+					"../../assets/sound/background.mp3").toURI()));
+		} catch (URISyntaxException e) {
+			ok = new MP3Player(new File(Sound.class.getResource(
+					"../../assets/sound/background.mp3").getPath()));
+		}
+	}
 }

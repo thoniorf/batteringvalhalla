@@ -69,11 +69,12 @@ public class GameFrame extends JFrame {
 
 	private void start() {
 		menuStart();
+		Sound s = new Sound();
 		if (o.option().equals("0")) {
-			Sound.ok.play();
+			s.ok.play();
 
 		} else {
-			Sound.ok.stop();
+			s.ok.stop();
 		}
 	}
 

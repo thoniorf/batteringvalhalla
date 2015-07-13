@@ -23,6 +23,11 @@ public class GameFrame extends JFrame {
 
 	private JPanel panel;
 	Option o = new Option(this);
+	Sound s;
+
+	public Sound getS() {
+		return s;
+	}
 
 	public Dimension getResolution() {
 		return resolution;
@@ -50,6 +55,7 @@ public class GameFrame extends JFrame {
 		this.screen_height = 768;
 		this.setResolution(
 				new Dimension(this.screen_width, this.screen_height), true);
+		s = new Sound();
 	}
 
 	public GameFrame() throws HeadlessException {
@@ -69,7 +75,6 @@ public class GameFrame extends JFrame {
 
 	private void start() {
 		menuStart();
-		Sound s = new Sound();
 		if (o.option().equals("0")) {
 			s.ok.play();
 

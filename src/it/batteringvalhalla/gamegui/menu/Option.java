@@ -54,7 +54,7 @@ public class Option extends JPanel {
 	public Option(GameFrame frame) {
 		super();
 		this.frame = frame;
-		s = new Sound();
+		s = frame.getS();
 		try {
 			load();
 		} catch (IOException e) {

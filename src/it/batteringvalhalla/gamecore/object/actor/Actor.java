@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
 import it.batteringvalhalla.gamecore.collision.shape.CollisionShape;
+import it.batteringvalhalla.gamecore.loader.ImageLoader;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,9 +13,9 @@ public class Actor extends AbstractMovableActor {
 
 	public Actor(int x, int y) {
 		super(x, y);
-		setSpeedX(2);
-		setSpeedY(2);
-		setMaxSpeed(8f);
+		setSpeedX(0);
+		setSpeedY(0);
+		setMaxSpeed(5.5f);
 		setHeight(30);
 		setWidth(90);
 		live = 3;
@@ -64,10 +65,11 @@ public class Actor extends AbstractMovableActor {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+		g.drawImage(ImageLoader.player, x, y - 40, null);
 		g.setColor(Color.blue);
-		g.fillRect(x + 30, y - 40, width2, height2);
+		g.drawRect(x + 30, y - 40, width2, height2);
 		g.setColor(Color.GREEN);
-		g.fillRect(x, y, width, height);
+		g.drawRect(x, y, width, height);
 	}
 
 }

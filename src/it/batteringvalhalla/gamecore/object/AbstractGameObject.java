@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamecore.object;
 
 import it.batteringvalhalla.gamecore.collision.shape.CollisionShape;
+import it.batteringvalhalla.gamecore.object.actor.Actor;
 
 import java.awt.Graphics;
 
@@ -67,7 +68,7 @@ public abstract class AbstractGameObject implements
 
 	}
 
-	public void postCollision(AbstractGameObject obj) {
+	public void postCollision(Actor obj) {
 
 	}
 

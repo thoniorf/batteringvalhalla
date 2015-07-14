@@ -1,5 +1,6 @@
 package it.batteringvalhalla.gamegui;
 
+import it.batteringvalhalla.gamecore.loader.ImageLoader;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.Option;
 import it.batteringvalhalla.gamegui.sound.FileSound;
@@ -7,6 +8,7 @@ import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -74,6 +76,12 @@ public class GameFrame extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		try {
+			ImageLoader.loadImages();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		GameFrame frame = new GameFrame();
 		frame.start();
 

@@ -2,11 +2,13 @@ package it.batteringvalhalla.gamegui.sound;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileSound {
+	File f;
 
 	public FileSound() {
 
@@ -48,7 +50,7 @@ public class FileSound {
 	public String read() {
 		FileReader r;
 
-		String s;
+		String s = "";
 
 		String s1 = "0";
 		String s2 = "1";
@@ -80,13 +82,21 @@ public class FileSound {
 	}
 
 	void construct() {
-		if (read().equals("")) {
-			write0();
-		} else if (read().equals("1")) {
-			write1();
-		} else if (read().equals("0")) {
-			write0();
-		}
+		f = new File("options.txt");
+		if (f.exists()) {
+			if (read().equals("1")) {
+				write1();
+			} else if (read().equals("0")) {
+				write0();
+			}
+
+		} else
+			try {
+				f.createNewFile();
+				write0();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 	}
 

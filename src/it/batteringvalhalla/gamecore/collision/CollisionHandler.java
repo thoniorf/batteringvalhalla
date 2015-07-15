@@ -36,8 +36,9 @@ public class CollisionHandler {
 		 */
 
 		for (int i = 0; i < arrayList.size(); i++) {
-			for (int j = i + 1; j < arrayList.size(); j++) {
-				if (((Actor) arrayList.get(i)).getLive() != 0
+			for (int j = 0; j < arrayList.size(); j++) {
+				if (i != j
+						&& ((Actor) arrayList.get(i)).getLive() != 0
 						&& ((Actor) arrayList.get(j)).getLive() != 0
 						&& arrayList.get(i).getCollisionShape().intersecable()
 						&& arrayList.get(j).getCollisionShape().intersecable()
@@ -49,7 +50,8 @@ public class CollisionHandler {
 
 					arrayList.get(i).getCollisionShape().updateCollisionpoint();
 					// arrayList.get(j).getCollisionShape().updateCollisionpoint();
-					arrayList.get(i).postCollision(arrayList.get(j));
+					arrayList.get(i).postCollision((Actor) arrayList.get(j));
+					// arrayList.get(j).postCollision((Actor) arrayList.get(i));
 				}
 			}
 		}

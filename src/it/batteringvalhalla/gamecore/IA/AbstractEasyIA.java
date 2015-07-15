@@ -23,7 +23,9 @@ protected boolean canNord(){
 			return true;
 	
 		return false;
-	
+//if(pg.getY()-pg.getMaxSpeed()>arena.getEdge().y)
+//	return true;
+//return false;
 	
 }
 
@@ -67,52 +69,63 @@ protected boolean warning(){
 }
 
 protected int whereICan(){
-	int tmp=rnd.nextInt(4)+1;
-	int i=0;
-	while(i<6){
-	switch (tmp) {
-	case 1:
-		if (canNord())
-		{
-			return tmp;
-			
-			
-		}
-		else
-			tmp=rnd.nextInt(4)+1;
-		break;
-		
-	case 2:
-		if (canSud())
-			{return tmp;
-			}
-		else
-			tmp=rnd.nextInt(4)+1;
-		break;
-	case 3:
-		if (canEst())
-			{return tmp;
-			}
-		else 
-			tmp=rnd.nextInt(4)+1;
-		break;
-	case 4:
-		if (canOvest())
-			{return tmp;
-			}
-		else
-			tmp=rnd.nextInt(4)+1;
-		break;
-	case 5:
-
-		return tmp;
-		
-
-	default:
-
-		break;}
-	i++;}
+//	int tmp;
+//	int i=0;
+//	while(i<6){
+//		tmp=rnd.nextInt(4)+1;
+//		
+//	switch (tmp) {
+//	case 1:
+//		if (canNord())
+//		{
+//			return tmp;
+//			
+//			
+//		}
+//		else
+//			tmp=rnd.nextInt(4)+1;
+//		break;
+//		
+//	case 2:
+//		if (canSud())
+//			{return tmp;
+//			}
+//		else
+//			tmp=rnd.nextInt(4)+1;
+//		break;
+//	case 3:
+//		if (canEst())
+//			{return tmp;
+//			}
+//		else 
+//			tmp=rnd.nextInt(4)+1;
+//		break;
+//	case 4:
+//		if (canOvest())
+//			{return tmp;
+//			}
+//		else
+//			tmp=rnd.nextInt(4)+1;
+//		break;
+//	case 5:
+//
+//		return tmp;
+//		
+//
+//	default:
+//
+//		break;}
+//	i++;}
+//return 5;
+//}
+if(canNord())
+	return 1;
+if(canSud())
+	return 2;
+if(canEst())
+	return 3;
+if(canOvest())
+	return 4;
 return 5;
 }
 }
-

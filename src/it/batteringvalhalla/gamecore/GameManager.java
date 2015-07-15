@@ -32,7 +32,6 @@ public class GameManager {
 			world.setState(1);
 			world.nextMatch();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -46,7 +45,7 @@ public class GameManager {
 			System.exit(0);
 	}
 
-	// TODO implements game state in replacements of current game logic
+	// TODO implements new fps methods
 	public void run() {
 		new Thread() {
 			@Override

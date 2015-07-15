@@ -36,6 +36,7 @@ public class ExitMenu extends JPanel {
 		super();
 		this.gameframe = gameFrame;
 		this.mediaLoader();
+		this.listenerLoader();
 	}
 
 	private void mediaLoader() {

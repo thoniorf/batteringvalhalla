@@ -66,23 +66,23 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 	public void update() {
 		switch (direction) {
 		case nord:
-			if (Math.abs(speedY - 8f) <= maxSpeed)
-				speedY -= 8f;
+			if (Math.abs(speedY - 1f) <= maxSpeed)
+				speedY -= 1f;
 
 			break;
 		case sud:
-			if (Math.abs(speedY + 8f) <= maxSpeed)
-				speedY += 8f;
+			if (Math.abs(speedY + 1f) <= maxSpeed)
+				speedY += 1f;
 
 			break;
 		case est:
-			if (Math.abs(speedX + 8f) <= maxSpeed)
-				speedX += 8f;
+			if (Math.abs(speedX + 1f) <= maxSpeed)
+				speedX += 1f;
 
 			break;
 		case ovest:
-			if (Math.abs(speedX - 8f) <= maxSpeed)
-				speedX -= 8f;
+			if (Math.abs(speedX - 1f) <= maxSpeed)
+				speedX -= 1f;
 
 			break;
 		case stop:
@@ -115,25 +115,28 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 	}
 
 	@Override
-	public void postCollision(AbstractGameObject obj) {
-		super.postCollision(obj);
+	public void postCollision(Actor act) {
+		// TODO New physics
+		super.postCollision(act);
 
-		double distobj = Math.sqrt(Math.pow(
-				Math.abs(((Actor) obj).getSpeedX() - obj.getX()), 2.0)
-				+ Math.pow(Math.abs(((Actor) obj).getSpeedY() - obj.getY()),
-						2.0));
-		double dist = Math.sqrt(Math.pow(Math.abs(this.speedX - this.x), 2.0)
-				+ Math.pow(Math.abs(this.speedY - this.y), 2.0));
+		float actdx = Math.abs(act.getX() - act.getX() + act.getSpeedX());
+		float actdy = Math.abs(act.getY() - act.getY() + act.getSpeedY());
 
-		((Actor) obj).setSpeedX(((Actor) obj).getSpeedX() + this.speedX);
-		((Actor) obj).setSpeedY(((Actor) obj).getSpeedY() + this.speedY);
+		float dx = Math.abs(this.getX() - this.getX() + this.getSpeedX());
+		float dy = Math.abs(this.getY() - this.getY() + this.getSpeedY());
 
-		if (dist > distobj) {
+		double distact = Math.sqrt(Math.pow(actdx, 2.0) + Math.pow(actdy, 2.0));
+		double dist = Math.sqrt(Math.pow(dx, 2.0) + Math.pow(dy, 2.0));
+
+		act.setSpeedX(act.getSpeedX() + this.speedX);
+		act.setSpeedY(act.getSpeedY() + this.speedY);
+
+		if (dist > distact) {
+			this.speedX += -1 * (this.speedX / 0.75);
+			this.speedY += -1 * (this.speedY / 0.75);
+		} else if (dist == distact) {
 			this.speedX += -1 * (this.speedX / 0.5);
 			this.speedY += -1 * (this.speedY / 0.5);
-		} else if (dist == distobj) {
-			this.speedX += -1 * (this.speedX / 0.25);
-			this.speedY += -1 * (this.speedY / 0.25);
 		}
 	}
 }

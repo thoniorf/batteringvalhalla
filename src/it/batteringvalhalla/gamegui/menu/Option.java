@@ -46,13 +46,11 @@ public class Option extends JPanel {
 	Image v2;
 	Image vtmp;
 	Circle viki_circle;
-	Sound s;
 	FileSound f;
 
 	public Option(GameFrame frame) {
 		super();
 		this.frame = frame;
-		s = frame.getS();
 		f = frame.getF();
 
 		try {
@@ -199,10 +197,10 @@ public class Option extends JPanel {
 
 					f.write0();
 					if (f.read().equals("0")) {
-						s.ok.play();
+						Sound.ok.play();
 
 					} else {
-						s.ok.stop();
+						Sound.ok.stop();
 					}
 				}
 
@@ -210,11 +208,11 @@ public class Option extends JPanel {
 					onNo();
 					f.write1();
 					if (f.read().equals("0")) {
-						s.ok.play();
+						Sound.ok.play();
 
 					} else {
 
-						s.ok.stop();
+						Sound.ok.stop();
 					}
 				}
 

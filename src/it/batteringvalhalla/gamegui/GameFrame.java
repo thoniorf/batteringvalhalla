@@ -25,12 +25,7 @@ public class GameFrame extends JFrame {
 	private Dimension resolution;
 
 	private JPanel panel;
-	Sound s;
 	FileSound f;
-
-	public Sound getS() {
-		return s;
-	}
 
 	public FileSound getF() {
 		return f;
@@ -62,7 +57,6 @@ public class GameFrame extends JFrame {
 		this.screen_height = 768;
 		this.setResolution(
 				new Dimension(this.screen_width, this.screen_height), true);
-		s = new Sound();
 
 	}
 
@@ -78,10 +72,12 @@ public class GameFrame extends JFrame {
 	public static void main(String[] args) {
 		try {
 			ImageLoader.loadImages();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		Sound.loadSound();
 		GameFrame frame = new GameFrame();
 		frame.start();
 
@@ -91,9 +87,9 @@ public class GameFrame extends JFrame {
 		menuStart();
 		f = new FileSound();
 		if ((f.read()).equals("0")) {
-			s.ok.play();
+			Sound.ok.play();
 		} else {
-			s.ok.stop();
+			Sound.ok.stop();
 		}
 
 	}

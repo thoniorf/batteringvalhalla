@@ -56,7 +56,7 @@ public class CollisionShape extends Rectangle {
 	}
 
 	public void updateCollisionpoint() {
-		this.collisionpoint = 6;
+		this.collisionpoint = 3;
 	}
 
 	public void downgradeCollisionpoint() {

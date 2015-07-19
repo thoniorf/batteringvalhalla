@@ -16,24 +16,37 @@ public class CollisionHandler {
 		returnsobjects = new ArrayList<AbstractGameObject>();
 	}
 
-	public void checkCollisions(List<AbstractGameObject> arrayList) {
-		/*
-		 * quadtree.clear(); for (int i = 0; i < objects.size(); i++) {
-		 * quadtree.insert(objects.get(i)); }
-		 * 
-		 * for (int i = 0; i < objects.size(); i++) { returnsobjects.clear();
-		 * quadtree.retrieve(returnsobjects, objects.get(i)); for (int j = 0; j
-		 * < returnsobjects.size(); j++) { if
-		 * (objects.get(i).getCollisionShape().intersecable() &&
-		 * returnsobjects.get(i).getCollisionShape() .intersecable() && i != j
-		 * && objects .get(i) .getCollisionShape() .intersects(
-		 * returnsobjects.get(j) .getCollisionShape())) {
-		 * 
-		 * objects.get(i).getCollisionShape().updateCollisionpoint();
-		 * objects.get(i).postCollision(returnsobjects.get(j));
-		 * 
-		 * } } }
-		 */
+	private void checkWithQuads(List<AbstractGameObject> arrayList) {
+		quadtree.clear();
+		for (int i = 0; i < arrayList.size(); i++) {
+			quadtree.insert(arrayList.get(i));
+		}
+
+		for (int i = 0; i < arrayList.size(); i++) {
+			returnsobjects.clear();
+			quadtree.retrieve(returnsobjects, arrayList.get(i));
+			for (int j = 0; j < returnsobjects.size(); j++) {
+				if (arrayList.get(i).getCollisionShape().intersecable()
+						&& returnsobjects.get(i).getCollisionShape()
+								.intersecable()
+						&& i != j
+						&& arrayList
+								.get(i)
+								.getCollisionShape()
+								.intersects(
+										returnsobjects.get(j)
+												.getCollisionShape())) {
+
+					arrayList.get(i).getCollisionShape().updateCollisionpoint();
+					arrayList.get(i).postCollision(
+							(Actor) returnsobjects.get(j));
+
+				}
+			}
+		}
+	}
+
+	private void checkWitoutQuads(List<AbstractGameObject> arrayList) {
 
 		for (int i = 0; i < arrayList.size(); i++) {
 			for (int j = 0; j < arrayList.size(); j++) {
@@ -49,11 +62,14 @@ public class CollisionHandler {
 										arrayList.get(j).getCollisionShape())) {
 
 					arrayList.get(i).getCollisionShape().updateCollisionpoint();
-					// arrayList.get(j).getCollisionShape().updateCollisionpoint();
+					arrayList.get(j).getCollisionShape().updateCollisionpoint();
 					arrayList.get(i).postCollision((Actor) arrayList.get(j));
-					// arrayList.get(j).postCollision((Actor) arrayList.get(i));
 				}
 			}
 		}
+	}
+
+	public void checkCollisions(List<AbstractGameObject> arrayList) {
+		checkWitoutQuads(arrayList);
 	}
 }

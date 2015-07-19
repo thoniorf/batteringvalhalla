@@ -116,27 +116,30 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 
 	@Override
 	public void postCollision(Actor act) {
-		// TODO New physics
-		super.postCollision(act);
+		float speedPx = 0.0f, speedPy = 0.0f;
+		float speedAx = 0.0f, speedAy = 0.0f;
 
-		float actdx = Math.abs(act.getX() - act.getX() + act.getSpeedX());
-		float actdy = Math.abs(act.getY() - act.getY() + act.getSpeedY());
+		speedPx = this.speedX;
+		speedPy = this.speedY;
+		speedAx = act.getSpeedX();
+		speedAy = act.getSpeedY();
 
-		float dx = Math.abs(this.getX() - this.getX() + this.getSpeedX());
-		float dy = Math.abs(this.getY() - this.getY() + this.getSpeedY());
-
-		double distact = Math.sqrt(Math.pow(actdx, 2.0) + Math.pow(actdy, 2.0));
-		double dist = Math.sqrt(Math.pow(dx, 2.0) + Math.pow(dy, 2.0));
-
-		act.setSpeedX(act.getSpeedX() + this.speedX);
-		act.setSpeedY(act.getSpeedY() + this.speedY);
-
-		if (dist > distact) {
-			this.speedX += -1 * (this.speedX / 0.75);
-			this.speedY += -1 * (this.speedY / 0.75);
-		} else if (dist == distact) {
-			this.speedX += -1 * (this.speedX / 0.5);
-			this.speedY += -1 * (this.speedY / 0.5);
+		if (this.speedX == 0 && this.speedY == 0) {
+			this.speedX = speedAx;
+			this.speedY = speedAy;
+			act.setSpeedX(-1 * act.getSpeedX());
+			act.setSpeedY(-1 * act.getSpeedY());
+		} else if (act.speedX == 0 && act.speedY == 0) {
+			act.setSpeedX(speedPx);
+			act.setSpeedY(speedPy);
+			this.speedX = -1 * this.speedX;
+			this.speedY = -1 * this.speedY;
+		} else {
+			this.speedX = -1 * this.speedX;
+			this.speedY = -1 * this.speedY;
+			act.setSpeedX(-1 * act.getSpeedX());
+			act.setSpeedY(-1 * act.getSpeedY());
 		}
+
 	}
 }

@@ -6,7 +6,6 @@ import it.batteringvalhalla.gamecore.object.AbstractGameObject;
 import it.batteringvalhalla.gamecore.object.actor.Actor;
 
 import java.awt.Graphics;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -58,6 +57,7 @@ public class GameWorld {
 
 	// remember the enemies constant
 	public void newMatch(Integer enemies) {
+		altPlayer();
 		this.match += 1;
 		this.enemies = enemies;
 		objects.clear();
@@ -78,7 +78,6 @@ public class GameWorld {
 		objects = new CopyOnWriteArrayList<AbstractGameObject>();
 		npc = new CopyOnWriteArrayList<IAICanMove>();
 		player = new Actor(200, 300);
-		altPlayer();
 	}
 
 	public void nextMatch() {
@@ -97,30 +96,28 @@ public class GameWorld {
 	}
 
 	public void update() {
-		AbstractGameObject obj;
-		Iterator<AbstractGameObject> iter = objects.iterator();
-		obj = iter.next();
-		obj.update();
-		if (!arena.getEdge().contains(player.getX(), player.getY())) {
-			setState(4);
-		}
 
-		int i = 0;
-		while (iter.hasNext()) {
-			obj = iter.next();
-			if (((Actor) obj).getLive() != 0) {
-				npc.get(i).moveActor();
-				obj.update();
-				if (!arena.getEdge().contains(obj.getX(), obj.getY())) {
-					((Actor) obj).setLive(0);
+		for (int i = 1; i < objects.size(); i++)
+			if (((Actor) objects.get(i)).getLive() != 0) {
+				npc.get(i - 1).moveActor();
+				objects.get(i).update();
+				if (!arena.getEdge().contains(objects.get(i).getX(),
+						objects.get(i).getY(), objects.get(i).getWidth(),
+						objects.get(i).getHeight())) {
+					((Actor) objects.get(i)).setLive(0);
 					enemies -= 1;
 					if (enemies == 0) {
 						setState(3);
 					}
 				}
 			}
-			i++;
+
+		player.update();
+		if (!arena.getEdge().contains(player.getX(), player.getY(),
+				player.getWidth(), player.getHeight())) {
+			setState(4);
 		}
+
 	}
 
 	public void zOrder() {

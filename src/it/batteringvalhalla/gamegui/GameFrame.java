@@ -91,6 +91,7 @@ public class GameFrame extends JFrame {
 		menuStart();
 		f = new FileSound();
 		if ((f.read()).equals("0")) {
+			Sound.ok.setRepeat(true);
 			Sound.ok.play();
 		} else {
 			Sound.ok.stop();

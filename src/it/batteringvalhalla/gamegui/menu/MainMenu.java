@@ -31,7 +31,6 @@ public class MainMenu extends JPanel {
 	Circle option_circle;
 	Image exit_draw;
 	Circle exit_circle;
-	JPanel op;
 	int screenh = 768;
 	boolean enabled = false;
 
@@ -108,7 +107,12 @@ public class MainMenu extends JPanel {
 
 					break;
 				case 3:
-					System.exit(0);
+					try {
+						frame.exit();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					break;
 				default:
 					break;

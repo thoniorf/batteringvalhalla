@@ -12,6 +12,7 @@ public class ResourcesLoader {
 
 	public static Image player;
 	public static ArrayList<Image> mainmenu_images;
+	public static ArrayList<Image> exitmenu_images;
 	public static Font gothic;
 
 	public ResourcesLoader() {
@@ -57,6 +58,25 @@ public class ResourcesLoader {
 								.getResource("../../assets/gui/menu/icon/hover/h_exit.png"))
 						.getScaledInstance(139, 149,
 								java.awt.Image.SCALE_SMOOTH));
+
+	}
+
+	public static synchronized void loadExitMenuImages() throws IOException {
+		exitmenu_images = new ArrayList<Image>();
+		exitmenu_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getResource("../../assets/gui/menu/background/exit_background.png"))
+						.getScaledInstance(678, 309,
+								java.awt.Image.SCALE_SMOOTH));
+		exitmenu_images.add(ImageIO.read(
+				ResourcesLoader.class
+						.getResource("../../assets/gui/menu/icon/yes.png"))
+				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
+		exitmenu_images.add(ImageIO.read(
+				ResourcesLoader.class
+						.getResource("../../assets/gui/menu/icon/no.png"))
+				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
 
 	}
 

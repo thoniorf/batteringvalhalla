@@ -1,14 +1,13 @@
 package it.batteringvalhalla.gamegui.menu;
 
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.GameFrame;
 
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.MediaTracker;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,7 +16,6 @@ import java.io.IOException;
 
 import javafx.scene.shape.Circle;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class MainMenu extends JPanel {
@@ -27,19 +25,12 @@ public class MainMenu extends JPanel {
 	 */
 	private static final long serialVersionUID = -1819144638361253664L;
 	GameFrame frame;
-	Image play;
-	Image play_odd;
 	Image play_draw;
 	Circle play_circle;
-	Image options;
-	Image options_odd;
 	Image options_draw;
 	Circle option_circle;
-	Image exit;
-	Image exit_odd;
 	Image exit_draw;
 	Circle exit_circle;
-	Font font;
 	JPanel op;
 	int screenh = 768;
 	boolean enabled = false;
@@ -60,69 +51,36 @@ public class MainMenu extends JPanel {
 	}
 
 	private void mediaLoader() throws IOException {
-		MediaTracker mt = new MediaTracker(this);
-
-		play = ImageIO.read(
-				this.getClass().getResource(
-						"../../assets/gui/menu/icon/play.png"))
-				.getScaledInstance(200, 212, java.awt.Image.SCALE_SMOOTH);
-		play_odd = ImageIO.read(
-				this.getClass().getResource(
-						"../../assets/gui/menu/icon/hover/h_play.png"))
-				.getScaledInstance(200, 212, java.awt.Image.SCALE_SMOOTH);
-		options = ImageIO.read(
-				this.getClass().getResource(
-						"../../assets/gui/menu/icon/option.png"))
-				.getScaledInstance(165, 178, java.awt.Image.SCALE_SMOOTH);
-		options_odd = ImageIO.read(
-				this.getClass().getResource(
-						"../../assets/gui/menu/icon/hover/h_option.png"))
-				.getScaledInstance(165, 178, java.awt.Image.SCALE_SMOOTH);
-		exit = ImageIO.read(
-				this.getClass().getResource(
-						"../../assets/gui/menu/icon/exit.png"))
-				.getScaledInstance(139, 149, java.awt.Image.SCALE_SMOOTH);
-		exit_odd = ImageIO.read(
-				this.getClass().getResource(
-						"../../assets/gui/menu/icon/hover/h_exit.png"))
-				.getScaledInstance(139, 149, java.awt.Image.SCALE_SMOOTH);
-
-		mt.addImage(play, 0);
-		mt.addImage(options, 1);
-		mt.addImage(exit, 2);
-		mt.addImage(play_odd, 3);
-		mt.addImage(options_odd, 4);
-		mt.addImage(exit_odd, 5);
-		play_draw = play;
-		options_draw = options;
-		exit_draw = exit;
-		try {
-			mt.waitForAll();
-			this.font = Font.createFont(Font.TRUETYPE_FONT, getClass()
-					.getResourceAsStream("../../assets/gui/fonts/Deutsch.ttf"));
-			GraphicsEnvironment ge = GraphicsEnvironment
-					.getLocalGraphicsEnvironment();
-			ge.registerFont(font);
-		} catch (InterruptedException | FontFormatException | IOException e) {
-			e.printStackTrace();
-		}
+		play_draw = ResourcesLoader.mainmenu_images.get(0);
+		options_draw = ResourcesLoader.mainmenu_images.get(2);
+		exit_draw = ResourcesLoader.mainmenu_images.get(4);
+		GraphicsEnvironment ge = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
+		ge.registerFont(ResourcesLoader.gothic);
 
 		play_circle = new Circle();
-		play_circle.setCenterX(438 + play.getWidth(this) / 2);
-		play_circle
-				.setCenterY((screenh - 270 - 212) + play.getHeight(this) / 2);
-		play_circle.setRadius(play.getHeight(this) / 2);
+		play_circle.setCenterX(438 + ResourcesLoader.mainmenu_images.get(0)
+				.getWidth(this) / 2);
+		play_circle.setCenterY((screenh - 270 - 212)
+				+ ResourcesLoader.mainmenu_images.get(0).getHeight(this) / 2);
+		play_circle.setRadius(ResourcesLoader.mainmenu_images.get(0).getHeight(
+				this) / 2);
 
 		option_circle = new Circle();
-		option_circle.setCenterX(243 + options.getWidth(this) / 2);
+		option_circle.setCenterX(243 + ResourcesLoader.mainmenu_images.get(2)
+				.getWidth(this) / 2);
 		option_circle.setCenterY((screenh - 167 - 178)
-				+ options.getHeight(this) / 2);
-		option_circle.setRadius(options.getHeight(this) / 2);
+				+ ResourcesLoader.mainmenu_images.get(2).getHeight(this) / 2);
+		option_circle.setRadius(ResourcesLoader.mainmenu_images.get(2)
+				.getHeight(this) / 2);
 
 		exit_circle = new Circle();
-		exit_circle.setCenterX(687 + exit.getWidth(this) / 2);
-		exit_circle.setCenterY((screenh - 84 - 149) + exit.getHeight(this) / 2);
-		exit_circle.setRadius(exit.getHeight(this) / 2);
+		exit_circle.setCenterX(687 + ResourcesLoader.mainmenu_images.get(4)
+				.getWidth(this) / 2);
+		exit_circle.setCenterY((screenh - 84 - 149)
+				+ ResourcesLoader.mainmenu_images.get(4).getHeight(this) / 2);
+		exit_circle.setRadius(ResourcesLoader.mainmenu_images.get(4).getHeight(
+				this) / 2);
 
 	}
 
@@ -179,7 +137,8 @@ public class MainMenu extends JPanel {
 		g.drawImage(play_draw, 438, screenh - 270 - 212, null);
 		g.drawImage(options_draw, 243, screenh - 167 - 178, null);
 		g.drawImage(exit_draw, 687, screenh - 84 - 149, null);
-		g.setFont(new Font(font.getName(), font.getStyle(), 144));
+		g.setFont(new Font(ResourcesLoader.gothic.getName(),
+				ResourcesLoader.gothic.getStyle(), 144));
 		g.drawString("Battering Valhalla", 39, screenh - 594);
 	}
 
@@ -196,19 +155,19 @@ public class MainMenu extends JPanel {
 
 	public void motionListener(int x, int y) {
 		if (play_circle.contains(x, y)) {
-			play_draw = play_odd;
+			play_draw = ResourcesLoader.mainmenu_images.get(1);
 		} else {
-			play_draw = play;
+			play_draw = ResourcesLoader.mainmenu_images.get(0);
 		}
 		if (option_circle.contains(x, y)) {
-			options_draw = options_odd;
+			options_draw = ResourcesLoader.mainmenu_images.get(3);
 		} else {
-			options_draw = options;
+			options_draw = ResourcesLoader.mainmenu_images.get(2);
 		}
 		if (exit_circle.contains(x, y)) {
-			exit_draw = exit_odd;
+			exit_draw = ResourcesLoader.mainmenu_images.get(5);
 		} else {
-			exit_draw = exit;
+			exit_draw = ResourcesLoader.mainmenu_images.get(4);
 		}
 		repaint();
 	}

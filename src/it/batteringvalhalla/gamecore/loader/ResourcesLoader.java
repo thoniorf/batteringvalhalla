@@ -13,6 +13,7 @@ public class ResourcesLoader {
 	public static Image player;
 	public static ArrayList<Image> mainmenu_images;
 	public static ArrayList<Image> exitmenu_images;
+	public static ArrayList<Image> optionmenu_images;
 	public static Font gothic;
 
 	public ResourcesLoader() {
@@ -57,6 +58,41 @@ public class ResourcesLoader {
 						.read(ResourcesLoader.class
 								.getResource("../../assets/gui/menu/icon/hover/h_exit.png"))
 						.getScaledInstance(139, 149,
+								java.awt.Image.SCALE_SMOOTH));
+
+	}
+
+	public static synchronized void loadOptionMenuImages() throws IOException {
+		optionmenu_images = new ArrayList<Image>();
+		optionmenu_images
+				.add(ImageIO.read(ResourcesLoader.class
+						.getResource("../../assets/gui/menu/icon/pink_button_sound_on_morgaine1976.png")));
+		optionmenu_images
+				.add(ImageIO.read(ResourcesLoader.class
+						.getResource("../../assets/gui/menu/icon/pink_button_sound_off_morgaine1976.png")));
+		optionmenu_images.add(ImageIO.read(ResourcesLoader.class
+				.getResource("../../assets/gui/menu/icon/bottonon.png")));
+		optionmenu_images
+				.add(ImageIO.read(ResourcesLoader.class
+						.getResource("../../assets/gui/menu/icon/hover/Senzanome.png")));
+		optionmenu_images.add(ImageIO.read(ResourcesLoader.class
+				.getResource("../../assets/gui/menu/icon/off.png")));
+		optionmenu_images.add(ImageIO.read(ResourcesLoader.class
+				.getResource("../../assets/gui/menu/icon/hover/off2.png")));
+		optionmenu_images
+				.add(ImageIO.read(ResourcesLoader.class
+						.getResource("../../assets/gui/menu/background/exit_background.png")));
+		optionmenu_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getResource("../../assets/gui/menu/icon/di4875BKT.png"))
+						.getScaledInstance(100, 100,
+								java.awt.Image.SCALE_SMOOTH));
+		optionmenu_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getResource("../../assets/gui/menu/icon/hover/viki.png"))
+						.getScaledInstance(100, 100,
 								java.awt.Image.SCALE_SMOOTH));
 
 	}

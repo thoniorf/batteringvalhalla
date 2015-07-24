@@ -3,7 +3,7 @@ package it.batteringvalhalla.gamegui;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
-import it.batteringvalhalla.gamegui.menu.Option;
+import it.batteringvalhalla.gamegui.menu.OptionMenu;
 import it.batteringvalhalla.gamegui.sound.FileSound;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
@@ -75,6 +75,7 @@ public class GameFrame extends JFrame {
 			ResourcesLoader.loadPlayerImages();
 			ResourcesLoader.loadMainMenuImages();
 			ResourcesLoader.loadExitMenuImages();
+			ResourcesLoader.loadOptionMenuImages();
 			ResourcesLoader.loadFont();
 
 		} catch (IOException e) {
@@ -129,7 +130,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void opt() throws InterruptedException {
-		panel = new Option(this);
+		panel = new OptionMenu(this);
 
 		this.setContentPane(panel);
 		panel.updateUI();

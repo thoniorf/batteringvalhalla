@@ -1,6 +1,6 @@
-# Batteringvalhalla
+# Batteringvalhalla [![Build Status](https://travis-ci.org/thoniorf/batteringvalhalla.svg?branch=master)](https://travis-ci.org/thoniorf/batteringvalhalla)
 Battering Valhalla game , wrote in Java as final project for Graphics Interface and Events Programming
-[![Build Status](https://travis-ci.org/thoniorf/batteringvalhalla.svg?branch=master)](https://travis-ci.org/thoniorf/batteringvalhalla)
+
 
 # Presentation ( italian )
 Rivisitazione del minigioco presente in Crash Bash, Polar Push.

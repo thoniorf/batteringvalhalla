@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="BatteringValhalla.MakeJar" default="MakeJar" basedir=".">
+  <target name ="MakeJar" description="Create a jar for the BatteringValhalla project">
+    <jar jarfile="BatteringValhalla.jar" includes="src/*.class" basedir="bin"/>
+  </target>
+</project>

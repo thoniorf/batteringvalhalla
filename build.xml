@@ -3,6 +3,8 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
+    	<mkdir dir="${basedir}/bin"/>
+    	<javac srcdir="${basedir}/src" destdir="${basedir}/bin" ></javac>
         <jar destfile="${basedir}/BatteringValhalla.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="it.batteringvalhalla.gamegui.GameFrame"/>
@@ -12,4 +14,8 @@
             <zipfileset excludes="META-INF/*.SF" src="${basedir}/src/it/batteringvalhalla/assets/libr/jaco-mp3-player-0.9.3.jar"/>
         </jar>
     </target>
+	<target name="clean">
+	    <delete dir="${basedir}/bin"></delete>
+		<delete file="${basedir}/BatteringValhalla.jar"></delete>
+   </target>
 </project>

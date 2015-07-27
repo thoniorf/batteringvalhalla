@@ -4,7 +4,11 @@
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
     	<mkdir dir="${basedir}/bin"/>
-    	<javac srcdir="${basedir}/src" destdir="${basedir}/bin" ></javac>
+    	<javac srcdir="${basedir}/src" destdir="${basedir}/bin" >
+    		<classpath>
+    		        <pathelement path="${basedir}/src/it/batteringvalhalla/assets/libr/jaco-mp3-player-0.9.3.jar"/>
+    		    </classpath>
+    	</javac>
         <jar destfile="${basedir}/BatteringValhalla.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="it.batteringvalhalla.gamegui.GameFrame"/>

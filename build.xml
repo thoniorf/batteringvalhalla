@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project BatteringValhalla">
+<project default="create_run_jar" name="Create Runnable Jar for Project BatteringValhalla" basedir=".">
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="/home/thoniorf/Documents/UNICAL/IGPE/BatteringValhalla/BatteringValhalla.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="${basedir}/BatteringValhalla.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="it.batteringvalhalla.gamegui.GameFrame"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="/home/thoniorf/Documents/UNICAL/IGPE/BatteringValhalla/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/thoniorf/Documents/UNICAL/IGPE/BatteringValhalla/src/it/batteringvalhalla/assets/libr/jaco-mp3-player-0.9.3.jar"/>
+            <fileset dir="${basedir}/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="${basedir}/src/it/batteringvalhalla/assets/libr/jaco-mp3-player-0.9.3.jar"/>
         </jar>
     </target>
 </project>

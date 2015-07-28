@@ -1,4 +1,6 @@
 # Batteringvalhalla [![Build Status](https://travis-ci.org/thoniorf/batteringvalhalla.svg?branch=master)](https://travis-ci.org/thoniorf/batteringvalhalla)
+
+[![Join the chat at https://gitter.im/thoniorf/batteringvalhalla](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/thoniorf/batteringvalhalla?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Battering Valhalla game , wrote in Java as final project for Graphics Interface and Events Programming
 
 

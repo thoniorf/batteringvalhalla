@@ -4,6 +4,7 @@ import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
+import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.sound.FileSound;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
@@ -79,7 +80,6 @@ public class GameFrame extends JFrame {
 			ResourcesLoader.loadFont();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Sound.loadSound();
@@ -97,6 +97,7 @@ public class GameFrame extends JFrame {
 		} else {
 			Sound.ok.stop();
 		}
+		userField();
 
 	}
 
@@ -131,7 +132,6 @@ public class GameFrame extends JFrame {
 
 	public void opt() throws InterruptedException {
 		panel = new OptionMenu(this);
-
 		this.setContentPane(panel);
 		panel.updateUI();
 		panel.requestFocus();
@@ -141,7 +141,6 @@ public class GameFrame extends JFrame {
 
 	public void backMenu() {
 		panel = new MainMenu(this);
-
 		this.setContentPane(panel);
 		panel.updateUI();
 		panel.requestFocus();
@@ -150,4 +149,15 @@ public class GameFrame extends JFrame {
 
 	}
 
+	public void userField() {
+		panel = new UsernameMenu(this);
+		this.setContentPane(panel);
+		panel.updateUI();
+		panel.requestFocus();
+		this.pack();
+		this.setLocationRelativeTo(null);
+		((UsernameMenu) panel).getUserfield().requestFocusInWindow();
+		((UsernameMenu) panel).getUserfield().selectAll();
+
+	}
 }

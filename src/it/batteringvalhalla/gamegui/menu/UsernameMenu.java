@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamegui.menu;
 
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.object.actor.Player;
 import it.batteringvalhalla.gamegui.GameFrame;
 
 import java.awt.Font;
@@ -13,6 +14,9 @@ import javafx.scene.shape.Circle;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 public class UsernameMenu extends JPanel {
 
@@ -26,11 +30,35 @@ public class UsernameMenu extends JPanel {
 	public UsernameMenu(GameFrame frame) {
 		super(null);
 		this.frame = frame;
-		userfield = new JTextField();
-		this.add(userfield);
-		userfield.setBounds(182, screenh - 309 - 140, 250, 70);
 		this.mediaLoader();
 		this.listenerLoader();
+		userfield = new JTextField();
+		this.add(userfield);
+		userfield.setBorder(null);
+		userfield.setOpaque(false);
+		userfield.setFont(new Font(ResourcesLoader.gothic.getName(),
+				ResourcesLoader.gothic.getStyle(), 96));
+		userfield.setHorizontalAlignment(JTextField.CENTER);
+		userfield.setBounds(198, screenh - 315 - 108,
+				ResourcesLoader.exitmenu_images.get(0).getWidth(this) - 42, 96);
+		userfield.setDocument(new PlainDocument() {
+			private static final long serialVersionUID = 3970826291478127404L;
+
+			@Override
+			public void insertString(int offs, String str, AttributeSet a)
+					throws BadLocationException {
+				if (str == null) {
+					return;
+				}
+
+				if ((getLength() + str.length()) <= 8) {
+					super.insertString(offs, str, a);
+				}
+
+			}
+		});
+		userfield.setText("Player 1");
+
 	}
 
 	@Override
@@ -41,9 +69,6 @@ public class UsernameMenu extends JPanel {
 				screenh - 165 - 133, null);
 		g.drawImage(ResourcesLoader.exitmenu_images.get(2), 584,
 				screenh - 165 - 133, null);
-		g.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 96));
-		g.drawString("Are you sure ?", 236, screenh - 315 - 96 / 3);
 	}
 
 	private void mediaLoader() {
@@ -76,10 +101,15 @@ public class UsernameMenu extends JPanel {
 				super.mouseReleased(e);
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
-					// System.exit(0);
+					if (userfield.getText().length() != 0)
+						Player.username = userfield.getText();
+					else
+						userfield.setText("Player 1");
+					frame.menuStart();
 					break;
 				case 2:
-					// gameframe.menuStart();
+					Player.username = "Player 1";
+					frame.menuStart();
 					break;
 				}
 				// repaint();
@@ -96,4 +126,7 @@ public class UsernameMenu extends JPanel {
 		return 0;
 	}
 
+	public JTextField getUserfield() {
+		return userfield;
+	}
 }

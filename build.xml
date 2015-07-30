@@ -4,6 +4,10 @@
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
     	<mkdir dir="${basedir}/bin"/>
+    	<copy todir="${basedir}/bin/it/batteringvalhalla/assets/">
+    		<fileset dir="${basedir}/src/it/batteringvalhalla/assets/">
+		    </fileset>
+    	</copy>
     	<javac srcdir="${basedir}/src" destdir="${basedir}/bin" >
     		<classpath>
     		        <pathelement path="${basedir}/src/it/batteringvalhalla/assets/libr/jaco-mp3-player-0.9.3.jar"/>

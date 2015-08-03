@@ -1,7 +1,9 @@
-# Batteringvalhalla [![Build Status](https://travis-ci.org/thoniorf/batteringvalhalla.svg?branch=master)](https://travis-ci.org/thoniorf/batteringvalhalla) <a href="https://scan.coverity.com/projects/5955">
+# Batteringvalhalla 
+[![Build Status](https://travis-ci.org/thoniorf/batteringvalhalla.svg?branch=master)](https://travis-ci.org/thoniorf/batteringvalhalla) <a href="https://scan.coverity.com/projects/5955">
   <img alt="Coverity Scan Build Status"
        src="https://scan.coverity.com/projects/5955/badge.svg"/>
 </a> [![Join the chat at https://gitter.im/thoniorf/batteringvalhalla](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/thoniorf/batteringvalhalla?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Battering Valhalla game , wrote in Java as final project for Graphics Interface and Events Programming
 
 

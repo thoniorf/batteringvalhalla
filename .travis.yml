@@ -9,10 +9,3 @@ notifications:
     on_success: always  # options: [always|never|change] default: always
     on_failure: always  # options: [always|never|change] default: always
     on_start: false     # default: false
-deploy:
-  provider: releases
-  api_key: "32228777f0400082740cb4910dd920114202f7e4"
-  file: "BatteringValhalla.jar"
-  skip_cleanup: true
-  on:
-    branch: master

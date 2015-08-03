@@ -3,7 +3,9 @@ package it.batteringvalhalla.gamegui;
 import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.input.InputHandler;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.actor.Direction;
+import it.batteringvalhalla.gamecore.object.actor.Player;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -98,12 +100,10 @@ public class GamePanel extends JPanel {
 
 	private void paintUI(Graphics g) {
 		g.setColor(Color.BLACK);
-		g.setFont(new Font("Serif", Font.ITALIC, 30));
-		g.drawString("Live:" + world.getPlayer().getLive(), 30, 70);
-
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("Serif", Font.BOLD, 30));
-		g.drawString("Match:" + world.getMatch().toString(), 150, 70);
+		g.setFont(new Font(ResourcesLoader.gothic.getName(),
+				ResourcesLoader.gothic.getStyle(), 38));
+		g.drawString(Player.username, 30, 70);
+		g.drawString("Match:" + world.getMatch().toString(), 156, 70);
 	}
 
 	public Integer paintRestartPrompt() {

@@ -16,8 +16,10 @@ public class InputHandler implements KeyListener {
 	}
 
 	public void resetKeys() {
-		for (Boolean key : keys)
-			key = false;
+		for (int i = 0; i < keys.size(); i++) {
+			keys.set(i, false);
+		}
+
 	}
 
 	public List<Boolean> getKeys() {

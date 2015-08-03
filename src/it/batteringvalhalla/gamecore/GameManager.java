@@ -47,7 +47,7 @@ public class GameManager {
 
 	private void endGame() {
 		if (panel.paintRestartPrompt().equals(1)) {
-			// panel.resetInput();
+			panel.resetInput();
 			world.reset();
 			init();
 		} else
@@ -62,7 +62,7 @@ public class GameManager {
 				sleepTime = 0;
 				panel.requestFocus();
 				while (world.getState() != 4) {
-					while (world.getState().equals(1)) {
+					while (world.getState() == 1) {
 						beginTime = System.currentTimeMillis();
 						framesSkipped = 0;
 						world.update();
@@ -90,10 +90,12 @@ public class GameManager {
 
 						}
 					}
-					if (world.getState().equals(3))
+					if (world.getState().equals(3)) {
 						nextMatch();
-					else if (world.getState().equals(4))
+					} else if (world.getState().equals(4)) {
 						endGame();
+					}
+					panel.getInput();
 					try {
 						Thread.sleep(30);
 					} catch (InterruptedException e) {

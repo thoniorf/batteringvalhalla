@@ -59,7 +59,17 @@ public class OptionMenu extends JPanel {
 		GraphicsEnvironment ge = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		ge.registerFont(ResourcesLoader.gothic);
-		img = ResourcesLoader.optionmenu_images.get(0);
+		if (f.read().equals("0")) {
+
+			img = ResourcesLoader.optionmenu_images.get(0);
+
+		} else {
+			img = ResourcesLoader.optionmenu_images.get(1);
+		}
+
+		on = ResourcesLoader.optionmenu_images.get(2);
+		off = ResourcesLoader.optionmenu_images.get(4);
+		viki = ResourcesLoader.optionmenu_images.get(7);
 		off_circle = new Circle();
 		off_circle.setCenterX(735);
 		off_circle.setCenterY(185);
@@ -116,26 +126,16 @@ public class OptionMenu extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				if (on_circle.contains(e.getX(), e.getY())) {
 					on();
-
 					f.write0();
-					if (f.read().equals("0")) {
-						Sound.ok.play();
+					Sound.ok.play();
 
-					} else {
-						Sound.ok.stop();
-					}
 				}
 
 				if (off_circle.contains(e.getX(), e.getY())) {
 					onNo();
 					f.write1();
-					if (f.read().equals("0")) {
-						Sound.ok.play();
+					Sound.ok.stop();
 
-					} else {
-
-						Sound.ok.stop();
-					}
 				}
 
 				if (viki_circle.contains(e.getX(), e.getY())) {

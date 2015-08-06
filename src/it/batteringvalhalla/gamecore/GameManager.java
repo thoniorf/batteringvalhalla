@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamecore;
 
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
+import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.GamePanel;
 
 import java.awt.Rectangle;
@@ -45,15 +46,6 @@ public class GameManager {
 		}
 	}
 
-	private void endGame() {
-		if (panel.paintRestartPrompt().equals(1)) {
-			panel.resetInput();
-			world.reset();
-			init();
-		} else
-			System.exit(0);
-	}
-
 	public void run() {
 		new Thread() {
 			@Override
@@ -76,7 +68,6 @@ public class GameManager {
 							// if sleepTime > 0 we're OK
 							try {
 								// send the thread to sleep for a short period
-								// very useful for battery saving
 								Thread.sleep(sleepTime);
 							} catch (InterruptedException e) {
 							}
@@ -92,8 +83,6 @@ public class GameManager {
 					}
 					if (world.getState().equals(3)) {
 						nextMatch();
-					} else if (world.getState().equals(4)) {
-						endGame();
 					}
 					panel.getInput();
 					try {
@@ -101,7 +90,11 @@ public class GameManager {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-
+				}
+				try {
+					panel.getFrame().showScores();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 
 			};

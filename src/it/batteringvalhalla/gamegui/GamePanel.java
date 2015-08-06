@@ -15,7 +15,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
@@ -63,6 +62,10 @@ public class GamePanel extends JPanel {
 		return manager;
 	}
 
+	public GameFrame getFrame() {
+		return frame;
+	}
+
 	public void getInput() {
 		List<Boolean> keys = inputkey.getKeys();
 		Boolean moving = new Boolean(false);
@@ -104,22 +107,5 @@ public class GamePanel extends JPanel {
 				ResourcesLoader.gothic.getStyle(), 38));
 		g.drawString(Player.username, 30, 70);
 		g.drawString("Match:" + world.getMatch().toString(), 156, 70);
-	}
-
-	public Integer paintRestartPrompt() {
-		switch (JOptionPane
-				.showConfirmDialog(null, "You survived to " + world.getMatch()
-						+ " matchs. " + "Retry ?", "Game Over",
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)) {
-		case JOptionPane.YES_OPTION:
-			return 1;
-		case JOptionPane.NO_OPTION:
-			return 0;
-		default:
-			break;
-		}
-
-		return -1;
-
 	}
 }

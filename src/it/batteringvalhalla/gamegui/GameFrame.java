@@ -4,6 +4,7 @@ import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
+import it.batteringvalhalla.gamegui.menu.ScoreBoard;
 import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.sound.FileSound;
 import it.batteringvalhalla.gamegui.sound.Sound;
@@ -76,6 +77,7 @@ public class GameFrame extends JFrame {
 			ResourcesLoader.loadPlayerImages();
 			ResourcesLoader.loadMainMenuImages();
 			ResourcesLoader.loadExitMenuImages();
+			ResourcesLoader.loadScoreBoardImages();
 			ResourcesLoader.loadOptionMenuImages();
 			ResourcesLoader.loadFont();
 
@@ -118,6 +120,16 @@ public class GameFrame extends JFrame {
 		this.pack();
 		this.setLocationRelativeTo(null);
 		((GamePanel) panel).getManager().run();
+
+	}
+
+	public void showScores() throws InterruptedException {
+		panel = new ScoreBoard(this);
+		this.setContentPane(panel);
+		panel.updateUI();
+		panel.requestFocus();
+		this.pack();
+		this.setLocationRelativeTo(null);
 
 	}
 

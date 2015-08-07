@@ -14,6 +14,7 @@ public class ResourcesLoader {
 	public static ArrayList<Image> mainmenu_images;
 	public static ArrayList<Image> exitmenu_images;
 	public static ArrayList<Image> optionmenu_images;
+	public static ArrayList<Image> scoreboard_images;
 	public static Font gothic;
 
 	public ResourcesLoader() {
@@ -152,6 +153,27 @@ public class ResourcesLoader {
 				ResourcesLoader.class.getClassLoader().getResource(
 						"it/batteringvalhalla/assets/gui/menu/icon/no.png"))
 				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
+
+	}
+
+	public static synchronized void loadScoreBoardImages() throws IOException {
+		scoreboard_images = new ArrayList<Image>();
+		scoreboard_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getClassLoader()
+								.getResource(
+										"it/batteringvalhalla/assets/gui/menu/background/scoreboard_background.png"))
+						.getScaledInstance(678, 642,
+								java.awt.Image.SCALE_SMOOTH));
+		scoreboard_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getClassLoader()
+								.getResource(
+										"it/batteringvalhalla/assets/gui/menu/icon/restart.png"))
+						.getScaledInstance(123, 133,
+								java.awt.Image.SCALE_SMOOTH));
 
 	}
 

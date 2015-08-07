@@ -1,16 +1,16 @@
 package it.batteringvalhalla.gamegui;
 
-import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
 import it.batteringvalhalla.gamegui.menu.UsernameMenu;
+import it.batteringvalhalla.gamegui.progress.LoadProgress;
 import it.batteringvalhalla.gamegui.sound.FileSound;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
-import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -51,6 +51,7 @@ public class GameFrame extends JFrame {
 
 	public void setFullscreen(Boolean fullscreen) {
 		this.fullscreen = fullscreen;
+
 	}
 
 	private void init() {
@@ -72,24 +73,31 @@ public class GameFrame extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		try {
-			ResourcesLoader.loadPlayerImages();
-			ResourcesLoader.loadMainMenuImages();
-			ResourcesLoader.loadExitMenuImages();
-			ResourcesLoader.loadOptionMenuImages();
-			ResourcesLoader.loadFont();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Sound.loadSound();
 		GameFrame frame = new GameFrame();
+
+		LoadProgress i = new LoadProgress(frame);
+
+		frame.progress(i);
+
+		i.run();
+
 		frame.start();
 
 	}
 
+	public void progress(Container i) {
+
+		this.setContentPane(i);
+
+		this.pack();
+
+		this.setLocationRelativeTo(null);
+
+	}
+
 	private void start() {
-		menuStart();
+		userField();
 		f = new FileSound();
 		if ((f.read()).equals("0")) {
 			Sound.ok.setRepeat(true);
@@ -97,7 +105,6 @@ public class GameFrame extends JFrame {
 		} else {
 			Sound.ok.stop();
 		}
-		userField();
 
 	}
 

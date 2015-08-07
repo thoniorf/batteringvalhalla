@@ -74,6 +74,14 @@ public class GameFrame extends JFrame {
 
 	public static void main(String[] args) {
 
+		try {
+			ResourcesLoader.loadPlayerImages();
+			ResourcesLoader.loadMainMenuImages();
+			ResourcesLoader.loadExitMenuImages();
+			ResourcesLoader.loadScoreBoardImages();
+			ResourcesLoader.loadOptionMenuImages();
+			ResourcesLoader.loadFont();
+
 		GameFrame frame = new GameFrame();
 
 		LoadProgress i = new LoadProgress(frame);

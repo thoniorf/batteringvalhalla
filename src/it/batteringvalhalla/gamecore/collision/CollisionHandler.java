@@ -16,6 +16,7 @@ public class CollisionHandler {
 		returnsobjects = new ArrayList<AbstractGameObject>();
 	}
 
+	@SuppressWarnings("unused")
 	private void checkWithQuads(List<AbstractGameObject> arrayList) {
 		quadtree.clear();
 		for (int i = 0; i < arrayList.size(); i++) {

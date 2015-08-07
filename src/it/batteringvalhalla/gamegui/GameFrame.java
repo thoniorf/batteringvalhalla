@@ -18,9 +18,6 @@ import javax.swing.JPanel;
 
 public class GameFrame extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5257465474614819083L;
 	private Integer screen_width;
 	private Integer screen_height;

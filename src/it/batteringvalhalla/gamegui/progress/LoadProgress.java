@@ -20,16 +20,15 @@ public class LoadProgress extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	final int MIN = 0;
-
 	final int MAX = 100;
-	ImageIcon i;
+	ImageIcon image;
 	URL imageURL = ResourcesLoader.class.getClassLoader().getResource(
 
 	"it/batteringvalhalla/assets/loadProgress/preloader.gif");
 
 	public LoadProgress(GameFrame f) {
 		if (imageURL != null) {
-			i = new ImageIcon(imageURL);
+			image = new ImageIcon(imageURL);
 		}
 
 		load();
@@ -42,7 +41,7 @@ public class LoadProgress extends JPanel {
 				ResourcesLoader.gothic.getStyle(), 100));
 		g.drawString("Loading...", 350, 400);
 		if (imageURL != null) {
-			i.paintIcon(this, g, 430, 450);
+			image.paintIcon(this, g, 430, 450);
 		}
 
 	}

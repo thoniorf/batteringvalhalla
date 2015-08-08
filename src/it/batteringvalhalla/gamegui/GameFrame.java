@@ -74,21 +74,21 @@ public class GameFrame extends JFrame {
 	public static void main(String[] args) {
 		GameFrame frame = new GameFrame();
 
-		frame.progress();
+		frame.LoadingPanel();
 
 		frame.start();
 	}
 
-	public void progress() {
-		LoadProgress i = new LoadProgress(this);
+	public void LoadingPanel() {
+		LoadProgress load = new LoadProgress(this);
 
-		this.setContentPane(i);
+		this.setContentPane(load);
 
 		this.pack();
 
 		this.setLocationRelativeTo(null);
 
-		i.run();
+		load.run();
 	}
 
 	private void start() {

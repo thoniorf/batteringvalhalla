@@ -3,6 +3,7 @@ package it.batteringvalhalla.gamegui;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
+import it.batteringvalhalla.gamegui.menu.ScoreBoard;
 import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.progress.LoadProgress;
 import it.batteringvalhalla.gamegui.sound.FileSound;
@@ -17,6 +18,9 @@ import javax.swing.JPanel;
 
 public class GameFrame extends JFrame {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = -5257465474614819083L;
 	private Integer screen_width;
 	private Integer screen_height;
@@ -48,7 +52,6 @@ public class GameFrame extends JFrame {
 
 	public void setFullscreen(Boolean fullscreen) {
 		this.fullscreen = fullscreen;
-
 	}
 
 	private void init() {
@@ -70,15 +73,6 @@ public class GameFrame extends JFrame {
 	}
 
 	public static void main(String[] args) {
-
-		try {
-			ResourcesLoader.loadPlayerImages();
-			ResourcesLoader.loadMainMenuImages();
-			ResourcesLoader.loadExitMenuImages();
-			ResourcesLoader.loadScoreBoardImages();
-			ResourcesLoader.loadOptionMenuImages();
-			ResourcesLoader.loadFont();
-
 		GameFrame frame = new GameFrame();
 
 		LoadProgress i = new LoadProgress(frame);
@@ -88,7 +82,6 @@ public class GameFrame extends JFrame {
 		i.run();
 
 		frame.start();
-
 	}
 
 	public void progress(Container i) {
@@ -130,6 +123,16 @@ public class GameFrame extends JFrame {
 		this.pack();
 		this.setLocationRelativeTo(null);
 		((GamePanel) panel).getManager().run();
+
+	}
+
+	public void showScores() throws InterruptedException {
+		panel = new ScoreBoard(this);
+		this.setContentPane(panel);
+		panel.updateUI();
+		panel.requestFocus();
+		this.pack();
+		this.setLocationRelativeTo(null);
 
 	}
 

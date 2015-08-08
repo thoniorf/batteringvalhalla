@@ -23,7 +23,7 @@ public class LoadProgress extends JPanel {
 
 	final int MAX = 100;
 	ImageIcon i;
-	URL imageURL= ResourcesLoader.class.getClassLoader().getResource(
+	URL imageURL = ResourcesLoader.class.getClassLoader().getResource(
 
 	"it/batteringvalhalla/assets/loadProgress/preloader.gif");
 
@@ -67,6 +67,7 @@ public class LoadProgress extends JPanel {
 
 			ResourcesLoader.loadPlayerImages();
 			ResourcesLoader.loadMainMenuImages();
+			ResourcesLoader.loadScoreBoardImages();
 			ResourcesLoader.loadExitMenuImages();
 			ResourcesLoader.loadOptionMenuImages();
 			ResourcesLoader.loadFont();

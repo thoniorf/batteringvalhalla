@@ -9,7 +9,6 @@ import it.batteringvalhalla.gamegui.progress.LoadProgress;
 import it.batteringvalhalla.gamegui.sound.FileSound;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 
@@ -75,16 +74,13 @@ public class GameFrame extends JFrame {
 	public static void main(String[] args) {
 		GameFrame frame = new GameFrame();
 
-		LoadProgress i = new LoadProgress(frame);
-
-		frame.progress(i);
-
-		i.run();
+		frame.progress();
 
 		frame.start();
 	}
 
-	public void progress(Container i) {
+	public void progress() {
+		LoadProgress i = new LoadProgress(this);
 
 		this.setContentPane(i);
 
@@ -92,6 +88,7 @@ public class GameFrame extends JFrame {
 
 		this.setLocationRelativeTo(null);
 
+		i.run();
 	}
 
 	private void start() {

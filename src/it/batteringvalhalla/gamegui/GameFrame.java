@@ -73,26 +73,21 @@ public class GameFrame extends JFrame {
 
 	public static void main(String[] args) {
 		GameFrame frame = new GameFrame();
-
-		frame.LoadingPanel();
-
+		frame.loading();
 		frame.start();
 	}
 
-	public void LoadingPanel() {
-		LoadProgress load = new LoadProgress(this);
-
-		this.setContentPane(load);
-
+	public void loading() {
+		panel = new LoadProgress(this);
+		this.setContentPane(panel);
+		panel.updateUI();
 		this.pack();
-
 		this.setLocationRelativeTo(null);
-
-		load.run();
+		((LoadProgress) panel).run();
 	}
 
 	private void start() {
-		userField();
+		menuStart();
 		f = new FileSound();
 		if ((f.read()).equals("0")) {
 			Sound.ok.setRepeat(true);
@@ -100,6 +95,7 @@ public class GameFrame extends JFrame {
 		} else {
 			Sound.ok.stop();
 		}
+		userField();
 
 	}
 

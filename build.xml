@@ -10,6 +10,7 @@
     	</copy>
     	<javac srcdir="${basedir}/src" destdir="${basedir}/bin" >
     		<classpath>
+    				<pathelement path="${basedir}/src/it/batteringvalhalla/assets/libr/sqlite-jdbc-3.8.10.1.jar"/>
     		        <pathelement path="${basedir}/src/it/batteringvalhalla/assets/libr/jaco-mp3-player-0.9.3.jar"/>
     		    </classpath>
     	</javac>
@@ -19,6 +20,7 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${basedir}/bin"/>
+        	<zipfileset excludes="META-INF/*.SF" src="${basedir}/src/it/batteringvalhalla/assets/libr/sqlite-jdbc-3.8.10.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${basedir}/src/it/batteringvalhalla/assets/libr/jaco-mp3-player-0.9.3.jar"/>
         </jar>
     </target>

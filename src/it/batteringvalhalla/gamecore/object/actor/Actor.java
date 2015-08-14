@@ -8,8 +8,10 @@ import java.awt.Graphics;
 
 public class Actor extends AbstractMovableActor {
 
-	public static final int width2 = 30;
 	public static final int height2 = 50;
+	public static final int width2 = 30;
+
+	private int live;
 
 	public Actor(int x, int y) {
 		super(x, y);
@@ -18,27 +20,17 @@ public class Actor extends AbstractMovableActor {
 		setMaxSpeed(5.5f);
 		setHeight(30);
 		setWidth(90);
-		live = 3;
+		this.live = 3;
 		this.collider = new CollisionShape(x, y, width, height);
 
 	}
 
-	private int score;
-
-	@Override
-	public void setScore(int value) {
-		this.score = value;
+	public void decrementLive() {
+		live -= 1;
 	}
 
-	@Override
-	public int getScore() {
-		return this.score;
-	}
-
-	private int live;
-
-	public void setLive(int value) {
-		this.live = value;
+	public void setLive(Integer i) {
+		this.live = i;
 	}
 
 	public int getLive() {
@@ -47,19 +39,9 @@ public class Actor extends AbstractMovableActor {
 
 	public void incrementLive() {
 		if (live == 3) {
-
 			return;
 		}
-
 		live += 1;
-	}
-
-	public void incrementScore() {
-		score += 10;
-	}
-
-	public void decrementLive() {
-		live -= 1;
 	}
 
 	@Override

@@ -1,9 +1,11 @@
 package it.batteringvalhalla.gamecore;
 
-import it.batteringvalhalla.gamecore.IA.IAICanMove;
+import it.batteringvalhalla.gamecore.IA.AbstractIA;
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.object.AbstractGameObject;
 import it.batteringvalhalla.gamecore.object.actor.Actor;
+import it.batteringvalhalla.gamecore.object.actor.Direction;
+import it.batteringvalhalla.gamecore.object.actor.Enemy;
 
 import java.awt.Graphics;
 import java.util.List;
@@ -12,8 +14,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GameWorld {
 	// Objects
 	Arena arena;
-	List<AbstractGameObject> objects;
-	List<IAICanMove> npc;
+	CopyOnWriteArrayList<AbstractGameObject> objects;
+	CopyOnWriteArrayList<AbstractIA> npc;
 	Actor player;
 
 	// behavior var
@@ -32,7 +34,6 @@ public class GameWorld {
 
 	public void endGame() {
 		setState(4);
-		player.setScore(match);
 	}
 
 	public Integer getMatch() {
@@ -64,9 +65,9 @@ public class GameWorld {
 		npc.clear();
 		objects.add(player);
 		for (int i = 0; i < enemies; i++) {
-			Actor tmp = new Actor(400, 500);
+			Enemy tmp = new Enemy(400, 500, Direction.nord);
 			objects.add(tmp);
-			npc.add(new IAICanMove(tmp, arena));
+			npc.add(new AbstractIA(tmp, arena));
 		}
 	}
 
@@ -76,7 +77,7 @@ public class GameWorld {
 		this.state = new Integer(0);
 		arena = new Arena();
 		objects = new CopyOnWriteArrayList<AbstractGameObject>();
-		npc = new CopyOnWriteArrayList<IAICanMove>();
+		npc = new CopyOnWriteArrayList<AbstractIA>();
 		player = new Actor(200, 300);
 	}
 
@@ -99,8 +100,7 @@ public class GameWorld {
 
 		for (int i = 1; i < objects.size(); i++)
 			if (((Actor) objects.get(i)).getLive() != 0) {
-				npc.get(i - 1).moveActor();
-				objects.get(i).update();
+				npc.get(i - 1).update();
 				if (!arena.getEdge().contains(objects.get(i).getX(),
 						objects.get(i).getY(), objects.get(i).getWidth(),
 						objects.get(i).getHeight())) {

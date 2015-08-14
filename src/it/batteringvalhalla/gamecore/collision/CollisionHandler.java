@@ -39,8 +39,9 @@ public class CollisionHandler {
 												.getCollisionShape())) {
 
 					arrayList.get(i).getCollisionShape().updateCollisionpoint();
-					arrayList.get(i).postCollision(
-							(Actor) returnsobjects.get(j));
+					arrayList.get(j).getCollisionShape().updateCollisionpoint();
+					postCollision((Actor) arrayList.get(i),
+							(Actor) arrayList.get(j));
 
 				}
 			}
@@ -64,7 +65,8 @@ public class CollisionHandler {
 
 					arrayList.get(i).getCollisionShape().updateCollisionpoint();
 					arrayList.get(j).getCollisionShape().updateCollisionpoint();
-					arrayList.get(i).postCollision((Actor) arrayList.get(j));
+					postCollision((Actor) arrayList.get(i),
+							(Actor) arrayList.get(j));
 				}
 			}
 		}
@@ -72,5 +74,19 @@ public class CollisionHandler {
 
 	public void checkCollisions(List<AbstractGameObject> arrayList) {
 		checkWitoutQuads(arrayList);
+	}
+
+	private void postCollision(Actor a1, Actor a2) {
+		float newSpx1 = a1.getSpeedX() + 2 * a2.getSpeedX();
+		float newSpy1 = a1.getSpeedY() + 2 * a2.getSpeedY();
+		float newSpx2 = a2.getSpeedX() + 2 * a1.getSpeedX();
+		float newSpy2 = a2.getSpeedY() + 2 * a1.getSpeedY();
+		a1.setSpeedX(newSpx1);
+		a1.setSpeedY(newSpy1);
+		a2.setSpeedX(newSpx2);
+		a2.setSpeedY(newSpy2);
+		a1.postCollision();
+		a2.postCollision();
+
 	}
 }

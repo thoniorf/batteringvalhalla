@@ -13,6 +13,10 @@ public class AbstractIA {
 	Long startime;
 	Long currentime;
 
+	public Enemy getEnemy() {
+		return enemy;
+	}
+
 	public AbstractIA(Enemy enemy, Arena arena) {
 		this.enemy = enemy;
 		this.arena = arena;
@@ -31,7 +35,6 @@ public class AbstractIA {
 		}
 
 		enemy.setDirection(Direction.fromInt(dir));
-		enemy.update();
 	}
 
 	private boolean canMove(float x, float y) {

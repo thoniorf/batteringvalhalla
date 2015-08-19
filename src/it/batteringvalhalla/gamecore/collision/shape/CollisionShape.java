@@ -51,7 +51,6 @@ public class CollisionShape extends Rectangle {
 	public boolean intersecable() {
 		if (this.collisionpoint == 0)
 			return true;
-
 		return false;
 	}
 
@@ -65,15 +64,11 @@ public class CollisionShape extends Rectangle {
 		}
 	}
 
-	public boolean beginCollided() {
-		if (this.collisionpoint != 0) {
-			System.out.println("CONTACT !");
-			return true;
-		}
-
-		return false;
+	@Override
+	public boolean contains(double x, double y) {
+		// TODO new contains method
+		return super.contains(x, y);
 	}
-
 	public void paint(Graphics g) {
 		g.fillRect(x, y, 40, 50);
 	}

@@ -97,25 +97,39 @@ public class GameWorld {
 	}
 
 	public void update() {
-
-		for (int i = 1; i < objects.size(); i++)
+		Boolean isenemy = false;
+		zOrder();
+		for (int i = 0; i < npc.size(); i++) {
+			if (npc.get(i).getEnemy().getLive() != 0) {
+				// npc.get(i).update();
+			}
+		}
+		for (int i = 0; i < objects.size(); i++) {
+			if (objects.get(i) instanceof Enemy) {
+				isenemy = true;
+			} else {
+				isenemy = false;
+			}
 			if (((Actor) objects.get(i)).getLive() != 0) {
-				npc.get(i - 1).update();
+				objects.get(i).update();
 				if (!arena.getEdge().contains(objects.get(i).getX(),
 						objects.get(i).getY(), objects.get(i).getWidth(),
 						objects.get(i).getHeight())) {
 					((Actor) objects.get(i)).setLive(0);
-					enemies -= 1;
-					if (enemies == 0) {
-						setState(3);
+					if (isenemy) {
+						enemies -= 1;
 					}
+
 				}
 			}
-
-		player.update();
-		if (!arena.getEdge().contains(player.getX(), player.getY(),
-				player.getWidth(), player.getHeight())) {
+		}
+		// !arena.getEdge().contains(player.getX(),
+		// player.getY(),player.getWidth(), player.getHeight())
+		if (player.getLive() == 0) {
 			setState(4);
+		}
+		if (enemies == 0) {
+			setState(3);
 		}
 
 	}

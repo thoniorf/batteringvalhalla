@@ -2,12 +2,12 @@ package it.batteringvalhalla.gamegui.menu;
 
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.sound.FileSound;
+import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
-import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -23,11 +23,13 @@ public class ExitMenu extends JPanel {
 	GameFrame gameframe;
 	Circle yes_circle;
 	Circle no_circle;
+	FileSound f;
 	int screenh = 768;
 
 	public ExitMenu(GameFrame gameFrame) {
 		super();
 		this.gameframe = gameFrame;
+		this.f = gameframe.getF();
 		this.mediaLoader();
 		this.listenerLoader();
 	}
@@ -56,15 +58,15 @@ public class ExitMenu extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.drawImage(ResourcesLoader.exitmenu_images.get(0), 182,
 				screenh - 309 - 140, null);
 		g.drawImage(ResourcesLoader.exitmenu_images.get(1), 312,
 				screenh - 165 - 133, null);
 		g.drawImage(ResourcesLoader.exitmenu_images.get(2), 584,
 				screenh - 165 - 133, null);
+		// g.setFont(new Font(ResourcesLoader.gothic.getName(),
+		// ResourcesLoader.gothic.getStyle(), 144));
+		// g.drawString("Battering Valhalla", 39, screenh - 594);
 		g.setFont(new Font(ResourcesLoader.gothic.getName(),
 				ResourcesLoader.gothic.getStyle(), 96));
 		g.drawString("Are you sure ?", 236, screenh - 315 - 96 / 3);
@@ -78,9 +80,15 @@ public class ExitMenu extends JPanel {
 				super.mouseReleased(e);
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
+					if ((f.read()).equals("0")) {
+						Sound.button.play();
+					}
 					System.exit(0);
 					break;
 				case 2:
+					if ((f.read()).equals("0")) {
+						Sound.button.play();
+					}
 					gameframe.menuStart();
 					break;
 				}

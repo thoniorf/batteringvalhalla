@@ -2,6 +2,8 @@ package it.batteringvalhalla.gamegui.menu;
 
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.sound.FileSound;
+import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -31,12 +33,14 @@ public class MainMenu extends JPanel {
 	Circle option_circle;
 	Image exit_draw;
 	Circle exit_circle;
+	FileSound f;
 	int screenh = 768;
 	boolean enabled = false;
 
 	public MainMenu(GameFrame frame) {
 		this.enabled = true;
 		this.frame = frame;
+		this.f = frame.getF();
 
 		try {
 			this.mediaLoader();
@@ -91,6 +95,9 @@ public class MainMenu extends JPanel {
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
 					try {
+						if ((f.read()).equals("0")) {
+							Sound.button.play();
+						}
 						frame.gameStart();
 					} catch (InterruptedException e2) {
 						// TODO Auto-generated catch block
@@ -99,6 +106,9 @@ public class MainMenu extends JPanel {
 					break;
 				case 2:
 					try {
+						if ((f.read()).equals("0")) {
+							Sound.button.play();
+						}
 						frame.opt();
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
@@ -108,6 +118,9 @@ public class MainMenu extends JPanel {
 					break;
 				case 3:
 					try {
+						if ((f.read()).equals("0")) {
+							Sound.button.play();
+						}
 						frame.exit();
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block

@@ -139,6 +139,10 @@ public class OptionMenu extends JPanel {
 				}
 
 				if (viki_circle.contains(e.getX(), e.getY())) {
+					if ((f.read()).equals("0")) {
+						Sound.button.play();
+
+					}
 					frame.backMenu();
 				}
 

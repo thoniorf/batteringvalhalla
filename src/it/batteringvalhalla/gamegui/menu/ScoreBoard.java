@@ -1,9 +1,9 @@
 package it.batteringvalhalla.gamegui.menu;
 
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamecore.object.actor.Player;
-import it.batteringvalhalla.gamecore.sqlite.ScoreFetch;
 import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.sound.FileSound;
+import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -12,8 +12,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import javafx.scene.shape.Circle;
 
@@ -25,23 +23,26 @@ public class ScoreBoard extends JPanel {
 	GameFrame gameframe;
 	Circle restart_circle;
 	Circle no_circle;
+	FileSound f;
 	int screenh = 768;
-	ArrayList<String> scores;
 
 	public ScoreBoard(GameFrame gameFrame) {
 		super(null);
 		this.gameframe = gameFrame;
+		this.f = gameframe.getF();
 		this.mediaLoader();
 		this.listenerLoader();
-		this.loadScores();
 	}
 
-	private void loadScores() {
-		scores = new ArrayList<String>();
-		ScoreFetch scorefetch = new ScoreFetch();
-		scorefetch.insertScore(Player.score, Player.username);
-		scorefetch.execQuery(
-				"Select * from scores order by match desc limit 5;", scores);
+	public void showScoreboard() {
+
+	}
+
+	private void loadScoreboard() {
+
+	}
+
+	public void addScore(int score) {
 
 	}
 
@@ -59,15 +60,6 @@ public class ScoreBoard extends JPanel {
 		g.setFont(new Font(ResourcesLoader.gothic.getName(),
 				ResourcesLoader.gothic.getStyle(), 96));
 		g.drawString("Scoreboard", 320, screenh - 567 - 96 / 3);
-		g.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 64));
-		Iterator<String> it = scores.iterator();
-		int y = screenh - 512;
-		while (it.hasNext()) {
-			g.drawString(it.next(), 226, y);
-			g.drawString(it.next(), 672, y);
-			y += 72;
-		}
 	}
 
 	private void mediaLoader() {
@@ -101,12 +93,18 @@ public class ScoreBoard extends JPanel {
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
 					try {
+						if ((f.read()).equals("0")) {
+							Sound.button.play();
+						}
 						gameframe.gameStart();
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
 					break;
 				case 2:
+					if ((f.read()).equals("0")) {
+						Sound.button.play();
+					}
 					gameframe.menuStart();
 					break;
 				}

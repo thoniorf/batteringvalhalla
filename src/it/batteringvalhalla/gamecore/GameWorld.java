@@ -113,8 +113,7 @@ public class GameWorld {
 			if (((Actor) objects.get(i)).getLive() != 0) {
 				objects.get(i).update();
 				if (!arena.getEdge().contains(objects.get(i).getX(),
-						objects.get(i).getY(), objects.get(i).getWidth(),
-						objects.get(i).getHeight())) {
+						objects.get(i).getY())) {
 					((Actor) objects.get(i)).setLive(0);
 					if (isenemy) {
 						enemies -= 1;
@@ -123,8 +122,6 @@ public class GameWorld {
 				}
 			}
 		}
-		// !arena.getEdge().contains(player.getX(),
-		// player.getY(),player.getWidth(), player.getHeight())
 		if (player.getLive() == 0) {
 			setState(4);
 		}

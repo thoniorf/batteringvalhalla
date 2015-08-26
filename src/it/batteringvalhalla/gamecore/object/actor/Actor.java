@@ -8,9 +8,6 @@ import java.awt.Graphics;
 
 public class Actor extends AbstractMovableActor {
 
-	public static final int height2 = 50;
-	public static final int width2 = 30;
-
 	private int live;
 
 	public Actor(int x, int y) {
@@ -21,7 +18,8 @@ public class Actor extends AbstractMovableActor {
 		setHeight(30);
 		setWidth(90);
 		this.live = 3;
-		this.collider = new CollisionShape(x, y, width, height);
+		this.collider = new CollisionShape(x - width / 2, y - height - 2,
+				width, height);
 
 	}
 
@@ -47,11 +45,12 @@ public class Actor extends AbstractMovableActor {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.drawImage(ResourcesLoader.player, x, y - 40, null);
-		g.setColor(Color.blue);
-		g.drawRect(x + 30, y - 40, width2, height2);
+		g.drawImage(ResourcesLoader.player, x - width / 2, y - height / 2 - 40,
+				null);
 		g.setColor(Color.GREEN);
-		g.drawRect(x, y, width, height);
+		g.drawRect(x - width / 2, y - height / 2, width, height);
+		g.setColor(Color.RED);
+		g.drawString("+", x, y);
 	}
 
 }

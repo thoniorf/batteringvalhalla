@@ -152,7 +152,6 @@ public class OptionMenu extends JPanel {
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		g.drawImage(ResourcesLoader.optionmenu_images.get(6), 200, 45, 600,
 				600, null);

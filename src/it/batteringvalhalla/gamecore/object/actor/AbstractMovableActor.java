@@ -97,7 +97,7 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 		}
 
 		move();
-		collider.setLocation(this.x, this.y);
+		collider.setLocation(this.x - width / 2, this.y - height / 2);
 		collider.downgradeCollisionpoint();
 
 	}

@@ -5,7 +5,7 @@ import it.batteringvalhalla.gamecore.object.AbstractGameObject;
 public abstract class AbstractMovableActor extends AbstractGameObject implements
 		MovableActor {
 
-	private Direction direction;
+	protected Direction direction;
 	protected float maxSpeed;
 	protected float speedX;
 	protected float speedY;

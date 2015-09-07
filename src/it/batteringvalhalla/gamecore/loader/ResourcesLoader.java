@@ -22,12 +22,10 @@ public class ResourcesLoader {
 	}
 
 	public static synchronized void loadPlayerImages() throws IOException {
-
 		player = ImageIO.read(
 				ResourcesLoader.class.getClassLoader().getResource(
 						"it/batteringvalhalla/assets/actor/player.png"))
-				.getScaledInstance(90, 80, java.awt.Image.SCALE_SMOOTH);
-
+				.getScaledInstance(360, 320, java.awt.Image.SCALE_SMOOTH);
 	}
 
 	public static synchronized void loadMainMenuImages() throws IOException {

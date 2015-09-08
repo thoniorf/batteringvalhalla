@@ -50,7 +50,7 @@ public class Actor extends AbstractMovableActor {
 	@Override
 	public void update() {
 		super.update();
-		sprite.update(speedX,speedY);
+		sprite.update(direction);
 	};
 
 	@Override

@@ -56,25 +56,25 @@ public class Sprite {
 		framesPerRow = new Integer(imageWidth / frameWidth);
 	}
 
-	public void update(float speedx, float speedy) {
-
-		currentFrame = (currentFrame + 1) % endFrame;
-		counter = (counter + 1) % frameSpeed;
-		frameCol = currentFrame % framesPerRow;
-		frameRow = currentFrame / framesPerRow;
-
+	public void update(Direction dir) {
+		if (!(dir == Direction.stop && currentFrame == 1)) {
+			currentFrame = (currentFrame + 1) % endFrame;
+			counter = (counter + 1) % frameSpeed;
+			frameCol = currentFrame % framesPerRow;
+			frameRow = currentFrame / framesPerRow;
+		}
 		g2 = (Graphics2D) frame.getGraphics();
 		g2.drawImage(img.getSubimage(frameCol * frameWidth, frameRow
 				* frameHeight, frameWidth, frameHeight), 0, 0, null);
 		g2.dispose();
-		// if (dir != imgDir && dir != Direction.stop) {
-		AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-		tx.translate(-frame.getWidth(null), 0);
-		AffineTransformOp op = new AffineTransformOp(tx,
-				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-		frame = op.filter(frame, null);
-		// imgDir = dir;
-		// }
+		if (dir == Direction.ovest || imgDir == Direction.ovest) {
+			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+			tx.translate(-frame.getWidth(null), 0);
+			AffineTransformOp op = new AffineTransformOp(tx,
+					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			frame = op.filter(frame, null);
+			imgDir = (dir != Direction.stop) ? dir : imgDir;
+		}
 	}
 
 	public BufferedImage getFrame() {

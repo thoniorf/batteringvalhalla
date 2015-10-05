@@ -117,6 +117,12 @@ public class ScoreBoard extends JPanel {
 						Sound.button.play();
 					}
 					gameframe.menuStart();
+					if ((f.read()).equals("0")) {
+						Sound.battle.stop();
+						Sound.menu.play();
+					} else {
+						Sound.menu.stop();
+					}
 					break;
 				}
 				// repaint();

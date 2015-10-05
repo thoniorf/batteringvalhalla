@@ -127,14 +127,14 @@ public class OptionMenu extends JPanel {
 				if (on_circle.contains(e.getX(), e.getY())) {
 					on();
 					f.write0();
-					Sound.ok.play();
+					Sound.menu.play();
 
 				}
 
 				if (off_circle.contains(e.getX(), e.getY())) {
 					onNo();
 					f.write1();
-					Sound.ok.stop();
+					Sound.menu.stop();
 
 				}
 

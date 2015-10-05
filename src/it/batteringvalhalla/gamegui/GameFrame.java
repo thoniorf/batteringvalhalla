@@ -90,10 +90,10 @@ public class GameFrame extends JFrame {
 		menuStart();
 		f = new FileSound();
 		if ((f.read()).equals("0")) {
-			Sound.ok.setRepeat(true);
-			Sound.ok.play();
+			Sound.menu.setRepeat(true);
+			Sound.menu.play();
 		} else {
-			Sound.ok.stop();
+			Sound.menu.stop();
 		}
 		userField();
 
@@ -106,6 +106,7 @@ public class GameFrame extends JFrame {
 		panel.updateUI();
 		this.pack();
 		this.setLocationRelativeTo(null);
+
 	}
 
 	public void gameStart() throws InterruptedException {
@@ -116,6 +117,14 @@ public class GameFrame extends JFrame {
 		this.pack();
 		this.setLocationRelativeTo(null);
 		((GamePanel) panel).getManager().run();
+		f = new FileSound();
+		if ((f.read()).equals("0")) {
+			Sound.menu.stop();
+			Sound.battle.setRepeat(true);
+			Sound.battle.play();
+		} else {
+			Sound.battle.stop();
+		}
 
 	}
 
@@ -126,7 +135,6 @@ public class GameFrame extends JFrame {
 		panel.requestFocus();
 		this.pack();
 		this.setLocationRelativeTo(null);
-
 	}
 
 	public void exit() throws InterruptedException {

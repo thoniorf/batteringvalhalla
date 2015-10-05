@@ -2,6 +2,7 @@ package it.batteringvalhalla.gamecore.animation;
 
 import it.batteringvalhalla.gamecore.object.actor.Direction;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
@@ -45,12 +46,14 @@ public class Sprite {
 		this.currentFrame = new Integer(1);
 		this.counter = new Integer(0);
 		this.img = new BufferedImage(imageWidth, imageHeight,
-				BufferedImage.TYPE_INT_RGB);
+				BufferedImage.TYPE_INT_ARGB);
 		this.frame = new BufferedImage(frameWidth, frameHeight,
-				BufferedImage.TYPE_INT_RGB);
+				BufferedImage.TYPE_INT_ARGB);
 		g2 = this.img.createGraphics();
+		g2.setComposite(AlphaComposite.Src);
 		g2.drawImage(img, 0, 0, null);
 		g2.dispose();
+		g2.setComposite(AlphaComposite.Src);
 		g2 = this.frame.createGraphics();
 		g2.dispose();
 		framesPerRow = new Integer(imageWidth / frameWidth);
@@ -64,8 +67,10 @@ public class Sprite {
 			frameRow = currentFrame / framesPerRow;
 		}
 		g2 = (Graphics2D) frame.getGraphics();
+		g2.setComposite(AlphaComposite.Src);
 		g2.drawImage(img.getSubimage(frameCol * frameWidth, frameRow
 				* frameHeight, frameWidth, frameHeight), 0, 0, null);
+
 		g2.dispose();
 		if (dir == Direction.ovest || imgDir == Direction.ovest) {
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
@@ -73,7 +78,8 @@ public class Sprite {
 			AffineTransformOp op = new AffineTransformOp(tx,
 					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 			frame = op.filter(frame, null);
-			imgDir = (dir != Direction.stop) ? dir : imgDir;
+			imgDir = ((dir == Direction.ovest && imgDir == Direction.est) || (dir == Direction.est && imgDir == Direction.ovest)) ? dir
+					: imgDir;
 		}
 	}
 

@@ -20,3 +20,10 @@ L'obiettivo e sopravvivere il più a lungo possibile combattendo di match in mat
 ~~Per ogni match vinto guadagnere dei punti, i quali vi permetteranno di scalare la classifica online.~~
 
 Nel caso in cui la modalità arcade non fosse abbastanza potrete sfidarvi nella modalità Versus online, da due a più giocatori (2+), nella quale vi spingerete giù dall'arena con i vostri amici
+
+# TODO
+- Editor Integration
+- Player paint
+- IA
+- network
+- better UI

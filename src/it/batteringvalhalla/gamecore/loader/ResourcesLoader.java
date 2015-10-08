@@ -75,61 +75,69 @@ public class ResourcesLoader {
 
 	public static synchronized void loadOptionMenuImages() throws IOException {
 		optionmenu_images = new ArrayList<Image>();
+
+		optionmenu_images.add(ImageIO.read(
+				ResourcesLoader.class.getClassLoader().getResource(
+						"it/batteringvalhalla/assets/gui/menu/icon/on.png"))
+				.getScaledInstance(90, 90, java.awt.Image.SCALE_SMOOTH));
 		optionmenu_images
 				.add(ImageIO
 						.read(ResourcesLoader.class
 								.getClassLoader()
 								.getResource(
-										"it/batteringvalhalla/assets/gui/menu/icon/pink_button_sound_on_morgaine1976.png")));
+										"it/batteringvalhalla/assets/gui/menu/icon/hover/on_hover.png"))
+						.getScaledInstance(90, 90, java.awt.Image.SCALE_SMOOTH));
+		optionmenu_images.add(ImageIO.read(
+				ResourcesLoader.class.getClassLoader().getResource(
+						"it/batteringvalhalla/assets/gui/menu/icon/off.png"))
+				.getScaledInstance(90, 90, java.awt.Image.SCALE_SMOOTH));
 		optionmenu_images
 				.add(ImageIO
 						.read(ResourcesLoader.class
 								.getClassLoader()
 								.getResource(
-										"it/batteringvalhalla/assets/gui/menu/icon/pink_button_sound_off_morgaine1976.png")));
+										"it/batteringvalhalla/assets/gui/menu/icon/hover/off_hover.png"))
+						.getScaledInstance(90, 90, java.awt.Image.SCALE_SMOOTH));
 		optionmenu_images
 				.add(ImageIO
 						.read(ResourcesLoader.class
 								.getClassLoader()
 								.getResource(
-										"it/batteringvalhalla/assets/gui/menu/icon/bottonon.png")));
+										"it/batteringvalhalla/assets/gui/menu/background/exit_background.png"))
+						.getScaledInstance(600, 600,
+								java.awt.Image.SCALE_SMOOTH));
+		optionmenu_images.add(ImageIO.read(
+				ResourcesLoader.class.getClassLoader().getResource(
+						"it/batteringvalhalla/assets/gui/menu/icon/back.png"))
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 		optionmenu_images
 				.add(ImageIO
 						.read(ResourcesLoader.class
 								.getClassLoader()
 								.getResource(
-										"it/batteringvalhalla/assets/gui/menu/icon/hover/Senzanome.png")));
-		optionmenu_images.add(ImageIO.read(ResourcesLoader.class
-				.getClassLoader().getResource(
-						"it/batteringvalhalla/assets/gui/menu/icon/off.png")));
-		optionmenu_images
-				.add(ImageIO
-						.read(ResourcesLoader.class
-								.getClassLoader()
-								.getResource(
-										"it/batteringvalhalla/assets/gui/menu/icon/hover/off2.png")));
-		optionmenu_images
-				.add(ImageIO
-						.read(ResourcesLoader.class
-								.getClassLoader()
-								.getResource(
-										"it/batteringvalhalla/assets/gui/menu/background/exit_background.png")));
-		optionmenu_images
-				.add(ImageIO
-						.read(ResourcesLoader.class
-								.getClassLoader()
-								.getResource(
-										"it/batteringvalhalla/assets/gui/menu/icon/di4875BKT.png"))
+										"it/batteringvalhalla/assets/gui/menu/icon/hover/h_back.png"))
 						.getScaledInstance(100, 100,
 								java.awt.Image.SCALE_SMOOTH));
-		optionmenu_images
-				.add(ImageIO
-						.read(ResourcesLoader.class
-								.getClassLoader()
-								.getResource(
-										"it/batteringvalhalla/assets/gui/menu/icon/hover/viki.png"))
-						.getScaledInstance(100, 100,
-								java.awt.Image.SCALE_SMOOTH));
+
+		optionmenu_images.add(ImageIO.read(
+				ResourcesLoader.class.getClassLoader().getResource(
+						"it/batteringvalhalla/assets/gui/menu/icon/w.png"))
+				.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH));
+
+		optionmenu_images.add(ImageIO.read(
+				ResourcesLoader.class.getClassLoader().getResource(
+						"it/batteringvalhalla/assets/gui/menu/icon/s.png"))
+				.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH));
+
+		optionmenu_images.add(ImageIO.read(
+				ResourcesLoader.class.getClassLoader().getResource(
+						"it/batteringvalhalla/assets/gui/menu/icon/a.png"))
+				.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH));
+
+		optionmenu_images.add(ImageIO.read(
+				ResourcesLoader.class.getClassLoader().getResource(
+						"it/batteringvalhalla/assets/gui/menu/icon/d.png"))
+				.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH));
 
 	}
 

@@ -26,17 +26,14 @@ public class OptionMenu extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -1370627725870961582L;
-	Image img;
 
 	Image on;
-
-	Image off;
-
-	Circle off_circle;
 	Circle on_circle;
+	Image off;
+	Circle off_circle;
 	GameFrame frame;
-	Image viki;
-	Circle viki_circle;
+	Image back;
+	Circle back_circle;
 	FileSound f;
 
 	public OptionMenu(GameFrame frame) {
@@ -61,29 +58,30 @@ public class OptionMenu extends JPanel {
 		ge.registerFont(ResourcesLoader.gothic);
 		if (f.read().equals("0")) {
 
-			img = ResourcesLoader.optionmenu_images.get(0);
+			on = ResourcesLoader.optionmenu_images.get(1);
+			off = ResourcesLoader.optionmenu_images.get(2);
 
 		} else {
-			img = ResourcesLoader.optionmenu_images.get(1);
+
+			off = ResourcesLoader.optionmenu_images.get(3);
+			on = ResourcesLoader.optionmenu_images.get(0);
 		}
 
-		on = ResourcesLoader.optionmenu_images.get(2);
-		off = ResourcesLoader.optionmenu_images.get(4);
-		viki = ResourcesLoader.optionmenu_images.get(7);
+		back = ResourcesLoader.optionmenu_images.get(5);
 		off_circle = new Circle();
-		off_circle.setCenterX(735);
-		off_circle.setCenterY(185);
+		off_circle.setCenterX(745);
+		off_circle.setCenterY(195);
 		off_circle.setRadius(45);
 
 		on_circle = new Circle();
-		on_circle.setCenterX(600);
-		on_circle.setCenterY(185);
+		on_circle.setCenterX(610);
+		on_circle.setCenterY(195);
 		on_circle.setRadius(45);
 
-		viki_circle = new Circle();
-		viki_circle.setCenterX(305);
-		viki_circle.setCenterY(550);
-		viki_circle.setRadius(35);
+		back_circle = new Circle();
+		back_circle.setCenterX(295);
+		back_circle.setCenterY(550);
+		back_circle.setRadius(35);
 
 	}
 
@@ -91,28 +89,12 @@ public class OptionMenu extends JPanel {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				if (on_circle.contains(e.getX(), e.getY())) {
 
-					on = ResourcesLoader.optionmenu_images.get(3);
-
-				} else {
-					on = ResourcesLoader.optionmenu_images.get(2);
-
-				}
-
-				if (off_circle.contains(e.getX(), e.getY())) {
-					off = ResourcesLoader.optionmenu_images.get(5);
+				if (back_circle.contains(e.getX(), e.getY())) {
+					back = ResourcesLoader.optionmenu_images.get(6);
 
 				} else {
-					off = ResourcesLoader.optionmenu_images.get(4);
-
-				}
-
-				if (viki_circle.contains(e.getX(), e.getY())) {
-					viki = ResourcesLoader.optionmenu_images.get(8);
-
-				} else {
-					viki = ResourcesLoader.optionmenu_images.get(7);
+					back = ResourcesLoader.optionmenu_images.get(5);
 
 				}
 
@@ -132,13 +114,13 @@ public class OptionMenu extends JPanel {
 				}
 
 				if (off_circle.contains(e.getX(), e.getY())) {
-					onNo();
+					off();
 					f.write1();
 					Sound.menu.stop();
 
 				}
 
-				if (viki_circle.contains(e.getX(), e.getY())) {
+				if (back_circle.contains(e.getX(), e.getY())) {
 					if ((f.read()).equals("0")) {
 						Sound.button.play();
 
@@ -153,18 +135,22 @@ public class OptionMenu extends JPanel {
 	@Override
 	protected void paintComponent(final Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		g.drawImage(ResourcesLoader.optionmenu_images.get(6), 200, 45, 600,
-				600, null);
+		g.drawImage(ResourcesLoader.optionmenu_images.get(4), 200, 45, null);
 		g.setFont(new Font(ResourcesLoader.gothic.getName(),
 				ResourcesLoader.gothic.getStyle(), 60));
 		g.drawString("Sound  ON / OFF", 210, 130);
-		g.drawImage(img, 220, 135, 90, 90, null);
-		g.drawImage(on, 550, 135, 90, 90, null);
-		g.drawImage(off, 680, 135, 90, 90, null);
+		g.drawImage(on, 555, 145, null);
+		g.drawImage(off, 685, 145, null);
 		g.setFont(new Font(ResourcesLoader.gothic.getName(),
 				ResourcesLoader.gothic.getStyle(), 67));
-		g.drawString("Torna al menu'", 380, 580);
-		g.drawImage(viki, 230, 500, 120, 100, null);
+		g.drawImage(back, 230, 500, null);
+		g.drawImage(ResourcesLoader.optionmenu_images.get(7), 320, 245, null);
+		g.drawImage(ResourcesLoader.optionmenu_images.get(8), 320, 300, null);
+		g.drawImage(ResourcesLoader.optionmenu_images.get(9), 265, 270, null);
+		g.drawImage(ResourcesLoader.optionmenu_images.get(10), 375, 270, null);
+		g.drawString("Move", 265, 408);
+		g.setFont(new Font(ResourcesLoader.gothic.getName(),
+				ResourcesLoader.gothic.getStyle(), 64));
 
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
@@ -172,13 +158,15 @@ public class OptionMenu extends JPanel {
 	}
 
 	void on() {
-		img = ResourcesLoader.optionmenu_images.get(0);
+		on = ResourcesLoader.optionmenu_images.get(1);
+		off = ResourcesLoader.optionmenu_images.get(2);
 		repaint();
 
 	}
 
-	void onNo() {
-		img = ResourcesLoader.optionmenu_images.get(1);
+	void off() {
+		off = ResourcesLoader.optionmenu_images.get(3);
+		on = ResourcesLoader.optionmenu_images.get(0);
 		repaint();
 
 	}

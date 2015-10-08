@@ -134,7 +134,10 @@ public class OptionMenu extends JPanel {
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
 		g.drawImage(ResourcesLoader.optionmenu_images.get(4), 200, 45, null);
 		g.setFont(new Font(ResourcesLoader.gothic.getName(),
 				ResourcesLoader.gothic.getStyle(), 60));
@@ -151,9 +154,6 @@ public class OptionMenu extends JPanel {
 		g.drawString("Move", 265, 408);
 		g.setFont(new Font(ResourcesLoader.gothic.getName(),
 				ResourcesLoader.gothic.getStyle(), 64));
-
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
 
 	}
 

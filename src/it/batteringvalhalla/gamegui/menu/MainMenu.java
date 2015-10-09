@@ -33,6 +33,8 @@ public class MainMenu extends JPanel {
 	Circle option_circle;
 	Image exit_draw;
 	Circle exit_circle;
+	Image editor_draw;
+	Circle editor_circle;
 	FileSound f;
 	int screenh = 768;
 	boolean enabled = false;
@@ -57,6 +59,7 @@ public class MainMenu extends JPanel {
 		play_draw = ResourcesLoader.mainmenu_images.get(0);
 		options_draw = ResourcesLoader.mainmenu_images.get(2);
 		exit_draw = ResourcesLoader.mainmenu_images.get(4);
+		editor_draw = ResourcesLoader.mainmenu_images.get(6);
 		GraphicsEnvironment ge = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		ge.registerFont(ResourcesLoader.gothic);
@@ -84,6 +87,14 @@ public class MainMenu extends JPanel {
 				+ ResourcesLoader.mainmenu_images.get(4).getHeight(this) / 2);
 		exit_circle.setRadius(ResourcesLoader.mainmenu_images.get(4).getHeight(
 				this) / 2);
+
+		editor_circle = new Circle();
+		editor_circle.setCenterX(440 + ResourcesLoader.mainmenu_images.get(6)
+				.getWidth(this) / 2);
+		editor_circle.setCenterY((screenh - 90 - 140)
+				+ ResourcesLoader.mainmenu_images.get(6).getHeight(this) / 2);
+		editor_circle.setRadius(ResourcesLoader.mainmenu_images.get(6)
+				.getHeight(this) / 2);
 
 	}
 
@@ -154,6 +165,7 @@ public class MainMenu extends JPanel {
 		g.drawImage(play_draw, 438, screenh - 270 - 212, null);
 		g.drawImage(options_draw, 243, screenh - 167 - 178, null);
 		g.drawImage(exit_draw, 687, screenh - 84 - 149, null);
+		g.drawImage(editor_draw, 440, screenh - 90 - 140, null);
 		g.setFont(new Font(ResourcesLoader.gothic.getName(),
 				ResourcesLoader.gothic.getStyle(), 144));
 		g.drawString("Battering Valhalla", 39, screenh - 594);
@@ -185,6 +197,11 @@ public class MainMenu extends JPanel {
 			exit_draw = ResourcesLoader.mainmenu_images.get(5);
 		} else {
 			exit_draw = ResourcesLoader.mainmenu_images.get(4);
+		}
+		if (editor_circle.contains(x, y)) {
+			editor_draw = ResourcesLoader.mainmenu_images.get(7);
+		} else {
+			editor_draw = ResourcesLoader.mainmenu_images.get(6);
 		}
 		repaint();
 	}

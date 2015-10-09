@@ -11,9 +11,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -26,7 +28,9 @@ public class ScoreBoard extends JPanel {
 	private static final long serialVersionUID = -8054712688033068639L;
 	GameFrame gameframe;
 	Circle restart_circle;
+	Image restart_draw;
 	Circle no_circle;
+	Image no_draw;
 	FileSound f;
 	int screenh = 768;
 	ArrayList<String> scores;
@@ -55,10 +59,8 @@ public class ScoreBoard extends JPanel {
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.drawImage(ResourcesLoader.scoreboard_images.get(0), 182,
 				screenh - 642 - 65, null);
-		g.drawImage(ResourcesLoader.scoreboard_images.get(1), 312,
-				screenh - 165 - 49, null);
-		g.drawImage(ResourcesLoader.exitmenu_images.get(2), 584,
-				screenh - 165 - 49, null);
+		g.drawImage(restart_draw, 312, screenh - 165 - 49, null);
+		g.drawImage(no_draw, 584, screenh - 165 - 49, null);
 		g.setFont(new Font(ResourcesLoader.gothic.getName(),
 				ResourcesLoader.gothic.getStyle(), 96));
 		g.drawString("Scoreboard", 320, screenh - 567 - 96 / 3);
@@ -74,6 +76,10 @@ public class ScoreBoard extends JPanel {
 	}
 
 	private void mediaLoader() {
+
+		restart_draw = ResourcesLoader.scoreboard_images.get(1);
+		no_draw = ResourcesLoader.exitmenu_images.get(2);
+
 		GraphicsEnvironment ge = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		ge.registerFont(ResourcesLoader.gothic);
@@ -128,6 +134,15 @@ public class ScoreBoard extends JPanel {
 				// repaint();
 			}
 		});
+
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				super.mouseMoved(e);
+				motionListener(e.getX(), e.getY());
+
+			}
+		});
 	}
 
 	public int listener(int x, int y) {
@@ -137,6 +152,21 @@ public class ScoreBoard extends JPanel {
 			return 2;
 		}
 		return 0;
+	}
+
+	public void motionListener(int x, int y) {
+		if (restart_circle.contains(x, y)) {
+			restart_draw = ResourcesLoader.scoreboard_images.get(2);
+		} else {
+			restart_draw = ResourcesLoader.scoreboard_images.get(1);
+		}
+
+		if (no_circle.contains(x, y)) {
+			no_draw = ResourcesLoader.exitmenu_images.get(4);
+		} else {
+			no_draw = ResourcesLoader.exitmenu_images.get(2);
+		}
+		repaint();
 	}
 
 }

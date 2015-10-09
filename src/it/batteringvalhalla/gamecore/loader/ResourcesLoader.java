@@ -71,6 +71,24 @@ public class ResourcesLoader {
 						.getScaledInstance(139, 149,
 								java.awt.Image.SCALE_SMOOTH));
 
+		mainmenu_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getClassLoader()
+								.getResource(
+										"it/batteringvalhalla/assets/gui/menu/icon/editor.png"))
+						.getScaledInstance(150, 160,
+								java.awt.Image.SCALE_SMOOTH));
+
+		mainmenu_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getClassLoader()
+								.getResource(
+										"it/batteringvalhalla/assets/gui/menu/icon/hover/h_editor.png"))
+						.getScaledInstance(150, 160,
+								java.awt.Image.SCALE_SMOOTH));
+
 	}
 
 	public static synchronized void loadOptionMenuImages() throws IOException {
@@ -160,6 +178,24 @@ public class ResourcesLoader {
 						"it/batteringvalhalla/assets/gui/menu/icon/no.png"))
 				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
 
+		exitmenu_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getClassLoader()
+								.getResource(
+										"it/batteringvalhalla/assets/gui/menu/icon/hover/h_yes.png"))
+						.getScaledInstance(123, 133,
+								java.awt.Image.SCALE_SMOOTH));
+
+		exitmenu_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getClassLoader()
+								.getResource(
+										"it/batteringvalhalla/assets/gui/menu/icon/hover/h_no.png"))
+						.getScaledInstance(123, 133,
+								java.awt.Image.SCALE_SMOOTH));
+
 	}
 
 	public static synchronized void loadScoreBoardImages() throws IOException {
@@ -178,6 +214,15 @@ public class ResourcesLoader {
 								.getClassLoader()
 								.getResource(
 										"it/batteringvalhalla/assets/gui/menu/icon/restart.png"))
+						.getScaledInstance(123, 133,
+								java.awt.Image.SCALE_SMOOTH));
+
+		scoreboard_images
+				.add(ImageIO
+						.read(ResourcesLoader.class
+								.getClassLoader()
+								.getResource(
+										"it/batteringvalhalla/assets/gui/menu/icon/hover/h_restart.png"))
 						.getScaledInstance(123, 133,
 								java.awt.Image.SCALE_SMOOTH));
 

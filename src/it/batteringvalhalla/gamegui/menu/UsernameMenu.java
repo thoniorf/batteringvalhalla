@@ -9,8 +9,10 @@ import it.batteringvalhalla.gamegui.sound.Sound;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javafx.scene.shape.Circle;
 
@@ -26,7 +28,9 @@ public class UsernameMenu extends JPanel {
 	GameFrame frame;
 	JTextField userfield;
 	Circle yes_circle;
+	Image yes_draw;
 	Circle no_circle;
+	Image no_draw;
 	FileSound f;
 	int screenh = 768;
 
@@ -69,13 +73,13 @@ public class UsernameMenu extends JPanel {
 	protected void paintComponent(Graphics g) {
 		g.drawImage(ResourcesLoader.exitmenu_images.get(0), 182,
 				screenh - 309 - 140, null);
-		g.drawImage(ResourcesLoader.exitmenu_images.get(1), 312,
-				screenh - 165 - 133, null);
-		g.drawImage(ResourcesLoader.exitmenu_images.get(2), 584,
-				screenh - 165 - 133, null);
+		g.drawImage(yes_draw, 312, screenh - 165 - 133, null);
+		g.drawImage(no_draw, 584, screenh - 165 - 133, null);
 	}
 
 	private void mediaLoader() {
+		yes_draw = ResourcesLoader.exitmenu_images.get(1);
+		no_draw = ResourcesLoader.exitmenu_images.get(2);
 		GraphicsEnvironment ge = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		ge.registerFont(ResourcesLoader.gothic);
@@ -126,6 +130,16 @@ public class UsernameMenu extends JPanel {
 				// repaint();
 			}
 		});
+
+		addMouseMotionListener(new MouseMotionAdapter() {
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				motionListener(e.getX(), e.getY());
+
+			}
+
+		});
 	}
 
 	public int listener(int x, int y) {
@@ -139,5 +153,20 @@ public class UsernameMenu extends JPanel {
 
 	public JTextField getUserfield() {
 		return userfield;
+	}
+
+	public void motionListener(int x, int y) {
+		if (yes_circle.contains(x, y)) {
+			yes_draw = ResourcesLoader.exitmenu_images.get(3);
+		} else {
+			yes_draw = ResourcesLoader.exitmenu_images.get(1);
+		}
+
+		if (no_circle.contains(x, y)) {
+			no_draw = ResourcesLoader.exitmenu_images.get(4);
+		} else {
+			no_draw = ResourcesLoader.exitmenu_images.get(2);
+		}
+		repaint();
 	}
 }

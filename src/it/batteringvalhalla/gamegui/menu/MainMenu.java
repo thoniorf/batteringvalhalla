@@ -1,8 +1,9 @@
 package it.batteringvalhalla.gamegui.menu;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.sound.FileSound;
+
 import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
@@ -35,14 +36,14 @@ public class MainMenu extends JPanel {
 	Circle exit_circle;
 	Image editor_draw;
 	Circle editor_circle;
-	FileSound f;
+	ManagerFilePlayer mfp;
 	int screenh = 768;
 	boolean enabled = false;
 
 	public MainMenu(GameFrame frame) {
 		this.enabled = true;
 		this.frame = frame;
-		this.f = frame.getF();
+		
 
 		try {
 			this.mediaLoader();
@@ -106,7 +107,7 @@ public class MainMenu extends JPanel {
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
 					try {
-						if ((f.read()).equals("0")) {
+						if (ManagerFilePlayer.soundOn()) {
 							Sound.button.play();
 						}
 						frame.gameStart();
@@ -117,7 +118,7 @@ public class MainMenu extends JPanel {
 					break;
 				case 2:
 					try {
-						if ((f.read()).equals("0")) {
+						if (ManagerFilePlayer.soundOn()) {
 							Sound.button.play();
 						}
 						frame.opt();
@@ -129,10 +130,21 @@ public class MainMenu extends JPanel {
 					break;
 				case 3:
 					try {
-						if ((f.read()).equals("0")) {
+						if (ManagerFilePlayer.soundOn()) {
 							Sound.button.play();
 						}
 						frame.exit();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				case 4:
+					try {
+						if (ManagerFilePlayer.soundOn()) {
+							Sound.button.play();
+						}
+						frame.Editor();
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -179,6 +191,8 @@ public class MainMenu extends JPanel {
 		} else if (exit_circle.contains(x, y)) {
 			return 3;
 		}
+		else if (editor_circle.contains(x, y))
+			return 4;
 		return 0;
 	}
 

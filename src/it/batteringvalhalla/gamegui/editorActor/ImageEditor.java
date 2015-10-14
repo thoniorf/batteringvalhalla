@@ -1,8 +1,12 @@
-package it.nello.editorActor;
+package it.batteringvalhalla.gamegui.editorActor;
 
 
+
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 
 import java.awt.Image;
+
 
 
 import java.io.IOException;
@@ -10,35 +14,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.print.DocFlavor.STRING;
+
 
 
 public class ImageEditor  {
 private static List<Image> imageTesta;
 private static List<Image> imageBusto;
 private static List<Image> imageCapra;
-private static Image tmp;
+
 private static Image frecciaDestra;
 private static Image frecciaSinistra;
 private static Image Sfondo;
 private static List<Image> exit;
-private static Image save;
+private static List<Image> save;
 private static int IndexTesta;
 private static int IndexBusto;
 private static int IndexCapra;
 private static int IndexExit;
+private static int IndexSave;
 private static boolean ErrorFrecce; 
 private static boolean finito=false;
 
+
 public ImageEditor(){
+	
 	ErrorFrecce=false;
 	imageTesta=new ArrayList<Image>();
 	imageBusto=new ArrayList<Image>();
 	imageCapra=new ArrayList<Image>();
 	exit=new ArrayList<Image>();
-	IndexBusto=IndexCapra=IndexTesta=IndexExit=0;
+	save=new ArrayList<Image>();
+	IndexTesta=ManagerFilePlayer.getTop();
+	IndexBusto=ManagerFilePlayer.getMid();
+	IndexCapra=ManagerFilePlayer.getBot();
+	IndexSave=IndexExit=0;
+	
+    save.add(ResourcesLoader.exitmenu_images.get(1));
+    save.add(ResourcesLoader.exitmenu_images.get(3));
 	try {
-		save=ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("img/save.png"));
+		
 		
 		frecciaDestra=ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("img/frecciaDestra.png"));
 		frecciaSinistra=ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("img/frecciaSinistra.png"));
@@ -48,13 +62,11 @@ public ImageEditor(){
 	catch(final IOException e){
 		ErrorFrecce=true;
 	}
-	for(int i=0;i<2;i++){
-	 try{
-		exit.add(ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("img/exit"+i+".png")));
-	}
-	 catch(final IOException e){
-		 
-	 }}
+	
+	 
+		exit.add( ResourcesLoader.optionmenu_images.get(5));
+		exit.add( ResourcesLoader.optionmenu_images.get(6));
+	
 	
 	for(int i=0;i<4&&!finito;i++){
 		try{
@@ -77,6 +89,7 @@ public ImageEditor(){
 		}
 	
 	finito=false;
+	
 	for(int i=0;i<3&&!finito;i++){
 		try{
 			
@@ -114,7 +127,7 @@ public Image getExit() {
 	return exit.get(IndexExit);
 }
 public Image getSave() {
-	return save;
+	return save.get(IndexSave);
 }
 
 boolean Error(){
@@ -141,11 +154,18 @@ public void spostaCapra(int i){
 	}
 }
 void pushExit(){
-	IndexExit=(IndexExit+1)%imageCapra.size();
+	IndexExit=(IndexExit+1)%2;
 	
 }
-public void reset(){
+public void resetExit(){
 	IndexExit=0;
+}
+void pushSave(){
+	IndexSave=(IndexSave+1)%2;
+	
+}
+public void resetSave(){
+	IndexSave=0;
 }
 public String getNameTesta(){
 	return "testa"+IndexTesta+".png";

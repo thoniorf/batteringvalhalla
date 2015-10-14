@@ -1,10 +1,11 @@
 package it.batteringvalhalla.gamegui.menu;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.actor.Player;
 import it.batteringvalhalla.gamecore.sqlite.ScoreFetch;
 import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.sound.FileSound;
+
 import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
@@ -31,14 +32,14 @@ public class ScoreBoard extends JPanel {
 	Image restart_draw;
 	Circle no_circle;
 	Image no_draw;
-	FileSound f;
+	
 	int screenh = 768;
 	ArrayList<String> scores;
 
 	public ScoreBoard(GameFrame gameFrame) {
 		super(null);
 		this.gameframe = gameFrame;
-		this.f = gameframe.getF();
+		
 		this.mediaLoader();
 		this.listenerLoader();
 		this.loadScores();
@@ -110,7 +111,7 @@ public class ScoreBoard extends JPanel {
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
 					try {
-						if ((f.read()).equals("0")) {
+						if (ManagerFilePlayer.soundOn()) {
 							Sound.button.play();
 						}
 						gameframe.gameStart();
@@ -119,11 +120,11 @@ public class ScoreBoard extends JPanel {
 					}
 					break;
 				case 2:
-					if ((f.read()).equals("0")) {
+					if (ManagerFilePlayer.soundOn()) {
 						Sound.button.play();
 					}
 					gameframe.menuStart();
-					if ((f.read()).equals("0")) {
+					if (ManagerFilePlayer.soundOn()) {
 						Sound.battle.stop();
 						Sound.menu.play();
 					} else {

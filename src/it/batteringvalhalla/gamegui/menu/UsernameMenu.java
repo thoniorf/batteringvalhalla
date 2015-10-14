@@ -1,9 +1,10 @@
 package it.batteringvalhalla.gamegui.menu;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.actor.Player;
 import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.sound.FileSound;
+
 import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
@@ -31,13 +32,13 @@ public class UsernameMenu extends JPanel {
 	Image yes_draw;
 	Circle no_circle;
 	Image no_draw;
-	FileSound f;
+	
 	int screenh = 768;
 
 	public UsernameMenu(GameFrame frame) {
 		super(null);
 		this.frame = frame;
-		f = frame.getF();
+		
 		this.mediaLoader();
 		this.listenerLoader();
 		userfield = new JTextField();
@@ -109,7 +110,7 @@ public class UsernameMenu extends JPanel {
 				super.mouseReleased(e);
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
-					if ((f.read()).equals("0")) {
+					if (ManagerFilePlayer.soundOn()) {
 						Sound.button.play();
 					}
 					if (userfield.getText().length() != 0)
@@ -120,7 +121,7 @@ public class UsernameMenu extends JPanel {
 					frame.menuStart();
 					break;
 				case 2:
-					if ((f.read()).equals("0")) {
+					if (ManagerFilePlayer.soundOn()) {
 						Sound.button.play();
 					}
 					Player.username = "Player 1";

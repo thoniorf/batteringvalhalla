@@ -1,8 +1,9 @@
 package it.batteringvalhalla.gamegui.menu;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.sound.FileSound;
+
 import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
@@ -34,12 +35,12 @@ public class OptionMenu extends JPanel {
 	GameFrame frame;
 	Image back;
 	Circle back_circle;
-	FileSound f;
+
 
 	public OptionMenu(GameFrame frame) {
 		super();
 		this.frame = frame;
-		f = frame.getF();
+		
 
 		try {
 			load();
@@ -56,7 +57,7 @@ public class OptionMenu extends JPanel {
 		GraphicsEnvironment ge = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		ge.registerFont(ResourcesLoader.gothic);
-		if (f.read().equals("0")) {
+		if (ManagerFilePlayer.soundOn()) {
 
 			on = ResourcesLoader.optionmenu_images.get(1);
 			off = ResourcesLoader.optionmenu_images.get(2);
@@ -108,20 +109,22 @@ public class OptionMenu extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				if (on_circle.contains(e.getX(), e.getY())) {
 					on();
-					f.write0();
+					ManagerFilePlayer.setSound("1");
+					ManagerFilePlayer.save();
 					Sound.menu.play();
 
 				}
 
 				if (off_circle.contains(e.getX(), e.getY())) {
 					off();
-					f.write1();
+					ManagerFilePlayer.setSound("0");
+					ManagerFilePlayer.save();
 					Sound.menu.stop();
 
 				}
 
 				if (back_circle.contains(e.getX(), e.getY())) {
-					if ((f.read()).equals("0")) {
+					if (ManagerFilePlayer.soundOn()) {
 						Sound.button.play();
 
 					}

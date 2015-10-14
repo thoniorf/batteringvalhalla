@@ -1,8 +1,9 @@
 package it.batteringvalhalla.gamegui.menu;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.sound.FileSound;
+
 import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
@@ -29,13 +30,13 @@ public class ExitMenu extends JPanel {
 	Image yes_draw;
 	Circle no_circle;
 	Image no_draw;
-	FileSound f;
+	
 	int screenh = 768;
 
 	public ExitMenu(GameFrame gameFrame) {
 		super();
 		this.gameframe = gameFrame;
-		this.f = gameframe.getF();
+		
 		this.mediaLoader();
 		this.listenerLoader();
 	}
@@ -87,13 +88,13 @@ public class ExitMenu extends JPanel {
 				super.mouseReleased(e);
 				switch (listener(e.getX(), e.getY())) {
 				case 1:
-					if ((f.read()).equals("0")) {
+					if (ManagerFilePlayer.soundOn()) {
 						Sound.button.play();
 					}
 					System.exit(0);
 					break;
 				case 2:
-					if ((f.read()).equals("0")) {
+					if (ManagerFilePlayer.soundOn()) {
 						Sound.button.play();
 					}
 					gameframe.menuStart();

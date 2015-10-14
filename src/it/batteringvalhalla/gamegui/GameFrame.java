@@ -1,12 +1,13 @@
 package it.batteringvalhalla.gamegui;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamegui.editorActor.EditorPanel;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
 import it.batteringvalhalla.gamegui.menu.ScoreBoard;
 import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.progress.LoadProgress;
-import it.batteringvalhalla.gamegui.sound.FileSound;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Dimension;
@@ -25,13 +26,13 @@ public class GameFrame extends JFrame {
 	private Integer screen_height;
 	private Boolean fullscreen;
 	private Dimension resolution;
+	
+	private ManagerFilePlayer mfp;
 
 	private JPanel panel;
-	FileSound f;
-
-	public FileSound getF() {
-		return f;
-	}
+		
+	
+	
 
 	public Dimension getResolution() {
 		return resolution;
@@ -68,7 +69,7 @@ public class GameFrame extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
-
+		mfp= new ManagerFilePlayer();
 	}
 
 	public static void main(String[] args) {
@@ -78,6 +79,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void loading() {
+		
 		panel = new LoadProgress(this);
 		this.setContentPane(panel);
 		panel.updateUI();
@@ -88,8 +90,7 @@ public class GameFrame extends JFrame {
 
 	private void start() {
 		menuStart();
-		f = new FileSound();
-		if ((f.read()).equals("0")) {
+		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.setRepeat(true);
 			Sound.menu.play();
 		} else {
@@ -117,8 +118,8 @@ public class GameFrame extends JFrame {
 		this.pack();
 		this.setLocationRelativeTo(null);
 		((GamePanel) panel).getManager().run();
-		f = new FileSound();
-		if ((f.read()).equals("0")) {
+		
+		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.stop();
 			Sound.battle.setRepeat(true);
 			Sound.battle.play();
@@ -155,6 +156,14 @@ public class GameFrame extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 
+	public void Editor() throws InterruptedException {
+		panel = new EditorPanel(this);
+		this.setContentPane(panel);
+		panel.updateUI();
+		panel.requestFocus();
+		this.pack();
+		this.setLocationRelativeTo(null);
+	}
 	public void backMenu() {
 		panel = new MainMenu(this);
 		this.setContentPane(panel);

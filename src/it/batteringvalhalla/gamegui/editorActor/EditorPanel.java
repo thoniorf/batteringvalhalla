@@ -1,30 +1,28 @@
-package it.nello.editorActor;
+package it.batteringvalhalla.gamegui.editorActor;
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamegui.GameFrame;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
 
 public class EditorPanel extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final int HEIGHTSFONDO = 690;
 	private static final int WIDTHSFONDO = 1024;
 	private static final int HEIGHTFRECCIE = 50;
@@ -58,14 +56,15 @@ public class EditorPanel extends JPanel {
 	private Rectangle2D save;
 	private Rectangle2D exit;
 	private ImageEditor ie;
+	private GameFrame gf;
 	
 	Font font;
-	public EditorPanel (){
-		
+	public EditorPanel (GameFrame gm){
+		this.gf=gm;
+		ie=new ImageEditor();
 		setPreferredSize(new Dimension(WIDTHSFONDO,HEIGHTSFONDO));
 		setBackground(Color.PINK);
-		ie=new ImageEditor();
-		load();
+		
 		tasto1=new Rectangle(x1,y1,WIDTHFRECCIE,HEIGHTFRECCIE);
 		tasto2=new Rectangle(x2,y1,WIDTHFRECCIE,HEIGHTFRECCIE);
 		tasto3=new Rectangle(x1,y2,WIDTHFRECCIE,HEIGHTFRECCIE);
@@ -74,15 +73,7 @@ public class EditorPanel extends JPanel {
 		tasto6=new Rectangle(x2,y3,WIDTHFRECCIE,HEIGHTFRECCIE);
 	    exit=new Rectangle(xExit,yComandi,WIDTHTASTI,HEIGHTTASTI);
 		save=new Rectangle(xSave,yComandi,WIDTHTASTI,HEIGHTTASTI);
-		try {
-			
-			this.font = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("../../../font/Deutsch.ttf"));
-			GraphicsEnvironment ge = GraphicsEnvironment
-					.getLocalGraphicsEnvironment();
-			ge.registerFont(font);
-		} catch (FontFormatException | IOException e) {
-			e.printStackTrace();
-		}
+		
 
 		
 	    repaint();
@@ -131,11 +122,14 @@ public class EditorPanel extends JPanel {
 		
 	}
 private void resetBotton(){
-	ie.reset();
+	ie.resetExit();
+	ie.resetSave();
 }
 private void bottonChangeImage(int x,int y){
 	if(exit.contains(x, y)){
 		ie.pushExit();}
+	if(save.contains(x,y))
+		ie.pushSave();
 	repaint();
 }
 private void changeImage(int x,int y){
@@ -161,7 +155,11 @@ private void changeImage(int x,int y){
 		ie.spostaCapra(1);
 	}
 	if(save.contains(x,y)){
-		Save();
+		ManagerFilePlayer.setTop(ImageEditor.getIndexTesta());
+		ManagerFilePlayer.setMid(ImageEditor.getIndexBusto());
+		ManagerFilePlayer.setBot(ImageEditor.getIndexCapra());
+		ManagerFilePlayer.save();
+		
 	}
 	if(exit.contains(x, y)){
 		ie.pushExit();
@@ -186,50 +184,21 @@ public void paint(Graphics g){
 	g2d.drawImage(ie.getExit(), xExit, yComandi, WIDTHTASTI,HEIGHTTASTI,null);
 	g2d.drawImage(ie.getSave(), xSave, yComandi, WIDTHTASTI,HEIGHTTASTI,null);
 	g.setColor(Color.BLACK);
-	g.setFont(new Font(font.getName(), font.getStyle(), 130));
+	g.setFont(new Font(ResourcesLoader.gothic.getName(),ResourcesLoader.gothic.getStyle(),130));
 	g.drawString("Editor Valhalla", 50, 110);
 }
-private void Save() {
-	FileWriter w ;
-	try{
-	    
-	    w=new FileWriter("scrittura.txt");
-	    BufferedWriter bw=new BufferedWriter(w);
-		bw.write(ie.getNameTesta()+"\n"+ie.getNameBusto()+"\n"+ie.getNameCapra());
-		bw.flush();
-	}
-	catch(IOException e){
-		
-	}
-	
-	  }
+
 	
 
 public void Chiudere() {
-	System.exit(0);}
+
+	gf.menuStart();}
 
 public void showExitConfirm() {
 	
 		System.exit(0);
 	
 }
-private void load(){
-	FileReader r;
-	String s;
-	try{
-		r=new FileReader("scrittura.txt");
-		BufferedReader br=new BufferedReader(r);
-		s=br.readLine();
-		ie.spostaTesta((int)s.charAt(5));
-		s=br.readLine();
-		ie.spostaBusto((int)s.charAt(5));
-		s=br.readLine();
-		ie.spostaCapra((int)s.charAt(5));
-		br.close();}
-	catch(IOException e){
-		
-	}
-	}
 }
 
 

@@ -1,67 +1,64 @@
 package it.batteringvalhalla.gamegui.menu.button;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.LayoutManager;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.geom.Ellipse2D;
 
-import javafx.scene.shape.Ellipse;
-
-import javax.swing.Action;
-import javax.swing.Icon;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.LayoutStyle;
-import javax.swing.text.LayoutQueue;
-
 
 public class JButtonRound extends JButton {
 	private Image image;
 	private Image imageHover;
 	private Image draw;
 	private Circle2D circle;
-	private Integer x;
-	private Integer y;
-	
-	
+	private Integer width;
+	private Integer height;
 
-	public JButtonRound(Image image,Image imageHover) {
+	public JButtonRound(Image image, Image imageHover) {
+		this.image = image;
+		this.imageHover = imageHover;
+		this.draw = image;
+		this.width = image.getWidth(null);
+		this.height = image.getHeight(null);
+		setPreferredSize(new Dimension(width, height));
+		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		setContentAreaFilled(false);
-		setOpaque(false);
-		this.x=(int)this.getLocation().getX();
-		this.y=(int)this.getLocation().getY();
-		System.out.println(x+" "+y);
-		this.image=image;
-		this.imageHover=imageHover;
-		this.draw=image;
-		this.circle=new Circle2D(x,y,image.getWidth(null)/2);
-		this.addMouseMotionListener(new MouseMotionAdapter() {
+		setFocusPainted(false);
+		this.circle = new Circle2D(width / 2, height / 2, image.getWidth(null) / 2);
+		this.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseMoved(MouseEvent e) {
-				super.mouseMoved(e);
-				if(circle.contains(e.getX(), e.getY())){
-					draw=imageHover;
-				}else {
-					draw=image;
-				}
+			public void mouseEntered(MouseEvent e) {
+				super.mouseEntered(e);
+				draw = imageHover;
 				repaint();
-			}});
-		
-		
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				super.mouseExited(e);
+				draw = image;
+				repaint();
+			}
+		});
+
 	}
-	
+
+	@Override
+	public boolean contains(int x, int y) {
+		return circle.contains(x, y);
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.drawImage(draw,x , y, null);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.drawImage(draw, 0, 0, null);
 	}
-
-	
 
 }

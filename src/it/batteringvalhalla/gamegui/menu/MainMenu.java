@@ -1,222 +1,75 @@
 package it.batteringvalhalla.gamegui.menu;
 
-import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamegui.GameFrame;
-
-import it.batteringvalhalla.gamegui.sound.Sound;
-
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.io.IOException;
-
-import javafx.scene.shape.Circle;
 
 import javax.swing.JPanel;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
+
 public class MainMenu extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1819144638361253664L;
-	GameFrame frame;
-	Image play_draw;
-	Circle play_circle;
-	Image options_draw;
-	Circle option_circle;
-	Image exit_draw;
-	Circle exit_circle;
-	Image editor_draw;
-	Circle editor_circle;
-	ManagerFilePlayer mfp;
-	int screenh = 768;
-	boolean enabled = false;
+	private static final long serialVersionUID = 1L;
 
-	public MainMenu(GameFrame frame) {
-		this.enabled = true;
-		this.frame = frame;
-		
+	private GameFrame frame;
+	private ManagerFilePlayer mfp;
+	private GridBagConstraints constraints;
+	private JButtonRound play;
+	private JButtonRound options;
+	private JButtonRound editor;
+	private JButtonRound exit;
 
-		try {
-			this.mediaLoader();
+	public MainMenu() {
+		super(new GridBagLayout());
+		this.frame = GameFrame.instance();
+		constraints = new GridBagConstraints();
+		play = new JButtonRound(ResourcesLoader.mainmenu_images.get(0), ResourcesLoader.mainmenu_images.get(1));
+		options = new JButtonRound(ResourcesLoader.mainmenu_images.get(2), ResourcesLoader.mainmenu_images.get(3));
+		editor = new JButtonRound(ResourcesLoader.mainmenu_images.get(4), ResourcesLoader.mainmenu_images.get(5));
+		exit = new JButtonRound(ResourcesLoader.mainmenu_images.get(6), ResourcesLoader.mainmenu_images.get(7));
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		constraints.anchor = GridBagConstraints.SOUTH;
+		constraints.weighty = 0.8;
+		add(play);
+		add(options);
+		add(editor);
+		add(exit);
+
+		setVisible(true);
 
 		listenerLoader();
-
-	}
-
-	private void mediaLoader() throws IOException {
-		play_draw = ResourcesLoader.mainmenu_images.get(0);
-		options_draw = ResourcesLoader.mainmenu_images.get(2);
-		exit_draw = ResourcesLoader.mainmenu_images.get(4);
-		editor_draw = ResourcesLoader.mainmenu_images.get(6);
-		GraphicsEnvironment ge = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		ge.registerFont(ResourcesLoader.gothic);
-
-		play_circle = new Circle();
-		play_circle.setCenterX(438 + ResourcesLoader.mainmenu_images.get(0)
-				.getWidth(this) / 2);
-		play_circle.setCenterY((screenh - 270 - 212)
-				+ ResourcesLoader.mainmenu_images.get(0).getHeight(this) / 2);
-		play_circle.setRadius(ResourcesLoader.mainmenu_images.get(0).getHeight(
-				this) / 2);
-
-		option_circle = new Circle();
-		option_circle.setCenterX(243 + ResourcesLoader.mainmenu_images.get(2)
-				.getWidth(this) / 2);
-		option_circle.setCenterY((screenh - 167 - 178)
-				+ ResourcesLoader.mainmenu_images.get(2).getHeight(this) / 2);
-		option_circle.setRadius(ResourcesLoader.mainmenu_images.get(2)
-				.getHeight(this) / 2);
-
-		exit_circle = new Circle();
-		exit_circle.setCenterX(687 + ResourcesLoader.mainmenu_images.get(4)
-				.getWidth(this) / 2);
-		exit_circle.setCenterY((screenh - 84 - 149)
-				+ ResourcesLoader.mainmenu_images.get(4).getHeight(this) / 2);
-		exit_circle.setRadius(ResourcesLoader.mainmenu_images.get(4).getHeight(
-				this) / 2);
-
-		editor_circle = new Circle();
-		editor_circle.setCenterX(440 + ResourcesLoader.mainmenu_images.get(6)
-				.getWidth(this) / 2);
-		editor_circle.setCenterY((screenh - 90 - 140)
-				+ ResourcesLoader.mainmenu_images.get(6).getHeight(this) / 2);
-		editor_circle.setRadius(ResourcesLoader.mainmenu_images.get(6)
-				.getHeight(this) / 2);
-
 	}
 
 	private void listenerLoader() {
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				super.mouseReleased(e);
-				switch (listener(e.getX(), e.getY())) {
-				case 1:
-					try {
-						if (ManagerFilePlayer.soundOn()) {
-							Sound.button.play();
-						}
-						frame.gameStart();
-					} catch (InterruptedException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
-					break;
-				case 2:
-					try {
-						if (ManagerFilePlayer.soundOn()) {
-							Sound.button.play();
-						}
-						frame.opt();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-					break;
-				case 3:
-					try {
-						if (ManagerFilePlayer.soundOn()) {
-							Sound.button.play();
-						}
-						frame.exit();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
-				case 4:
-					try {
-						if (ManagerFilePlayer.soundOn()) {
-							Sound.button.play();
-						}
-						frame.Editor();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
-				default:
-					break;
-
-				}
-			}
-
+		play.addActionListener(e -> {
+			frame.startGame();
 		});
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				super.mouseMoved(e);
-				motionListener(e.getX(), e.getY());
-
-			}
+		options.addActionListener(e -> {
+			frame.showOptions();
 		});
+		editor.addActionListener(e -> {
+			frame.showEditor();
+		});
+		exit.addActionListener(e -> {
+			frame.showExit();
+		});
+
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-		g.drawImage(play_draw, 438, screenh - 270 - 212, null);
-		g.drawImage(options_draw, 243, screenh - 167 - 178, null);
-		g.drawImage(exit_draw, 687, screenh - 84 - 149, null);
-		g.drawImage(editor_draw, 440, screenh - 90 - 140, null);
-		g.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 144));
-		g.drawString("Battering Valhalla", 39, screenh - 594);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 144));
+		g.drawString("Battering Valhalla", 39, 64);
 	}
 
-	public int listener(int x, int y) {
-		if (play_circle.contains(x, y)) {
-			return 1;
-		} else if (option_circle.contains(x, y)) {
-			return 2;
-		} else if (exit_circle.contains(x, y)) {
-			return 3;
-		}
-		else if (editor_circle.contains(x, y))
-			return 4;
-		return 0;
-	}
-
-	public void motionListener(int x, int y) {
-		if (play_circle.contains(x, y)) {
-			play_draw = ResourcesLoader.mainmenu_images.get(1);
-		} else {
-			play_draw = ResourcesLoader.mainmenu_images.get(0);
-		}
-		if (option_circle.contains(x, y)) {
-			options_draw = ResourcesLoader.mainmenu_images.get(3);
-		} else {
-			options_draw = ResourcesLoader.mainmenu_images.get(2);
-		}
-		if (exit_circle.contains(x, y)) {
-			exit_draw = ResourcesLoader.mainmenu_images.get(5);
-		} else {
-			exit_draw = ResourcesLoader.mainmenu_images.get(4);
-		}
-		if (editor_circle.contains(x, y)) {
-			editor_draw = ResourcesLoader.mainmenu_images.get(7);
-		} else {
-			editor_draw = ResourcesLoader.mainmenu_images.get(6);
-		}
-		repaint();
-	}
 }

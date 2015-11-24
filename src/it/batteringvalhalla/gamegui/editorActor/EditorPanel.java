@@ -135,24 +135,24 @@ private void bottonChangeImage(int x,int y){
 private void changeImage(int x,int y){
 	resetBotton();
 	if(tasto1.contains(x, y)){
-		ie.spostaTesta(-1);
+		ie.spostaHead(-1);
 		
 	}
 	
 	if(tasto2.contains(x, y)){
-		ie.spostaTesta(1);
+		ie.spostaHead(1);
 	}
 	if(tasto3.contains(x, y)){
-		ie.spostaBusto(-1);
+		ie.spostaBust(-1);
 	}
 	if(tasto4.contains(x, y)){
-		ie.spostaBusto(1);
+		ie.spostaBust(1);
 	}
 	if(tasto5.contains(x, y)){
-		ie.spostaCapra(-1);
+		ie.spostaGoat(-1);
 	}
 	if(tasto6.contains(x, y)){
-		ie.spostaCapra(1);
+		ie.spostaGoat(1);
 	}
 	if(save.contains(x,y)){
 		ManagerFilePlayer.setTop(ImageEditor.getIndexTesta());
@@ -178,9 +178,9 @@ public void paint(Graphics g){
 	g2d.drawImage(ie.getFrecciaDestra(),x2, y1, WIDTHFRECCIE, HEIGHTFRECCIE, null);
 	g2d.drawImage(ie.getFrecciaDestra(),x2, y2, WIDTHFRECCIE, HEIGHTFRECCIE, null);
 	g2d.drawImage(ie.getFrecciaDestra(),x2, y3, WIDTHFRECCIE, HEIGHTFRECCIE, null);
-	g2d.drawImage(ie.getImageTesta(),xImage, yTesta, WIDTHTESTA, HEIGHTESTA, null);
-	g2d.drawImage(ie.getImageBusto(),xImage, yBusto, WIDTHBUSTO, HEIGHTBUSTO, null);
-	g2d.drawImage(ie.getImageCapra(),xImage, yCapra, WIDTHCAPRA, HEIGHTCAPRA, null);
+	g2d.drawImage(ie.getImageHead(),xImage, yTesta, WIDTHTESTA, HEIGHTESTA, null);
+	g2d.drawImage(ie.getImageBust(),xImage, yBusto, WIDTHBUSTO, HEIGHTBUSTO, null);
+	g2d.drawImage(ie.getImageGoat(),xImage, yCapra, WIDTHCAPRA, HEIGHTCAPRA, null);
 	g2d.drawImage(ie.getExit(), xExit, yComandi, WIDTHTASTI,HEIGHTTASTI,null);
 	g2d.drawImage(ie.getSave(), xSave, yComandi, WIDTHTASTI,HEIGHTTASTI,null);
 	g.setColor(Color.BLACK);

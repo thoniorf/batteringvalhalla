@@ -1,8 +1,6 @@
 package it.batteringvalhalla.gamegui;
 
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -18,6 +16,9 @@ import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.progress.Loading;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
+/*	0			0			1			1			2
+ * Loading -> MainMenu -> UserMenu -> OptionMenu -> Exit Menu
+ */
 public class GameFrame extends JFrame {
 
 	private static GameFrame frame = null;
@@ -34,9 +35,15 @@ public class GameFrame extends JFrame {
 	public static void main(String[] args) {
 		GameFrame frame = GameFrame.instance();
 		frame.showLoading();
-		frame.setLayeredPane(LayeredPanel.instance());
-		frame.pack();
-		// frame.start();
+
+		frame.start();
+	}
+
+	public void start() {
+		this.getLayeredPane().removeAll();
+		this.showMenu();
+		this.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(false);
+		this.showUserField();
 	}
 
 	private Boolean fullscreen;
@@ -44,16 +51,15 @@ public class GameFrame extends JFrame {
 	private Dimension resolution;
 
 	private Integer screen_height;
-
 	private Integer screen_width;
 
-	private GameFrame() throws HeadlessException {
-		this.init();
+	private GameFrame() {
 		this.setTitle("Battering Valhalla");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.init();
 		this.setVisible(true);
-		// new ManagerFilePlayer();
+		new ManagerFilePlayer();
 	}
 
 	public Boolean getFullscreen() {
@@ -75,15 +81,14 @@ public class GameFrame extends JFrame {
 	private void init() {
 		this.fullscreen = true;
 		Toolkit t = Toolkit.getDefaultToolkit();
-		this.setScreen_width((int) t.getScreenSize().getWidth());
-		this.setScreen_height((int) t.getScreenSize().getHeight());
+		this.screen_width = (int) t.getScreenSize().getWidth();
+		this.screen_height = (int) t.getScreenSize().getHeight();
 		this.setResolution(t.getScreenSize(), true);
 
 	}
 
-	@Override
-	public void setContentPane(Container contentPane) {
-		super.setContentPane(contentPane);
+	public void addMenu(JPanel panel, int index) {
+		this.getLayeredPane().add(panel, new Integer(index));
 		panel.updateUI();
 		panel.requestFocus();
 		this.pack();
@@ -116,35 +121,39 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showExit() {
-		panel = new ExitMenu(this);
-		this.setContentPane(panel);
+		panel = new ExitMenu();
+		addMenu(panel, 2);
 	}
 
 	public void showLoading() {
-		panel = new Loading(this);
-		this.setContentPane(panel);
-		((Loading) panel).loadResources();
+		panel = new Loading();
+		addMenu(panel, 0);
+		try {
+			((Loading) panel).loadResources();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void showMenu() {
 		panel = new MainMenu();
-		this.setContentPane(panel);
+		addMenu(panel, 0);
 
 	}
 
 	public void showOptions() {
 		panel = new OptionMenu(this);
-		this.setContentPane(panel);
+		addMenu(panel, 1);
 	}
 
 	public void showScores() {
 		panel = new ScoreBoard(this);
-		this.setContentPane(panel);
+		addMenu(panel, 1);
 	}
 
 	public void showUserField() {
-		panel = new UsernameMenu(this);
-		this.setContentPane(panel);
+		panel = new UsernameMenu();
+		addMenu(panel, 1);
 		((UsernameMenu) panel).getUserfield().requestFocusInWindow();
 		((UsernameMenu) panel).getUserfield().selectAll();
 
@@ -152,7 +161,8 @@ public class GameFrame extends JFrame {
 
 	public void startGame() {
 		panel = new GamePanel(this);
-		this.setContentPane(panel);
+		this.getLayeredPane().removeAll();
+		addMenu(panel, 0);
 		((GamePanel) panel).getManager().run();
 		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.stop();

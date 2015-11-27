@@ -1,6 +1,5 @@
 package it.batteringvalhalla.gamegui.menu;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -33,7 +32,7 @@ public class ExitMenu extends JPanel {
 		super(new GridBagLayout());
 		this.frame = GameFrame.instance();
 		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
-		setBackground(Color.RED);
+		setOpaque(false);
 		constraints = new GridBagConstraints();
 		yes = new JButtonRound(ResourcesLoader.exitmenu_images.get(1), ResourcesLoader.exitmenu_images.get(3));
 		no = new JButtonRound(ResourcesLoader.exitmenu_images.get(2), ResourcesLoader.exitmenu_images.get(4));

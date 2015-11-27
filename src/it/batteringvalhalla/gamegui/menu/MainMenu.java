@@ -15,8 +15,6 @@ import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonCustom;
 import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
 
-// TODO Rectangle Button  class -> Play 
-// other menu
 public class MainMenu extends JPanel {
 
 	private static final long serialVersionUID = 1L;

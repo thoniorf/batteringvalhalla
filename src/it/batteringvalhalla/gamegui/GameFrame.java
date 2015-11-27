@@ -35,12 +35,15 @@ public class GameFrame extends JFrame {
 	public static void main(String[] args) {
 		GameFrame frame = GameFrame.instance();
 		frame.showLoading();
+
 		frame.start();
 	}
 
 	public void start() {
 		this.getLayeredPane().removeAll();
 		this.showMenu();
+		this.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(false);
+		this.showUserField();
 	}
 
 	private Boolean fullscreen;
@@ -149,7 +152,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showUserField() {
-		panel = new UsernameMenu(this);
+		panel = new UsernameMenu();
 		addMenu(panel, 1);
 		((UsernameMenu) panel).getUserfield().requestFocusInWindow();
 		((UsernameMenu) panel).getUserfield().selectAll();

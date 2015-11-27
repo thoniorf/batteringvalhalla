@@ -141,6 +141,7 @@ public class ResourcesLoader {
 
 	public static synchronized void loadExitMenuImages() throws IOException {
 		exitmenu_images = new ArrayList<Image>();
+
 		exitmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/background/exit_background.png"))
@@ -162,6 +163,26 @@ public class ResourcesLoader {
 		exitmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_no_blue.png"))
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
+
+		exitmenu_images.add(ImageIO
+				.read(ResourcesLoader.class.getClassLoader()
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/yes_blue.png"))
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
+
+		exitmenu_images.add(ImageIO
+				.read(ResourcesLoader.class.getClassLoader()
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_yes_blue.png"))
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
+
+		exitmenu_images.add(ImageIO
+				.read(ResourcesLoader.class.getClassLoader()
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/no_red.png"))
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
+
+		exitmenu_images.add(ImageIO
+				.read(ResourcesLoader.class.getClassLoader()
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_no_red.png"))
 				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 
 	}

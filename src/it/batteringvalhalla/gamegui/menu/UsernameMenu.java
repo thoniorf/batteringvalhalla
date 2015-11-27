@@ -12,6 +12,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.actor.Player;
 import it.batteringvalhalla.gamegui.CenterComp;
@@ -22,6 +23,7 @@ public class UsernameMenu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints constraints;
+	private ManagerFilePlayer mfp;
 	private GameFrame frame;
 	private JButtonRound no;
 	private JButtonRound yes;

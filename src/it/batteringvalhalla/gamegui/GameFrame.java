@@ -142,7 +142,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showOptions() {
-		panel = new OptionMenu(this);
+		panel = new OptionMenu();
 		addMenu(panel, 1);
 	}
 

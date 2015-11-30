@@ -1,177 +1,128 @@
 package it.batteringvalhalla.gamegui.menu;
 
-import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamegui.GameFrame;
-
-import it.batteringvalhalla.gamegui.sound.Sound;
-
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.io.IOException;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-import javafx.scene.shape.Circle;
-
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamegui.CenterComp;
+import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
+import it.batteringvalhalla.gamegui.sound.Sound;
 
 public class OptionMenu extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1370627725870961582L;
+	private static final long serialVersionUID = 1L;
+	private GridBagConstraints constraints;
+	private GameFrame frame;
+	private ManagerFilePlayer mfp;
 
-	Image on;
-	Circle on_circle;
-	Image off;
-	Circle off_circle;
-	GameFrame frame;
-	Image back;
-	Circle back_circle;
+	// Sound graphics objects
+	private JLabel sound_header;
+	private JButtonRound sound_on;
+	private JButtonRound sound_off;
 
+	// Controls graphics objects
+	private JLabel controls_header;
+	private JLabel keys_label;
 
-	public OptionMenu(GameFrame frame) {
-		super();
-		this.frame = frame;
-		
+	// Panel graphics objects
+	private JButtonRound back;
 
-		try {
-			load();
-		} catch (IOException e) {
+	private int width = 768;
+	private int height = 640;
 
-			e.printStackTrace();
-		}
-		listener();
+	public OptionMenu() {
+		super(new GridBagLayout());
+		this.frame = GameFrame.instance();
+		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
+		setOpaque(false);
+		constraints = new GridBagConstraints();
+		sound_on = new JButtonRound(ResourcesLoader.optionmenu_images.get(0), ResourcesLoader.optionmenu_images.get(1));
+		sound_off = new JButtonRound(ResourcesLoader.optionmenu_images.get(2),
+				ResourcesLoader.optionmenu_images.get(3));
+		sound_header = new JLabel("Sounds:");
+		sound_header.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 72));
+		controls_header = new JLabel("Controls");
+		controls_header.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 72));
+		keys_label = new JLabel(new ImageIcon(ResourcesLoader.optionmenu_images.get(7)));
+		back = new JButtonRound(ResourcesLoader.optionmenu_images.get(5), ResourcesLoader.optionmenu_images.get(6));
 
-	}
+		constraints.weightx = 0.5;
+		constraints.weighty = 0.5;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 3;
+		constraints.gridheight = 1;
+		constraints.insets = new Insets(25, 25, 0, 0);
+		add(sound_header, constraints);
 
-	private void load() throws IOException {
+		constraints.weightx = 0.4;
+		constraints.gridx = 4;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		add(sound_on, constraints);
 
-		GraphicsEnvironment ge = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		ge.registerFont(ResourcesLoader.gothic);
-		if (ManagerFilePlayer.soundOn()) {
+		constraints.gridx = 5;
+		add(sound_off, constraints);
 
-			on = ResourcesLoader.optionmenu_images.get(1);
-			off = ResourcesLoader.optionmenu_images.get(2);
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 6;
+		constraints.gridheight = 1;
+		constraints.insets = new Insets(0, 0, 0, 0);
+		add(controls_header, constraints);
 
-		} else {
+		constraints.anchor = GridBagConstraints.PAGE_START;
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		constraints.gridwidth = 6;
+		constraints.gridheight = 1;
+		constraints.insets = new Insets(35, 0, 0, 0);
+		add(keys_label, constraints);
 
-			off = ResourcesLoader.optionmenu_images.get(3);
-			on = ResourcesLoader.optionmenu_images.get(0);
-		}
+		constraints.weighty = 1.0;
+		constraints.anchor = GridBagConstraints.LAST_LINE_START;
+		constraints.gridx = 0;
+		constraints.gridy = 6;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		constraints.insets = new Insets(0, 35, 35, 0);
+		add(back, constraints);
 
-		back = ResourcesLoader.optionmenu_images.get(5);
-		off_circle = new Circle();
-		off_circle.setCenterX(745);
-		off_circle.setCenterY(195);
-		off_circle.setRadius(45);
+		listenerLoader();
 
-		on_circle = new Circle();
-		on_circle.setCenterX(610);
-		on_circle.setCenterY(195);
-		on_circle.setRadius(45);
-
-		back_circle = new Circle();
-		back_circle.setCenterX(295);
-		back_circle.setCenterY(550);
-		back_circle.setRadius(35);
-
-	}
-
-	private void listener() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-
-				if (back_circle.contains(e.getX(), e.getY())) {
-					back = ResourcesLoader.optionmenu_images.get(6);
-
-				} else {
-					back = ResourcesLoader.optionmenu_images.get(5);
-
-				}
-
-				repaint();
-			}
-
-		});
-
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				if (on_circle.contains(e.getX(), e.getY())) {
-					on();
-					ManagerFilePlayer.setSound("1");
-					ManagerFilePlayer.save();
-					Sound.menu.play();
-
-				}
-
-				if (off_circle.contains(e.getX(), e.getY())) {
-					off();
-					ManagerFilePlayer.setSound("0");
-					ManagerFilePlayer.save();
-					Sound.menu.stop();
-
-				}
-
-				if (back_circle.contains(e.getX(), e.getY())) {
-					if (ManagerFilePlayer.soundOn()) {
-						Sound.button.play();
-
-					}
-					frame.backMenu();
-				}
-
-			}
-		});
 	}
 
 	@Override
-	protected void paintComponent(final Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-		g.drawImage(ResourcesLoader.optionmenu_images.get(4), 200, 45, null);
-		g.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 60));
-		g.drawString("Sound  ON / OFF", 210, 130);
-		g.drawImage(on, 555, 145, null);
-		g.drawImage(off, 685, 145, null);
-		g.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 67));
-		g.drawImage(back, 230, 500, null);
-		g.drawImage(ResourcesLoader.optionmenu_images.get(7), 320, 245, null);
-		g.drawImage(ResourcesLoader.optionmenu_images.get(8), 320, 300, null);
-		g.drawImage(ResourcesLoader.optionmenu_images.get(9), 265, 270, null);
-		g.drawImage(ResourcesLoader.optionmenu_images.get(10), 375, 270, null);
-		g.drawString("Move", 265, 408);
-		g.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 64));
-
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(ResourcesLoader.optionmenu_images.get(4), 0, 0, null);
 	}
 
-	void on() {
-		on = ResourcesLoader.optionmenu_images.get(1);
-		off = ResourcesLoader.optionmenu_images.get(2);
-		repaint();
-
+	private void listenerLoader() {
+		sound_on.addActionListener(e -> {
+			ManagerFilePlayer.setSound("1");
+			ManagerFilePlayer.save();
+			Sound.menu.play();
+		});
+		sound_off.addActionListener(e -> {
+			ManagerFilePlayer.setSound("0");
+			ManagerFilePlayer.save();
+			Sound.menu.stop();
+		});
+		back.addActionListener(e -> {
+			// TODO add save option commands
+			frame.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(true);
+			frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(1)[0]);
+		});
 	}
-
-	void off() {
-		off = ResourcesLoader.optionmenu_images.get(3);
-		on = ResourcesLoader.optionmenu_images.get(0);
-		repaint();
-
-	}
-
 }

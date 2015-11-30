@@ -91,23 +91,23 @@ public class ResourcesLoader {
 		optionmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/on.png"))
-				.getScaledInstance(90, 90, java.awt.Image.SCALE_SMOOTH));
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 		optionmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/on_hover.png"))
-				.getScaledInstance(90, 90, java.awt.Image.SCALE_SMOOTH));
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_on.png"))
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 		optionmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/off.png"))
-				.getScaledInstance(90, 90, java.awt.Image.SCALE_SMOOTH));
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 		optionmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/off_hover.png"))
-				.getScaledInstance(90, 90, java.awt.Image.SCALE_SMOOTH));
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_off.png"))
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 		optionmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/background/exit_background.png"))
-				.getScaledInstance(600, 600, java.awt.Image.SCALE_SMOOTH));
+						.getResource("it/batteringvalhalla/assets/gui/menu/background/option_background.png"))
+				.getScaledInstance(768, 640, java.awt.Image.SCALE_SMOOTH));
 		optionmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/back.png"))
@@ -117,25 +117,8 @@ public class ResourcesLoader {
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_back.png"))
 				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 
-		optionmenu_images.add(ImageIO
-				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/w.png"))
-				.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH));
-
-		optionmenu_images.add(ImageIO
-				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/s.png"))
-				.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH));
-
-		optionmenu_images.add(ImageIO
-				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/a.png"))
-				.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH));
-
-		optionmenu_images.add(ImageIO
-				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/d.png"))
-				.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH));
+		optionmenu_images.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+				.getResource("it/batteringvalhalla/assets/gui/menu/all_keys.png")));
 
 	}
 

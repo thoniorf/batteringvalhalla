@@ -92,7 +92,7 @@ public class GameManager {
 						e.printStackTrace();
 					}
 				}
-				Player.score = world.getMatch();
+				Player.setScore(world.getMatch());
 				GameFrame.instance().showScores();
 
 			};

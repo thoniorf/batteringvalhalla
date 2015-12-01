@@ -107,7 +107,7 @@ public class GamePanel extends JPanel {
 	private void paintUI(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 38));
-		g.drawString(Player.username, 30, 70);
+		g.drawString(Player.getName(), 30, 70);
 		g.drawString("Match:" + world.getMatch().toString(), 200, 70);
 	}
 }

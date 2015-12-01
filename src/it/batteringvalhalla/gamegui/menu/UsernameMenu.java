@@ -96,12 +96,12 @@ public class UsernameMenu extends JPanel {
 
 	private void listenerLoader() {
 		yes.addActionListener(e -> {
-			Player.username = userfield.getText();
+			Player.setName(userfield.getText());
 			frame.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(true);
 			frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(1)[0]);
 		});
 		no.addActionListener(e -> {
-			Player.username = "Player 1";
+			Player.setName("Player 1");
 			frame.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(true);
 			frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(1)[0]);
 		});

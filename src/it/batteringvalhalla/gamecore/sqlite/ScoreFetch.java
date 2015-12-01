@@ -10,9 +10,7 @@ import java.util.ArrayList;
 public class ScoreFetch {
 
 	Connection con;
-	String dbpath = ScoreFetch.class.getProtectionDomain().getCodeSource()
-			.getLocation().getPath()
-			+ "it/batteringvalhalla/assets/db/";
+	String dbpath = ScoreFetch.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
 	public ScoreFetch() {
 		try {
@@ -20,26 +18,19 @@ public class ScoreFetch {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		try {
-			con = DriverManager.getConnection("jdbc:sqlite:" + dbpath
-					+ "scores.db");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	public void execQuery(String s, ArrayList<String> scores) {
 
 		try {
-			con = DriverManager.getConnection("jdbc:sqlite:" + dbpath
-					+ "scores.db");
+			try {
+				con = DriverManager
+						.getConnection("jdbc:sqlite:" + dbpath + "it/batteringvalhalla/assets/db/" + "scores.db");
+			} catch (SQLException e) {
+				con = DriverManager
+						.getConnection("jdbc:sqlite::resource:" + "it/batteringvalhalla/assets/db/" + "scores.db");
+
+			}
 			con.setAutoCommit(false);
 			Statement statemnt = con.createStatement();
 			ResultSet dSet = statemnt.executeQuery(s);
@@ -57,12 +48,10 @@ public class ScoreFetch {
 
 	public void insertScore(Integer score, String p) {
 		try {
-			con = DriverManager.getConnection("jdbc:sqlite:" + dbpath
-					+ "scores.db");
+			con = DriverManager.getConnection("jdbc:sqlite:" + dbpath + "scores.db");
 			con.setAutoCommit(false);
 			Statement statemnt = con.createStatement();
-			statemnt.executeUpdate("Insert into scores values(null,'" + p
-					+ "'," + score.toString() + ");");
+			statemnt.executeUpdate("Insert into scores values(null,'" + p + "'," + score.toString() + ");");
 			statemnt.close();
 			con.commit();
 			con.close();

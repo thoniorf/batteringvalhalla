@@ -99,7 +99,7 @@ public class ScoreBoard extends JPanel {
 		JLabel jAppoggio;
 		scores = new ArrayList<String>();
 		ScoreFetch scorefetch = new ScoreFetch();
-		scorefetch.insertScore(Player.score, Player.username);
+		scorefetch.insertScore(Player.getScore(), Player.getName());
 		scorefetch.execQuery("Select * from scores order by match desc limit 8;", scores);
 		for (String score : scores) {
 			jAppoggio = new JLabel(score);

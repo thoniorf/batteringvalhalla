@@ -48,7 +48,14 @@ public class ScoreFetch {
 
 	public void insertScore(Integer score, String p) {
 		try {
-			con = DriverManager.getConnection("jdbc:sqlite:" + dbpath + "scores.db");
+			try {
+				con = DriverManager
+						.getConnection("jdbc:sqlite:" + dbpath + "it/batteringvalhalla/assets/db/" + "scores.db");
+			} catch (SQLException e) {
+				con = DriverManager
+						.getConnection("jdbc:sqlite::resource:" + "it/batteringvalhalla/assets/db/" + "scores.db");
+
+			}
 			con.setAutoCommit(false);
 			Statement statemnt = con.createStatement();
 			statemnt.executeUpdate("Insert into scores values(null,'" + p + "'," + score.toString() + ");");

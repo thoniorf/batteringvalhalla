@@ -17,12 +17,11 @@ public class Actor extends AbstractMovableActor {
 		// TODO head load
 		this.body = new Sprite(ResourcesLoader.actor_body, ResourcesLoader.actor_body.getWidth(null),
 				ResourcesLoader.actor_body.getHeight(null), 115, 94, 3, 1, 0, 0, 0);
-		this.mount = new Sprite(ResourcesLoader.actor_mount.get(mountId),
-				ResourcesLoader.actor_mount.get(mountId).getWidth(null),
-				ResourcesLoader.actor_mount.get(mountId).getHeight(null), 117, 88, 3, 16, 0, 0, 0);
-		this.weapon = new Sprite(ResourcesLoader.actor_weapon.get(weapId),
-				ResourcesLoader.actor_weapon.get(weapId).getWidth(null),
-				ResourcesLoader.actor_weapon.get(weapId).getHeight(null), 103, 76, 3, 16, 0, 0, 0);
+		this.mount = new Sprite(ResourcesLoader.actor_mount.get(0), ResourcesLoader.actor_mount.get(0).getWidth(null),
+				ResourcesLoader.actor_mount.get(0).getHeight(null), 117, 88, 3, 16, 0, 0, 0);
+		this.weapon = new Sprite(ResourcesLoader.actor_weapon.get(0),
+				ResourcesLoader.actor_weapon.get(0).getWidth(null), ResourcesLoader.actor_weapon.get(0).getHeight(null),
+				103, 76, 3, 16, 0, 0, 0);
 		setSpeedX(0);
 		setSpeedY(0);
 		setMaxSpeed(5.5f);

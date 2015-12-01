@@ -1,15 +1,16 @@
 package it.batteringvalhalla.gamecore;
 
-import it.batteringvalhalla.gamecore.IA.AbstractIA;
-import it.batteringvalhalla.gamecore.arena.Arena;
-import it.batteringvalhalla.gamecore.object.AbstractGameObject;
-import it.batteringvalhalla.gamecore.object.actor.Actor;
-import it.batteringvalhalla.gamecore.object.actor.Direction;
-import it.batteringvalhalla.gamecore.object.actor.Enemy;
-
 import java.awt.Graphics;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import it.batteringvalhalla.gamecore.IA.AbstractIA;
+import it.batteringvalhalla.gamecore.IA.IAFocus;
+import it.batteringvalhalla.gamecore.arena.Arena;
+import it.batteringvalhalla.gamecore.object.AbstractGameObject;
+import it.batteringvalhalla.gamecore.object.actor.Actor;
+import it.batteringvalhalla.gamecore.object.actor.Enemy;
+import it.batteringvalhalla.gamecore.object.actor.Player;
 
 public class GameWorld {
 	// Objects
@@ -65,9 +66,9 @@ public class GameWorld {
 		npc.clear();
 		objects.add(player);
 		for (int i = 0; i < enemies; i++) {
-			Enemy tmp = new Enemy(400, 500, Direction.nord);
+			Enemy tmp = new Enemy(400, 500);
 			objects.add(tmp);
-			npc.add(new AbstractIA(tmp, arena));
+			npc.add(new IAFocus(tmp, arena, objects));
 		}
 	}
 
@@ -78,7 +79,7 @@ public class GameWorld {
 		arena = new Arena();
 		objects = new CopyOnWriteArrayList<AbstractGameObject>();
 		npc = new CopyOnWriteArrayList<AbstractIA>();
-		player = new Actor(200, 300);
+		player = new Player(200, 300);
 	}
 
 	public void nextMatch() {
@@ -101,7 +102,7 @@ public class GameWorld {
 		zOrder();
 		for (int i = 0; i < npc.size(); i++) {
 			if (npc.get(i).getEnemy().getLive() != 0) {
-				// npc.get(i).update();
+				npc.get(i).update();
 			}
 		}
 		for (int i = 0; i < objects.size(); i++) {
@@ -112,8 +113,7 @@ public class GameWorld {
 			}
 			if (((Actor) objects.get(i)).getLive() != 0) {
 				objects.get(i).update();
-				if (!arena.getEdge().contains(objects.get(i).getX(),
-						objects.get(i).getY())) {
+				if (!arena.getEdge().contains(objects.get(i).getX(), objects.get(i).getY())) {
 					((Actor) objects.get(i)).setLive(0);
 					if (isenemy) {
 						enemies -= 1;

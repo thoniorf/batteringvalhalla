@@ -1,12 +1,5 @@
 package it.batteringvalhalla.gamegui;
 
-import it.batteringvalhalla.gamecore.GameManager;
-import it.batteringvalhalla.gamecore.GameWorld;
-import it.batteringvalhalla.gamecore.input.InputHandler;
-import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamecore.object.actor.Direction;
-import it.batteringvalhalla.gamecore.object.actor.Player;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -16,6 +9,13 @@ import java.awt.RenderingHints;
 import java.util.List;
 
 import javax.swing.JPanel;
+
+import it.batteringvalhalla.gamecore.GameManager;
+import it.batteringvalhalla.gamecore.GameWorld;
+import it.batteringvalhalla.gamecore.input.InputHandler;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.object.actor.Direction;
+import it.batteringvalhalla.gamecore.object.actor.Player;
 
 public class GamePanel extends JPanel {
 
@@ -28,9 +28,13 @@ public class GamePanel extends JPanel {
 	GameManager manager;
 	InputHandler inputkey;
 
-	public GamePanel(GameFrame frame) {
+	private int width = 1024;
+	private int height = 768;
+
+	public GamePanel() {
 		super();
-		this.frame = frame;
+		this.frame = GameFrame.instance();
+		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
 		this.setOpaque(true);
 		this.setPreferredSize(new Dimension(1024, 768));
 		this.setFocusable(true);
@@ -52,8 +56,7 @@ public class GamePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		world.paint(g);
 		paintUI(g);
 	}
@@ -103,9 +106,8 @@ public class GamePanel extends JPanel {
 
 	private void paintUI(Graphics g) {
 		g.setColor(Color.BLACK);
-		g.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 38));
+		g.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 38));
 		g.drawString(Player.username, 30, 70);
-		g.drawString("Match:" + world.getMatch().toString(), 156, 70);
+		g.drawString("Match:" + world.getMatch().toString(), 200, 70);
 	}
 }

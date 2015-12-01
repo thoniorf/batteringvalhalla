@@ -1,10 +1,11 @@
 package it.batteringvalhalla.gamecore;
 
+import java.awt.Rectangle;
+
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
 import it.batteringvalhalla.gamecore.object.actor.Player;
+import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.GamePanel;
-
-import java.awt.Rectangle;
 
 public class GameManager {
 
@@ -91,12 +92,8 @@ public class GameManager {
 						e.printStackTrace();
 					}
 				}
-				try {
-					Player.score = world.getMatch();
-					panel.getFrame().showScores();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				Player.score = world.getMatch();
+				GameFrame.instance().showScores();
 
 			};
 		}.start();

@@ -1,9 +1,12 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
+import it.batteringvalhalla.gamegui.editorActor.ImageEditor;
+
 public class Enemy extends Actor {
 
-	public Enemy(int x, int y, Direction direction) {
-		super(x, y);
+	public Enemy(int x, int y) {
+		super(x, y, ImageEditor.getIndexTesta(), ImageEditor.getIndexBusto(), ImageEditor.getIndexCapra());
+		setDirection(Direction.nord);
 		this.collider.setBounds(this.x, this.y, width, height);
 	}
 }

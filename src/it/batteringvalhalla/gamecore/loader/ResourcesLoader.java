@@ -14,6 +14,9 @@ public class ResourcesLoader {
 	public static Image player;
 	public static Image actor_body;
 	public static ArrayList<Image> actor_head;
+	private static int N_head = 0;
+	private static int N_mount = 4;
+	private static int N_weapon = 1;
 	public static ArrayList<Image> actor_mount;
 	public static ArrayList<Image> actor_weapon;
 	public static ArrayList<Image> mainmenu_images;
@@ -38,7 +41,27 @@ public class ResourcesLoader {
 	}
 
 	public static synchronized void loadPlayerImages() throws IOException {
-		// TODO ACTOR IMAGES LOAD
+		actor_head = new ArrayList<Image>();
+		actor_mount = new ArrayList<Image>();
+		actor_weapon = new ArrayList<Image>();
+		actor_body = ImageIO.read(ResourcesLoader.class.getClassLoader()
+				.getResource("it/batteringvalhalla/assets/actor/bodies/player.png"));
+
+		for (int i = 1; i <= N_head; i++) {
+			actor_head.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+					.getResource("it/batteringvalhalla/assets/actor/heads/#########")));
+		}
+
+		for (int i = 1; i <= N_mount; i++) {
+			actor_mount.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+					.getResource("it/batteringvalhalla/assets/actor/rams/mount" + i + ".png")));
+		}
+
+		for (int i = 1; i <= N_weapon; i++) {
+			actor_weapon.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+					.getResource("it/batteringvalhalla/assets/actor/weapons/weapon" + i + ".png")));
+		}
+
 	}
 
 	public static synchronized void loadMainMenuImages() throws IOException {
@@ -172,19 +195,16 @@ public class ResourcesLoader {
 
 	public static synchronized void loadScoreBoardImages() throws IOException {
 		scoreboard_images = new ArrayList<Image>();
-		scoreboard_images.add(ImageIO
-				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/background/scoreboard_background.png"))
-				.getScaledInstance(678, 642, java.awt.Image.SCALE_SMOOTH));
+
 		scoreboard_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/restart.png"))
-				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 
 		scoreboard_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_restart.png"))
-				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
+				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 
 	}
 
@@ -220,32 +240,32 @@ public class ResourcesLoader {
 		for (int i = 0; i < sizeGoat; i++) {
 			imageGoat.add(ImageIO
 					.read(ResourcesLoader.class.getClassLoader()
-							.getResource("it/batteringvalhalla/assets/editor/Goat" + i + ".png"))
+							.getResource("it/batteringvalhalla/assets/editor/goat" + i + ".png"))
 					.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
 
 		}
 		Sfondo = ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/editor/Sfondo.png"))
+						.getResource("it/batteringvalhalla/assets/editor/sfondo.png"))
 				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH);
 		leftArrow.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/left.png"))
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/back.png"))
 				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
 
 		leftArrow.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_left.png"))
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_back.png"))
 				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
 
 		rightArrow.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/right.png"))
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/forward.png"))
 				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
 
 		rightArrow.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_right.png"))
+						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_forward.png"))
 				.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
 	}
 }

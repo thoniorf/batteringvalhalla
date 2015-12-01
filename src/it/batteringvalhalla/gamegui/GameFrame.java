@@ -16,8 +16,8 @@ import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.progress.Loading;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
-/*	0			0			1			1			2
- * Loading -> MainMenu -> UserMenu -> OptionMenu -> Exit Menu
+/*	0			0			1			1			1				2
+ * Loading -> MainMenu -> UserMenu -> OptionMenu -> EditorMenu -> Exit Menu
  */
 public class GameFrame extends JFrame {
 
@@ -44,6 +44,11 @@ public class GameFrame extends JFrame {
 		this.showMenu();
 		this.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(false);
 		this.showUserField();
+	}
+
+	public void restart() {
+		this.getLayeredPane().removeAll();
+		this.showMenu();
 	}
 
 	private Boolean fullscreen;
@@ -116,8 +121,8 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showEditor() {
-		panel = new EditorPanel(this);
-		this.setContentPane(panel);
+		panel = new EditorPanel();
+		addMenu(panel, 1);
 	}
 
 	public void showExit() {
@@ -147,7 +152,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showScores() {
-		panel = new ScoreBoard(this);
+		panel = new ScoreBoard();
 		addMenu(panel, 1);
 	}
 
@@ -160,7 +165,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void startGame() {
-		panel = new GamePanel(this);
+		panel = new GamePanel();
 		this.getLayeredPane().removeAll();
 		addMenu(panel, 0);
 		((GamePanel) panel).getManager().run();

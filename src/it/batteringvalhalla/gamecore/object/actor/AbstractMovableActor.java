@@ -1,9 +1,11 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
+import it.batteringvalhalla.gamecore.IA.AbstractIA;
 import it.batteringvalhalla.gamecore.object.AbstractGameObject;
 
 public abstract class AbstractMovableActor extends AbstractGameObject implements MovableActor {
 
+	protected AbstractIA strategy;
 	protected Direction direction;
 	protected float maxSpeed = 4f;
 	protected float chargeSpeed = 10f;
@@ -75,6 +77,9 @@ public abstract class AbstractMovableActor extends AbstractGameObject implements
 
 	@Override
 	public void update() {
+		if (strategy != null) {
+			strategy.update();
+		}
 		switch (direction) {
 		case nord:
 			if (Math.abs(speedY - 1f) <= maxSpeed)

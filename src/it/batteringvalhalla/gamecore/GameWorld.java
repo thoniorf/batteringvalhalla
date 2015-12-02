@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import it.batteringvalhalla.gamecore.IA.AbstractIA;
 import it.batteringvalhalla.gamecore.IA.IAFocus;
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.object.AbstractGameObject;
@@ -16,7 +15,6 @@ public class GameWorld {
 	// Objects
 	Arena arena;
 	CopyOnWriteArrayList<AbstractGameObject> objects;
-	CopyOnWriteArrayList<AbstractIA> npc;
 	Actor player;
 
 	// behavior var
@@ -62,13 +60,12 @@ public class GameWorld {
 		altPlayer();
 		this.match += 1;
 		this.enemies = enemies;
-		npc.clear();
 		objects.clear();
 		objects.add(player);
 		for (int i = 0; i < enemies; i++) {
-			Enemy tmp = new Enemy(400, 500);
+			Enemy tmp = new Enemy(arena.getSpawn().get(i + 1).x, arena.getSpawn().get(i + 1).y);
+			tmp.setIA(new IAFocus(tmp, arena, objects));
 			objects.add(tmp);
-			npc.add(new IAFocus(tmp, arena, objects));
 		}
 	}
 
@@ -78,8 +75,7 @@ public class GameWorld {
 		this.state = new Integer(0);
 		arena = new Arena();
 		objects = new CopyOnWriteArrayList<AbstractGameObject>();
-		npc = new CopyOnWriteArrayList<AbstractIA>();
-		player = new Player(200, 300);
+		player = new Player(arena.getSpawn().get(0).x, arena.getSpawn().get(0).y);
 	}
 
 	public void nextMatch() {
@@ -100,11 +96,6 @@ public class GameWorld {
 	public void update() {
 		Boolean isenemy = false;
 		zOrder();
-		for (int i = 0; i < npc.size(); i++) {
-			if (npc.get(i).getEnemy().getLive() != 0) {
-				// npc.get(i).update();
-			}
-		}
 		for (int i = 0; i < objects.size(); i++) {
 			if (objects.get(i) instanceof Enemy) {
 				isenemy = true;

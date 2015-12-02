@@ -12,21 +12,33 @@ public class Arena {
 	private CollisionShape edge;
 	private ArrayList<Point> spawn;
 
+	public Arena() {
+		edge = new CollisionShape(100, 50, 824, 658);
+		spawn = new ArrayList<>();
+		// one
+		spawn.add(new Point(200, 160));
+		// two
+		spawn.add(new Point(858, 620));
+		// three
+		spawn.add(new Point(858, 160));
+		// four
+		spawn.add(new Point(200, 620));
+		// five
+		spawn.add(new Point(488, 160));
+		// six
+		spawn.add(new Point(858, 400));
+		// seven
+		spawn.add(new Point(200, 400));
+		// eight players
+		spawn.add(new Point(858, 620));
+	}
+
 	public CollisionShape getEdge() {
 		return edge;
 	}
 
-	public Arena() {
-		edge = new CollisionShape(100, 50, 824, 658);
-		spawn = new ArrayList<>();
-		spawn.add(new Point(206, 142));
-		spawn.add(new Point(206, 284));
-		spawn.add(new Point(206, 426));
-		spawn.add(new Point(200, 568));
-		spawn.add(new Point(412, 142));
-		spawn.add(new Point(200, 284));
-		spawn.add(new Point(200, 284));
-		spawn.add(new Point(200, 284));
+	public ArrayList<Point> getSpawn() {
+		return spawn;
 	}
 
 	public void paint(Graphics g) {

@@ -28,8 +28,10 @@ public class JButtonRound extends JButton {
 		setIcon(this.image);
 		setRolloverIcon(this.imageHover);
 		setPressedIcon(this.imageHover);
+		setSelectedIcon(this.imageHover);
 		setDisabledIcon(this.image);
-		this.circle = new Circle2D(width / 2, height / 2, image.getWidth(null) / 2);
+		this.circle = new Circle2D(width / 2, height / 2,
+				image.getWidth(null) / 2);
 	}
 
 	@Override

@@ -1,11 +1,5 @@
 package it.batteringvalhalla.gamegui;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamegui.editorActor.EditorPanel;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
@@ -15,6 +9,12 @@ import it.batteringvalhalla.gamegui.menu.ScoreBoard;
 import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.progress.Loading;
 import it.batteringvalhalla.gamegui.sound.Sound;
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /*	0			0			1			1			1				2
  * Loading -> MainMenu -> UserMenu -> OptionMenu -> EditorMenu -> Exit Menu
@@ -40,6 +40,10 @@ public class GameFrame extends JFrame {
 	}
 
 	public void start() {
+		if (ManagerFilePlayer.soundOn()) {
+			Sound.menu.play();
+			Sound.menu.setRepeat(true);
+		}
 		this.getLayeredPane().removeAll();
 		this.showMenu();
 		this.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(false);
@@ -47,6 +51,10 @@ public class GameFrame extends JFrame {
 	}
 
 	public void restart() {
+		if (ManagerFilePlayer.soundOn()) {
+			Sound.battle.stop();
+			Sound.menu.play();
+		}
 		this.getLayeredPane().removeAll();
 		this.showMenu();
 	}

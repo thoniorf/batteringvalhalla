@@ -2,56 +2,56 @@ package it.batteringvalhalla.gamecore.input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class InputHandler implements KeyListener {
 
-	List<Boolean> keys;
+	boolean keys[] = { false, false, false, false, false, false };
+	private static int N_keys = 6;
 
 	public InputHandler() {
-		keys = new CopyOnWriteArrayList<Boolean>();
-		for (int i = 0; i < 5; i++)
-			keys.add(false);
 	}
 
 	public void resetKeys() {
-		for (int i = 0; i < keys.size(); i++) {
-			keys.set(i, false);
+		for (int i = 0; i <= N_keys; i++) {
+			keys[i] = false;
 		}
 
 	}
 
-	public List<Boolean> getKeys() {
+	public boolean[] getKeys() {
 		return keys;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_UP)
-			keys.set(0, true);
-		if (e.getKeyCode() == KeyEvent.VK_DOWN)
-			keys.set(1, true);
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-			keys.set(2, true);
-		if (e.getKeyCode() == KeyEvent.VK_LEFT)
-			keys.set(3, true);
+		if (e.getKeyCode() == KeyEvent.VK_W)
+			keys[0] = true;
+		if (e.getKeyCode() == KeyEvent.VK_S)
+			keys[1] = true;
+		if (e.getKeyCode() == KeyEvent.VK_D)
+			keys[2] = true;
+		if (e.getKeyCode() == KeyEvent.VK_A)
+			keys[3] = true;
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-			keys.set(4, true);
+			keys[4] = true;
+		if (e.getKeyCode() == KeyEvent.VK_SPACE)
+			keys[5] = true;
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_UP)
-			keys.set(0, false);
-		if (e.getKeyCode() == KeyEvent.VK_DOWN)
-			keys.set(1, false);
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-			keys.set(2, false);
-		if (e.getKeyCode() == KeyEvent.VK_LEFT)
-			keys.set(3, false);
+		if (e.getKeyCode() == KeyEvent.VK_W)
+			keys[0] = false;
+		if (e.getKeyCode() == KeyEvent.VK_S)
+			keys[1] = false;
+		if (e.getKeyCode() == KeyEvent.VK_D)
+			keys[2] = false;
+		if (e.getKeyCode() == KeyEvent.VK_A)
+			keys[3] = false;
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-			keys.set(4, false);
+			keys[4] = false;
+		if (e.getKeyCode() == KeyEvent.VK_SPACE)
+			keys[5] = false;
 	}
 
 	@Override

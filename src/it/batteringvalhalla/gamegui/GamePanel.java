@@ -1,13 +1,12 @@
 package it.batteringvalhalla.gamegui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import it.batteringvalhalla.gamecore.GameManager;
@@ -27,6 +26,7 @@ public class GamePanel extends JPanel {
 	GameWorld world;
 	GameManager manager;
 	InputHandler inputkey;
+	private JLabel playerANDscore;
 
 	private int width = 1024;
 	private int height = 768;
@@ -39,6 +39,14 @@ public class GamePanel extends JPanel {
 		this.setPreferredSize(new Dimension(1024, 768));
 		this.setFocusable(true);
 		this.setFocusTraversalKeysEnabled(true);
+
+		playerANDscore = new JLabel("Player 1    Match: 1");
+		playerANDscore.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 36));
+		playerANDscore.setAlignmentX(0.50f);
+		// playerANDscore.setBounds(CenterComp.centerX(playerANDscore.getWidth()),
+		// 12, playerANDscore.getWidth(),
+		// playerANDscore.getHeight());
+		add(playerANDscore);
 		inputkey = new InputHandler();
 		addKeyListener(inputkey);
 		init();
@@ -70,32 +78,32 @@ public class GamePanel extends JPanel {
 	}
 
 	public void getInput() {
-		List<Boolean> keys = inputkey.getKeys();
 		Boolean moving = new Boolean(false);
 		if (world.getState() == 1) {
-			if (keys.get(0)) {
+			if (inputkey.getKeys()[0]) {
 				moving = true;
 				world.getPlayer().setDirection(Direction.nord);
 			}
-			if (keys.get(1)) {
+			if (inputkey.getKeys()[1]) {
 				moving = true;
 				world.getPlayer().setDirection(Direction.sud);
 			}
-			if (keys.get(2)) {
+			if (inputkey.getKeys()[2]) {
 				moving = true;
 				world.getPlayer().setDirection(Direction.est);
 			}
-			if (keys.get(3)) {
+			if (inputkey.getKeys()[3]) {
 				moving = true;
 				world.getPlayer().setDirection(Direction.ovest);
 			}
-		}
-		if (keys.get(4))
-			if (world.getState() == 1) {
-				world.setState(2);
-			} else {
-				world.setState(1);
+			if (inputkey.getKeys()[5]) {
+				moving = true;
+				world.getPlayer().tryCharge();
 			}
+		}
+		if (inputkey.getKeys()[4])
+			world.setState((world.getState() == 1 ? 2 : 1));
+
 		if (!moving)
 			world.getPlayer().setDirection(Direction.stop);
 	}
@@ -105,9 +113,6 @@ public class GamePanel extends JPanel {
 	}
 
 	private void paintUI(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 38));
-		g.drawString(Player.getName(), 30, 70);
-		g.drawString("Match:" + world.getMatch().toString(), 200, 70);
+		playerANDscore.setText(Player.getName() + "    Match: " + world.getMatch().toString());
 	}
 }

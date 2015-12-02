@@ -8,7 +8,7 @@ public class Player extends Actor {
 
 	public Player(int x, int y) {
 		super(x, y, ImageEditor.getIndexTesta(), ImageEditor.getIndexBusto(), ImageEditor.getIndexCapra());
-		setDirection(Direction.est);
+		setDirection(Direction.stop);
 		this.collider.setBounds(this.x, this.y, width, height);
 	}
 

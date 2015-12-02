@@ -176,7 +176,7 @@ public class GameFrame extends JFrame {
 		panel = new GamePanel();
 		this.getLayeredPane().removeAll();
 		addMenu(panel, 0);
-		((GamePanel) panel).getManager().run();
+		((GamePanel) panel).getManager().start();
 		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.stop();
 			Sound.battle.setRepeat(true);

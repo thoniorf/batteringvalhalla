@@ -102,7 +102,7 @@ public class GameWorld {
 		zOrder();
 		for (int i = 0; i < npc.size(); i++) {
 			if (npc.get(i).getEnemy().getLive() != 0) {
-				npc.get(i).update();
+				// npc.get(i).update();
 			}
 		}
 		for (int i = 0; i < objects.size(); i++) {

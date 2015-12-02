@@ -23,7 +23,6 @@ public class Actor extends AbstractMovableActor {
 				103, 76, 1, 16, 36, 66, 48);
 		setSpeedX(0);
 		setSpeedY(0);
-		setMaxSpeed(5.5f);
 		setHeight(30);
 		setWidth(110);
 		this.live = 3;
@@ -64,9 +63,5 @@ public class Actor extends AbstractMovableActor {
 		g.drawImage(mount.getFrame(), x - mount.getOffsetX(), y - mount.getOffsetY(), null);
 		g.drawImage(body.getFrame(), x - body.getOffsetX(), y - body.getOffsetY(), null);
 		g.drawImage(weapon.getFrame(), x - weapon.getOffsetX(), y - weapon.getOffsetY(), null);
-		// g.setColor(Color.GREEN);
-		// g.drawRect(x - width / 2, y - height / 2, width, height);
-		// g.setColor(Color.RED);
-		// g.drawString("+", x, y);
 	}
 }

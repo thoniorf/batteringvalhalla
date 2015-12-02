@@ -17,7 +17,7 @@ public class Arena {
 	}
 
 	public Arena() {
-		edge = new CollisionShape(50, 150, 824, 658);
+		edge = new CollisionShape(100, 50, 824, 658);
 		spawn = new ArrayList<>();
 		spawn.add(new Point(206, 142));
 		spawn.add(new Point(206, 284));

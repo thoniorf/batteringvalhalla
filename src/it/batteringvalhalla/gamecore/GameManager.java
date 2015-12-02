@@ -7,7 +7,7 @@ import it.batteringvalhalla.gamecore.object.actor.Player;
 import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.GamePanel;
 
-public class GameManager {
+public class GameManager extends Thread {
 
 	private final static int MAX_FPS = 33;
 	private final static int MAX_FRAME_SKIP = 5;
@@ -47,56 +47,53 @@ public class GameManager {
 		}
 	}
 
+	@Override
 	public void run() {
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				sleepTime = 0;
-				panel.requestFocus();
-				while (world.getState() != 4) {
-					while (world.getState() == 1) {
-						beginTime = System.currentTimeMillis();
-						framesSkipped = 0;
-						world.update();
-						collisiondander.checkCollisions(world.getObjects());
-						panel.repaint();
-						panel.getInput();
-						timeDiff = System.currentTimeMillis() - beginTime;
-						sleepTime = (int) (FRAME_PERIOD - timeDiff);
+		super.run();
+		sleepTime = 0;
+		panel.requestFocus();
+		while (world.getState() != 4) {
+			while (world.getState() == 1) {
+				beginTime = System.currentTimeMillis();
+				framesSkipped = 0;
+				world.update();
+				collisiondander.checkCollisions(world.getObjects());
+				panel.repaint();
+				panel.getInput();
+				timeDiff = System.currentTimeMillis() - beginTime;
+				sleepTime = (int) (FRAME_PERIOD - timeDiff);
 
-						if (sleepTime > 0) {
-							// if sleepTime > 0 we're OK
-							try {
-								// send the thread to sleep for a short period
-								Thread.sleep(sleepTime);
-							} catch (InterruptedException e) {
-							}
-
-						}
-
-						while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIP) {
-							world.update();
-							sleepTime += FRAME_PERIOD;
-							framesSkipped++;
-
-						}
-					}
-					if (world.getState().equals(3)) {
-						nextMatch();
-					}
-					panel.getInput();
+				if (sleepTime > 0) {
+					// if sleepTime > 0 we're OK
 					try {
-						Thread.sleep(30);
+						// send the thread to sleep for a short period
+						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-				}
-				Player.setScore(world.getMatch());
-				GameFrame.instance().showScores();
 
-			};
-		}.start();
+				}
+
+				while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIP) {
+					world.update();
+					sleepTime += FRAME_PERIOD;
+					framesSkipped++;
+
+				}
+			}
+			if (world.getState().equals(3)) {
+				nextMatch();
+			}
+			panel.getInput();
+			try {
+				Thread.sleep(30);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		Player.setScore(world.getMatch());
+		GameFrame.instance().showScores();
 
 	}
+
 }

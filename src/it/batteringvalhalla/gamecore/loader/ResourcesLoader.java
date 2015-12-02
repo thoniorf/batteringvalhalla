@@ -2,6 +2,7 @@ package it.batteringvalhalla.gamecore.loader;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -212,6 +213,9 @@ public class ResourcesLoader {
 		try {
 			gothic = Font.createFont(Font.TRUETYPE_FONT, ResourcesLoader.class.getClassLoader()
 					.getResourceAsStream("it/batteringvalhalla/assets/gui/fonts/Deutsch.ttf"));
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, ResourcesLoader.class.getClassLoader()
+					.getResourceAsStream("it/batteringvalhalla/assets/gui/fonts/Deutsch.ttf")));
 		} catch (FontFormatException e) {
 			System.out.println("Invalid Font Format, please pay attention");
 			e.printStackTrace();

@@ -62,8 +62,8 @@ public class GameWorld {
 		altPlayer();
 		this.match += 1;
 		this.enemies = enemies;
-		objects.clear();
 		npc.clear();
+		objects.clear();
 		objects.add(player);
 		for (int i = 0; i < enemies; i++) {
 			Enemy tmp = new Enemy(400, 500);
@@ -102,7 +102,7 @@ public class GameWorld {
 		zOrder();
 		for (int i = 0; i < npc.size(); i++) {
 			if (npc.get(i).getEnemy().getLive() != 0) {
-				npc.get(i).update();
+				// npc.get(i).update();
 			}
 		}
 		for (int i = 0; i < objects.size(); i++) {

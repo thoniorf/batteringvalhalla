@@ -1,13 +1,13 @@
 package it.batteringvalhalla.gamecore.animation;
 
-import it.batteringvalhalla.gamecore.object.actor.Direction;
-
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+
+import it.batteringvalhalla.gamecore.object.actor.Direction;
 
 public class Sprite {
 
@@ -31,28 +31,26 @@ public class Sprite {
 	private BufferedImage img;
 	private Direction imgDir;
 
-	public Sprite(Image img, Integer imageWidth, Integer imageHeight,
-			Integer frameWidth, Integer frameHeight, Integer frameSpeed,
-			Integer endFrame, Integer offxleft, Integer offxright, Integer offy) {
+	public Sprite(Image img, Integer imageWidth, Integer imageHeight, Integer frameWidth, Integer frameHeight,
+			Integer frameSpeed, Integer endFrame, Integer offxleft, Integer offxright, Integer offy) {
 		this.imgDir = Direction.est;
-		this.imageWidth = imageWidth;
-		this.imageHeight = imageHeight;
-		this.frameWidth = frameWidth;
-		this.frameHeight = frameHeight;
-		this.spriteoffsetxleft = offxleft;
-		this.spriteoffsetxright = offxright;
-		this.spriteoffsety = offy;
+		this.imageWidth = new Integer(imageWidth);
+		this.imageHeight = new Integer(imageHeight);
+		this.frameWidth = new Integer(frameWidth);
+		this.frameHeight = new Integer(frameHeight);
+		this.spriteoffsetxleft = new Integer(offxleft);
+		this.spriteoffsetxright = new Integer(offxright);
+		this.spriteoffsety = new Integer(offy);
+		this.currentoffsetx = spriteoffsetxright;
 		this.frameRow = new Integer(0);
 		this.frameCol = new Integer(0);
-		this.endFrame = endFrame;
-		this.frameSpeed = frameSpeed;
+		this.endFrame = new Integer(endFrame);
+		this.frameSpeed = new Integer(frameSpeed);
 		this.currentFrame = new Integer(1);
 		framesPerRow = new Integer(imageWidth / frameWidth);
 		this.counter = new Integer(0);
-		this.img = new BufferedImage(imageWidth, imageHeight,
-				BufferedImage.TYPE_INT_ARGB);
-		this.frame = new BufferedImage(frameWidth, frameHeight,
-				BufferedImage.TYPE_INT_ARGB);
+		this.img = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+		this.frame = new BufferedImage(frameWidth, frameHeight, BufferedImage.TYPE_INT_ARGB);
 		g2 = this.img.createGraphics();
 		g2.setComposite(AlphaComposite.Src);
 		g2.drawImage(img, 0, 0, null);
@@ -96,21 +94,20 @@ public class Sprite {
 			frameCol = currentFrame % framesPerRow;
 			frameRow = currentFrame / framesPerRow;
 		}
-		g2 = (Graphics2D) frame.getGraphics();
+		g2 = frame.createGraphics();
 		g2.setComposite(AlphaComposite.Src);
-		g2.drawImage(img.getSubimage(frameCol * frameWidth, frameRow
-				* frameHeight, frameWidth, frameHeight), 0, 0, null);
+		g2.drawImage(img.getSubimage(frameCol * frameWidth, frameRow * frameHeight, frameWidth, frameHeight), 0, 0,
+				null);
 		g2.dispose();
 		currentoffsetx = spriteoffsetxright;
 		if (dir == Direction.ovest || imgDir == Direction.ovest) {
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 			tx.translate(-frame.getWidth(null), 0);
-			AffineTransformOp op = new AffineTransformOp(tx,
-					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 			frame = op.filter(frame, null);
 			currentoffsetx = spriteoffsetxleft;
-			imgDir = ((dir == Direction.ovest && imgDir == Direction.est) || (dir == Direction.est && imgDir == Direction.ovest)) ? dir
-					: imgDir;
+			imgDir = ((dir == Direction.ovest && imgDir == Direction.est)
+					|| (dir == Direction.est && imgDir == Direction.ovest)) ? dir : imgDir;
 		}
 	}
 }

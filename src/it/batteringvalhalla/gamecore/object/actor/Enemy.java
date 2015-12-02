@@ -6,7 +6,7 @@ public class Enemy extends Actor {
 
 	public Enemy(int x, int y) {
 		super(x, y, ImageEditor.getIndexTesta(), ImageEditor.getIndexBusto(), ImageEditor.getIndexCapra());
-		setDirection(Direction.nord);
+		setDirection(Direction.stop);
 		this.collider.setBounds(this.x, this.y, width, height);
 	}
 }

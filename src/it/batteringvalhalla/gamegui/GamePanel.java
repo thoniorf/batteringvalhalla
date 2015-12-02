@@ -39,10 +39,10 @@ public class GamePanel extends JPanel {
 		this.setPreferredSize(new Dimension(1024, 768));
 		this.setFocusable(true);
 		this.setFocusTraversalKeysEnabled(true);
-		this.setVisible(true);
 		inputkey = new InputHandler();
 		addKeyListener(inputkey);
 		init();
+		setVisible(true);
 
 	}
 

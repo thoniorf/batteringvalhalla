@@ -39,7 +39,7 @@ public class GameManager extends Thread {
 
 	private void nextMatch() {
 		try {
-			Thread.sleep(1470);
+			Thread.sleep(1500);
 			world.setState(1);
 			world.nextMatch();
 		} catch (InterruptedException e) {

@@ -20,6 +20,7 @@ public class GameWorld {
 	// behavior var
 	Integer match;
 	Integer enemies;
+	Integer n_enemy;
 	Integer state;
 
 	public GameWorld() {
@@ -56,13 +57,15 @@ public class GameWorld {
 	}
 
 	// remember the enemies constant
-	public void newMatch(Integer enemies) {
+	public void newMatch(int n_enemies) {
 		altPlayer();
 		this.match += 1;
-		this.enemies = enemies;
+		this.enemies = n_enemies;
 		objects.clear();
+		player.setX(arena.getSpawn().get(0).x);
+		player.setY(arena.getSpawn().get(0).y);
 		objects.add(player);
-		for (int i = 0; i < enemies; i++) {
+		for (int i = 0; i < n_enemies && i < arena.getSpawn().size(); i++) {
 			Enemy tmp = new Enemy(arena.getSpawn().get(i + 1).x, arena.getSpawn().get(i + 1).y);
 			tmp.setIA(new IAFocus(tmp, arena, objects));
 			objects.add(tmp);
@@ -72,6 +75,7 @@ public class GameWorld {
 	public void reset() {
 		this.match = new Integer(0);
 		this.enemies = new Integer(0);
+		this.n_enemy = new Integer(0);
 		this.state = new Integer(0);
 		arena = new Arena();
 		objects = new CopyOnWriteArrayList<AbstractGameObject>();
@@ -80,7 +84,8 @@ public class GameWorld {
 
 	public void nextMatch() {
 		altPlayer();
-		newMatch(1);
+		n_enemy = (n_enemy + 1) % 8;
+		newMatch(n_enemy);
 	}
 
 	public void paint(Graphics g) {

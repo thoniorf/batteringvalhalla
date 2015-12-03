@@ -21,7 +21,7 @@ public class Loading extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private List<Method> loaderMethods;
 	private String status[] = { "Loading Please Wait", "Looking Up Barbarian Kilts", "Feeding Animals",
-			"Adding Randomly Mispeled Words", "Sharpening Swords", "Grrr. Bark. Bark. Grrr.",
+			"Adding Randomly Mispelled Words", "Sharpening Swords", "Grrr. Bark. Bark. Grrr.",
 			"Ensuring Everything Works Perfektly", "Cleaning the dust" };
 	private int max = 8;
 	private int current;

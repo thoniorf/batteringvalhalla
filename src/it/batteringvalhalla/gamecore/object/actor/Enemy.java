@@ -13,7 +13,8 @@ public class Enemy extends Actor {
 		this.collider.setBounds(this.x, this.y, width, height);
 	}
 
-	public void setIA(AbstractIA ia) {
+	public void setIA(AbstractIA ia,int level) {
 		strategy = ia;
+		strategy.levelUp(level);
 	}
 }

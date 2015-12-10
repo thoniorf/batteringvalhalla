@@ -67,7 +67,8 @@ public class GameWorld {
 		objects.add(player);
 		for (int i = 0; i < n_enemies && i < arena.getSpawn().size(); i++) {
 			Enemy tmp = new Enemy(arena.getSpawn().get(i + 1).x, arena.getSpawn().get(i + 1).y);
-			tmp.setIA(new IAFocus(tmp, arena, objects));
+			tmp.setIA(new IAFocus(tmp, arena, objects),match);
+			
 			objects.add(tmp);
 		}
 	}
@@ -86,6 +87,7 @@ public class GameWorld {
 		altPlayer();
 		n_enemy = (n_enemy + 1) % 8;
 		newMatch(n_enemy);
+		
 	}
 
 	public void paint(Graphics g) {

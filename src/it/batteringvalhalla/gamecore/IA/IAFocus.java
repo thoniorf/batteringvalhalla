@@ -39,9 +39,9 @@ public class IAFocus extends AbstractIA {
 		return tmp;
 	}
 
-	public void levelUp() {
+	public void levelUp(int level) {
 		if (timePause > 199)
-			timePause -= 200;
+			timePause -= level*200;
 	}
 
 	@Override

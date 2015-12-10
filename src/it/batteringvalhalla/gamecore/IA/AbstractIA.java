@@ -61,5 +61,8 @@ public class AbstractIA {
 		return false;
 	}
 	
+	public void levelUp(int level){
+		
+	}
 	
 }

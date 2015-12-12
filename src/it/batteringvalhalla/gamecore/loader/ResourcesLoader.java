@@ -107,6 +107,8 @@ public class ResourcesLoader {
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_exit.png"))
 				.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
 
+		mainmenu_images.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+				.getResource("it/batteringvalhalla/assets/arena/background.png")));
 	}
 
 	public static synchronized void loadOptionMenuImages() throws IOException {

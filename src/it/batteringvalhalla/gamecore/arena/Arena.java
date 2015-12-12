@@ -6,14 +6,23 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import it.batteringvalhalla.gamecore.collision.shape.CollisionShape;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 
 public class Arena {
 
 	private CollisionShape edge;
 	private ArrayList<Point> spawn;
+	private int x;
+	private int y;
+	private int width;
+	private int height;
 
 	public Arena() {
-		edge = new CollisionShape(100, 50, 824, 658);
+		this.x = 100;
+		this.y = 50;
+		this.width = 824;
+		this.height = 658;
+		edge = new CollisionShape(x, y, width, height);
 		spawn = new ArrayList<>();
 		// one
 		spawn.add(new Point(200, 160));
@@ -43,7 +52,9 @@ public class Arena {
 
 	public void paint(Graphics g) {
 		g.setColor(Color.darkGray);
-		g.fillRect((int) edge.getX(), (int) edge.getY(), (int) edge.getWidth(), (int) edge.getHeight());
+		// g.fillRect((int) edge.getX(), (int) edge.getY(), (int)
+		// edge.getWidth(), (int) edge.getHeight());
+		g.drawImage(ResourcesLoader.mainmenu_images.get(9), x, y, null);
 
 	}
 

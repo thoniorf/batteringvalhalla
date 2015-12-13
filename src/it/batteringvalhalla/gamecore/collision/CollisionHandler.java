@@ -44,9 +44,9 @@ public class CollisionHandler {
 		}
 	}
 
-	private void checkWitoutQuads(List<AbstractGameObject> arrayList) {
+	private void checkWithoutQuads(List<AbstractGameObject> arrayList) {
 
-		for (int i = 0; i < arrayList.size(); i += 2) {
+		for (int i = 0; i < arrayList.size(); i++) {
 			for (int j = 0; j < arrayList.size(); j++) {
 				if (i != j && ((Actor) arrayList.get(i)).getLive() != 0 && ((Actor) arrayList.get(j)).getLive() != 0
 						&& arrayList.get(i).getCollisionShape().intersecable()
@@ -63,7 +63,7 @@ public class CollisionHandler {
 	}
 
 	public void checkCollisions(List<AbstractGameObject> arrayList) {
-		checkWitoutQuads(arrayList);
+		checkWithoutQuads(arrayList);
 	}
 
 	private void fixCollision(Actor a1, Actor a2) {

@@ -24,8 +24,13 @@ import it.batteringvalhalla.gamegui.sound.Sound;
 public class GameFrame extends JFrame {
 
 	private static GameFrame frame = null;
-
 	private static final long serialVersionUID = 1L;
+
+	private Boolean fullscreen;
+	private JPanel panel;
+	private Dimension resolution;
+	private Integer screen_height;
+	private Integer screen_width;
 
 	public static GameFrame instance() {
 		if (frame == null) {
@@ -41,47 +46,6 @@ public class GameFrame extends JFrame {
 		frame.start();
 	}
 
-	public void start() {
-		if (ManagerFilePlayer.soundOn()) {
-			Sound.menu.play();
-			Sound.menu.setRepeat(true);
-		}
-
-		this.getLayeredPane().removeAll();
-		this.showMenu();
-		this.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(false);
-		this.showUserField();
-	}
-
-	private void setUiBackground() {
-		JPanel background = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawImage(ResourcesLoader.mainmenu_images.get(10), 0, 0, null);
-			}
-		};
-		background.setBounds(0, 0, getScreen_width(), getScreen_height());
-		background.setVisible(true);
-		addMenu(background, 0);
-	}
-
-	public void restart() {
-		if (ManagerFilePlayer.soundOn()) {
-			Sound.battle.stop();
-			Sound.menu.play();
-		}
-		this.getLayeredPane().removeAll();
-		this.showMenu();
-	}
-
-	private Boolean fullscreen;
-	private JPanel panel;
-	private Dimension resolution;
-
-	private Integer screen_height;
-	private Integer screen_width;
-
 	private GameFrame() {
 		this.setTitle("Battering Valhalla");
 		this.setLocationRelativeTo(null);
@@ -89,6 +53,14 @@ public class GameFrame extends JFrame {
 		this.init();
 		this.setVisible(true);
 		new ManagerFilePlayer();
+	}
+
+	public void addMenu(JPanel panel, int index) {
+		this.getLayeredPane().add(panel, new Integer(index));
+		panel.updateUI();
+		panel.requestFocus();
+		this.pack();
+		this.setLocationRelativeTo(null);
 	}
 
 	public Boolean getFullscreen() {
@@ -99,11 +71,11 @@ public class GameFrame extends JFrame {
 		return resolution;
 	}
 
-	public Integer getScreen_height() {
+	public Integer getScreenHeight() {
 		return screen_height;
 	}
 
-	public Integer getScreen_width() {
+	public Integer getScreenWidth() {
 		return screen_width;
 	}
 
@@ -116,12 +88,13 @@ public class GameFrame extends JFrame {
 
 	}
 
-	public void addMenu(JPanel panel, int index) {
-		this.getLayeredPane().add(panel, new Integer(index));
-		panel.updateUI();
-		panel.requestFocus();
-		this.pack();
-		this.setLocationRelativeTo(null);
+	public void restart() {
+		if (ManagerFilePlayer.soundOn()) {
+			Sound.battle.stop();
+			Sound.menu.play();
+		}
+		this.getLayeredPane().removeAll();
+		this.showMenu();
 	}
 
 	public void setFullscreen(Boolean fullscreen) {
@@ -136,12 +109,27 @@ public class GameFrame extends JFrame {
 		this.setUndecorated(fullscreen);
 	}
 
-	public void setScreen_height(Integer screen_height) {
+	public void setScreenHeight(Integer screen_height) {
 		this.screen_height = screen_height;
 	}
 
-	public void setScreen_width(Integer screen_width) {
+	public void setScreenWidth(Integer screen_width) {
 		this.screen_width = screen_width;
+	}
+
+	private void setUiBackground() {
+		JPanel background = new JPanel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(ResourcesLoader.mainmenu_images.get(10), 0, 0, null);
+			}
+		};
+		background.setBounds(0, 0, getScreenWidth(), getScreenHeight());
+		background.setVisible(true);
+		addMenu(background, 0);
 	}
 
 	public void showEditor() {
@@ -187,6 +175,18 @@ public class GameFrame extends JFrame {
 		((UsernameMenu) panel).getUserfield().requestFocusInWindow();
 		((UsernameMenu) panel).getUserfield().selectAll();
 
+	}
+
+	public void start() {
+		if (ManagerFilePlayer.soundOn()) {
+			Sound.menu.play();
+			Sound.menu.setRepeat(true);
+		}
+
+		this.getLayeredPane().removeAll();
+		this.showMenu();
+		this.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(false);
+		this.showUserField();
 	}
 
 	public void startGame() {

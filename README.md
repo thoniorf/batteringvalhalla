@@ -15,15 +15,12 @@ Il gioco è composto da un editor, da un modalità arcade  e una modalità versu
 L'editor permette di personalizzare il vostro vichingo (testo, corpo e destretriero).
 
 Il centro del gioco è la modalità arcade.
-In questa modalità dovrete combattere nell'arena con l'intento di spingere tutti gli avversari giù dall'arena.
-L'obiettivo e sopravvivere il più a lungo possibile combattendo di match in match, fin tanto che qualcuno non vi butti giù.
-~~Per ogni match vinto guadagnere dei punti, i quali vi permetteranno di scalare la classifica online.~~
+In questa modalità dovrete combattere nell'arena con l'intento di spingere tutti gli avversari giù.
+L'obiettivo e sopravvivere il più a lungo possibile combattendo di match in match.
+Ad ogni vittoria guadagnerete un punto.
 
 Nel caso in cui la modalità arcade non fosse abbastanza potrete sfidarvi nella modalità Versus online, da due a più giocatori (2+), nella quale vi spingerete giù dall'arena con i vostri amici
 
 # TODO
-- Editor Integration
-- Player paint
 - IA
 - network
-- better UI

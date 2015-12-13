@@ -22,10 +22,10 @@ public class GamePanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1568479702061945112L;
-	GameFrame frame;
-	GameWorld world;
-	GameManager manager;
-	InputHandler inputkey;
+	private GameFrame frame;
+	private GameWorld world;
+	private GameManager manager;
+	private InputHandler inputkey;
 	private JLabel playerANDscore;
 
 	private int width = 1024;
@@ -63,7 +63,7 @@ public class GamePanel extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		world.paint(g);
-		paintUI(g);
+		paintUI();
 	}
 
 	public GameManager getManager() {
@@ -75,7 +75,7 @@ public class GamePanel extends JPanel {
 	}
 
 	public void getInput() {
-		Boolean moving = new Boolean(false);
+		Boolean moving = Boolean.FALSE;
 		if (world.getState() == 1) {
 			if (inputkey.getKeys()[0]) {
 				moving = true;
@@ -109,7 +109,7 @@ public class GamePanel extends JPanel {
 		inputkey.resetKeys();
 	}
 
-	private void paintUI(Graphics g) {
+	private void paintUI() {
 		playerANDscore.setText(Player.getName() + "    Match: " + world.getMatch().toString());
 	}
 }

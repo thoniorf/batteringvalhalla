@@ -1,6 +1,14 @@
 package it.batteringvalhalla.gamegui;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.editorActor.EditorPanel;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
@@ -10,14 +18,8 @@ import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.progress.Loading;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-/*	0			0			1			1			1				2
- * Loading -> MainMenu -> UserMenu -> OptionMenu -> EditorMenu -> Exit Menu
+/*	0			0			2			2			2				3
+ * Loading -> Background -> MainMenu -> UserMenu -> OptionMenu -> EditorMenu -> Exit Menu
  */
 public class GameFrame extends JFrame {
 
@@ -44,10 +46,24 @@ public class GameFrame extends JFrame {
 			Sound.menu.play();
 			Sound.menu.setRepeat(true);
 		}
+
 		this.getLayeredPane().removeAll();
 		this.showMenu();
-		this.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(false);
+		this.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(false);
 		this.showUserField();
+	}
+
+	private void setUiBackground() {
+		JPanel background = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(ResourcesLoader.mainmenu_images.get(10), 0, 0, null);
+			}
+		};
+		background.setBounds(0, 0, getScreen_width(), getScreen_height());
+		background.setVisible(true);
+		addMenu(background, 0);
 	}
 
 	public void restart() {
@@ -130,12 +146,12 @@ public class GameFrame extends JFrame {
 
 	public void showEditor() {
 		panel = new EditorPanel();
-		addMenu(panel, 1);
+		addMenu(panel, 2);
 	}
 
 	public void showExit() {
 		panel = new ExitMenu();
-		addMenu(panel, 2);
+		addMenu(panel, 3);
 	}
 
 	public void showLoading() {
@@ -149,33 +165,35 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showMenu() {
+		setUiBackground();
 		panel = new MainMenu();
-		addMenu(panel, 0);
+		addMenu(panel, 1);
 
 	}
 
 	public void showOptions() {
 		panel = new OptionMenu();
-		addMenu(panel, 1);
+		addMenu(panel, 2);
 	}
 
 	public void showScores() {
 		panel = new ScoreBoard();
-		addMenu(panel, 1);
+		addMenu(panel, 2);
 	}
 
 	public void showUserField() {
 		panel = new UsernameMenu();
-		addMenu(panel, 1);
+		addMenu(panel, 2);
 		((UsernameMenu) panel).getUserfield().requestFocusInWindow();
 		((UsernameMenu) panel).getUserfield().selectAll();
 
 	}
 
 	public void startGame() {
-		panel = new GamePanel();
 		this.getLayeredPane().removeAll();
-		addMenu(panel, 0);
+		setUiBackground();
+		panel = new GamePanel();
+		addMenu(panel, 1);
 		((GamePanel) panel).getManager().start();
 		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.stop();

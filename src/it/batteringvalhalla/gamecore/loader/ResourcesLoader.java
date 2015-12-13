@@ -109,6 +109,9 @@ public class ResourcesLoader {
 
 		mainmenu_images.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
 				.getResource("it/batteringvalhalla/assets/arena/background.png")));
+
+		mainmenu_images.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+				.getResource("it/batteringvalhalla/assets/gui/background-ui.png")));
 	}
 
 	public static synchronized void loadOptionMenuImages() throws IOException {

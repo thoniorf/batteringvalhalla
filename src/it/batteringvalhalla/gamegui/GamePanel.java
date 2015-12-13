@@ -35,7 +35,6 @@ public class GamePanel extends JPanel {
 		super();
 		this.frame = GameFrame.instance();
 		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
-		this.setOpaque(true);
 		this.setPreferredSize(new Dimension(1024, 768));
 		this.setFocusable(true);
 		this.setFocusTraversalKeysEnabled(true);
@@ -43,13 +42,11 @@ public class GamePanel extends JPanel {
 		playerANDscore = new JLabel("Player 1    Match: 1");
 		playerANDscore.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 36));
 		playerANDscore.setAlignmentX(0.50f);
-		// playerANDscore.setBounds(CenterComp.centerX(playerANDscore.getWidth()),
-		// 12, playerANDscore.getWidth(),
-		// playerANDscore.getHeight());
 		add(playerANDscore);
 		inputkey = new InputHandler();
 		addKeyListener(inputkey);
 		init();
+		this.setOpaque(false);
 		setVisible(true);
 
 	}

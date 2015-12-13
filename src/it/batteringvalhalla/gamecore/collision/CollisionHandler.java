@@ -3,7 +3,6 @@ package it.batteringvalhalla.gamecore.collision;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.object.AbstractGameObject;
 import it.batteringvalhalla.gamecore.object.actor.Actor;
-
 import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Rectangle;
@@ -12,13 +11,13 @@ import java.util.List;
 
 public class CollisionHandler {
 	QuadTree quadtree;
-	
+
 	ArrayList<AbstractGameObject> returnsobjects;
 
 	public CollisionHandler(Rectangle rect) {
 		quadtree = new QuadTree(0, rect);
 		returnsobjects = new ArrayList<AbstractGameObject>();
-		
+
 	}
 
 	@SuppressWarnings("unused")
@@ -83,7 +82,8 @@ public class CollisionHandler {
 
 	private void postCollision(Actor a1, Actor a2) {
 		if (ManagerFilePlayer.soundOn()) {
-			Sound.collision.play();
+			Sound.collision().setFramePosition(0);
+			Sound.collision().start();
 		}
 
 		float newSpx1 = a1.getSpeedX() + 2 * a2.getSpeedX();

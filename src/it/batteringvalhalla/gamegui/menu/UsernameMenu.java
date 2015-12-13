@@ -1,5 +1,13 @@
 package it.batteringvalhalla.gamegui.menu;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.object.actor.Player;
+import it.batteringvalhalla.gamegui.CenterComp;
+import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
+import it.batteringvalhalla.gamegui.sound.Sound;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -11,14 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
-
-import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamecore.object.actor.Player;
-import it.batteringvalhalla.gamegui.CenterComp;
-import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
-import it.batteringvalhalla.gamegui.sound.Sound;
 
 public class UsernameMenu extends JPanel {
 
@@ -36,22 +36,27 @@ public class UsernameMenu extends JPanel {
 	public UsernameMenu() {
 		super(new GridBagLayout());
 		this.frame = GameFrame.instance();
-		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
+		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width,
+				height);
 		setOpaque(false);
 		constraints = new GridBagConstraints();
-		yes = new JButtonRound(ResourcesLoader.exitmenu_images.get(5), ResourcesLoader.exitmenu_images.get(6));
-		no = new JButtonRound(ResourcesLoader.exitmenu_images.get(7), ResourcesLoader.exitmenu_images.get(8));
+		yes = new JButtonRound(ResourcesLoader.exitmenu_images.get(5),
+				ResourcesLoader.exitmenu_images.get(6));
+		no = new JButtonRound(ResourcesLoader.exitmenu_images.get(7),
+				ResourcesLoader.exitmenu_images.get(8));
 		userfield = new JTextField();
 
 		userfield.setBorder(null);
 		userfield.setOpaque(false);
-		userfield.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 72));
+		userfield.setFont(new Font(ResourcesLoader.gothic.getName(),
+				ResourcesLoader.gothic.getStyle(), 72));
 		userfield.setHorizontalAlignment(JTextField.CENTER);
 		userfield.setDocument(new PlainDocument() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			public void insertString(int offs, String str, AttributeSet a)
+					throws BadLocationException {
 				if (str == null) {
 					return;
 				}
@@ -98,19 +103,21 @@ public class UsernameMenu extends JPanel {
 	private void listenerLoader() {
 		yes.addActionListener(e -> {
 			if (ManagerFilePlayer.soundOn()) {
-				Sound.button.play();
+				Sound.button().start();
 			}
 			Player.setName(userfield.getText());
 			frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
-			frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(2)[0]);
+			frame.getLayeredPane().remove(
+					frame.getLayeredPane().getComponentsInLayer(2)[0]);
 		});
 		no.addActionListener(e -> {
 			if (ManagerFilePlayer.soundOn()) {
-				Sound.button.play();
+				Sound.button().start();
 			}
 			Player.setName("Player 1");
 			frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
-			frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(2)[0]);
+			frame.getLayeredPane().remove(
+					frame.getLayeredPane().getComponentsInLayer(2)[0]);
 		});
 	}
 

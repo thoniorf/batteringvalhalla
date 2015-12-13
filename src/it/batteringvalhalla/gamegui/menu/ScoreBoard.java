@@ -126,13 +126,13 @@ public class ScoreBoard extends JPanel {
 	private void listenerLoader() {
 		restart.addActionListener(e -> {
 			if (ManagerFilePlayer.soundOn()) {
-				Sound.button.play();
+				Sound.button().start();
 			}
 			frame.startGame();
 		});
 		exit.addActionListener(e -> {
 			if (ManagerFilePlayer.soundOn()) {
-				Sound.button.play();
+				Sound.button().start();
 			}
 			frame.restart();
 		});

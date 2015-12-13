@@ -55,7 +55,7 @@ public class CollisionShape extends Rectangle {
 	}
 
 	public void updateCollisionpoint() {
-		this.collisionpoint = 3;
+		this.collisionpoint = 0;
 	}
 
 	public void downgradeCollisionpoint() {
@@ -69,6 +69,7 @@ public class CollisionShape extends Rectangle {
 		// TODO new contains method
 		return super.contains(x, y);
 	}
+
 	public void paint(Graphics g) {
 		g.fillRect(x, y, 40, 50);
 	}

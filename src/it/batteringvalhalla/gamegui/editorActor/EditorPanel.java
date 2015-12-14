@@ -15,6 +15,7 @@ import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
 
 public class EditorPanel extends JPanel {
 
@@ -39,19 +40,26 @@ public class EditorPanel extends JPanel {
 	private static final int y1 = 220;
 	private static final int y2 = 320;
 	private static final int y3 = 420;
-	private static final int yTesta = 200;
-	private static final int yBusto = 300;
-	private static final int yCapra = 400;
+	private static final int yTesta = 250;
+	private static final int yBusto = 280;
+	private static final int yCapra = 300;
 	private static final int xSave = 80;
 	private static final int xExit = 920;
 	private static final int yComandi = 600;
 	private static final int xImage = 480;
-	private Rectangle2D tasto1;
+//	private Rectangle2D tasto1;
 	private Rectangle2D tasto2;
 	private Rectangle2D tasto3;
 	private Rectangle2D tasto4;
 	private Rectangle2D tasto5;
 	private Rectangle2D tasto6;
+	private JButtonRound tasto1;
+//	private JButtonRound tasto2;
+//	private JButtonRound tasto3;
+//	private JButtonRound tasto4;
+//	private JButtonRound tasto5;
+//	private JButtonRound tasto6;
+	
 	private Rectangle2D save;
 	private Rectangle2D exit;
 	private ImageEditor ie;
@@ -66,7 +74,7 @@ public class EditorPanel extends JPanel {
 		setOpaque(false);
 		setBackground(Color.PINK);
 
-		tasto1 = new Rectangle(x1, y1, WIDTHFRECCIE, HEIGHTFRECCIE);
+		tasto1 = new JButtonRound(ResourcesLoader.leftArrow.get(0),ResourcesLoader.leftArrow.get(0));
 		tasto2 = new Rectangle(x2, y1, WIDTHFRECCIE, HEIGHTFRECCIE);
 		tasto3 = new Rectangle(x1, y2, WIDTHFRECCIE, HEIGHTFRECCIE);
 		tasto4 = new Rectangle(x2, y2, WIDTHFRECCIE, HEIGHTFRECCIE);
@@ -166,17 +174,19 @@ public class EditorPanel extends JPanel {
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		super.paint(g);
+		super.paint(g2d);
 		g2d.drawImage(ie.getSfondo(), 0, 0, WIDTHSFONDO, HEIGHTSFONDO, null);
+		
 		g2d.drawImage(ie.getFrecciaSinistra(), x1, y1, WIDTHFRECCIE, HEIGHTFRECCIE, null);
 		g2d.drawImage(ie.getFrecciaSinistra(), x1, y2, WIDTHFRECCIE, HEIGHTFRECCIE, null);
 		g2d.drawImage(ie.getFrecciaSinistra(), x1, y3, WIDTHFRECCIE, HEIGHTFRECCIE, null);
 		g2d.drawImage(ie.getFrecciaDestra(), x2, y1, WIDTHFRECCIE, HEIGHTFRECCIE, null);
 		g2d.drawImage(ie.getFrecciaDestra(), x2, y2, WIDTHFRECCIE, HEIGHTFRECCIE, null);
 		g2d.drawImage(ie.getFrecciaDestra(), x2, y3, WIDTHFRECCIE, HEIGHTFRECCIE, null);
-		g2d.drawImage(ie.getImageHead(), xImage, yTesta, WIDTHTESTA, HEIGHTESTA, null);
-		g2d.drawImage(ie.getImageBust(), xImage, yBusto, WIDTHBUSTO, HEIGHTBUSTO, null);
-		g2d.drawImage(ie.getImageGoat(), xImage, yCapra, WIDTHCAPRA, HEIGHTCAPRA, null);
+		g2d.drawImage(ie.getImageGoat(), xImage,yCapra, WIDTHCAPRA, HEIGHTCAPRA, null);
+		g2d.drawImage(ResourcesLoader.actor_body, xImage,yTesta, WIDTHTESTA, HEIGHTESTA, null);
+		//g2d.drawImage(ie.getImageHead(), xImage, yTesta, WIDTHTESTA, HEIGHTESTA, null);
+		g2d.drawImage(ie.getImageBust(), xImage-15, yBusto, WIDTHBUSTO, HEIGHTBUSTO, null);
 		g2d.drawImage(ie.getExit(), xExit, yComandi, WIDTHTASTI, HEIGHTTASTI, null);
 		g2d.drawImage(ie.getSave(), xSave, yComandi, WIDTHTASTI, HEIGHTTASTI, null);
 		g.setColor(Color.BLACK);
@@ -186,8 +196,8 @@ public class EditorPanel extends JPanel {
 
 	public void Chiudere() {
 
-		frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
-		frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(2)[0]);
+		frame.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(true);
+		frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(1)[0]);
 	}
 
 	public void showExitConfirm() {

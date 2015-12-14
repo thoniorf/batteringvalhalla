@@ -196,8 +196,8 @@ public class EditorPanel extends JPanel {
 
 	public void Chiudere() {
 
-		frame.getLayeredPane().getComponentsInLayer(0)[0].setEnabled(true);
-		frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(1)[0]);
+		frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
+		frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(2)[0]);
 	}
 
 	public void showExitConfirm() {

@@ -1,5 +1,8 @@
 package it.batteringvalhalla.gamecore.loader;
 
+import it.batteringvalhalla.gamecore.animation.Sprite;
+import it.batteringvalhalla.gamecore.object.actor.Direction;
+
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -233,24 +236,29 @@ public class ResourcesLoader {
 		imageHead = new ArrayList<Image>();
 		leftArrow = new ArrayList<Image>();
 		rightArrow = new ArrayList<Image>();
+		Sprite tmp;
 
-		for (int i = 0; i < sizeHead; i++) {
-			imageHead.add(ImageIO
-					.read(ResourcesLoader.class.getClassLoader()
-							.getResource("it/batteringvalhalla/assets/editor/head" + i + ".png"))
-					.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
+//		for (int i = 0; i <ResourcesLoader.actor_head.size(); i++) {
+//			tmp=new Sprite(ResourcesLoader.actor_head.get(i), ResourcesLoader.actor_head.get(i).getWidth(null),
+//					ResourcesLoader.actor_head.get(i).getHeight(null), 115, 94, 1, 1, 0, 0, 0);
+//			tmp.update(Direction.est);
+//			imageHead.add(tmp.getFrame());
+//		}
+		for (int i = 0; i < ResourcesLoader.actor_weapon.size(); i++) {
+			tmp= new Sprite(ResourcesLoader.actor_weapon.get(i),
+					ResourcesLoader.actor_weapon.get(i).getWidth(null), ResourcesLoader.actor_weapon.get(i).getHeight(null),
+					103, 76, 1, 3, 0, 0, 0);
+			tmp.update(Direction.est);
+			tmp.update(Direction.est);
+			
+			imageBust.add(tmp.getFrame());
 		}
-		for (int i = 0; i < sizeBust; i++) {
-			imageBust.add(ImageIO
-					.read(ResourcesLoader.class.getClassLoader()
-							.getResource("it/batteringvalhalla/assets/editor/bust" + i + ".png"))
-					.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
-		}
-		for (int i = 0; i < sizeGoat; i++) {
-			imageGoat.add(ImageIO
-					.read(ResourcesLoader.class.getClassLoader()
-							.getResource("it/batteringvalhalla/assets/editor/goat" + i + ".png"))
-					.getScaledInstance(123, 133, java.awt.Image.SCALE_SMOOTH));
+		for (int i = 0; i < ResourcesLoader.actor_mount.size(); i++) {
+			tmp=new Sprite(ResourcesLoader.actor_mount.get(i), ResourcesLoader.actor_mount.get(i).getWidth(null),
+					ResourcesLoader.actor_mount.get(i).getHeight(null), 117, 88, 1, 1, 0, 0, 0);
+			tmp.update(Direction.est);
+			imageGoat.add(tmp.getFrame());
+			
 
 		}
 		Sfondo = ImageIO

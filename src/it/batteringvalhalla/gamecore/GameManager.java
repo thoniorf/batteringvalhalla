@@ -85,11 +85,6 @@ public class GameManager extends Thread {
 				nextMatch();
 			}
 			panel.getInput();
-			try {
-				Thread.sleep(30);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 		Player.setScore(world.getMatch());
 		GameFrame.instance().showScores();

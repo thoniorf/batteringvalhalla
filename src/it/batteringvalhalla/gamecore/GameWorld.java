@@ -29,7 +29,7 @@ public class GameWorld {
 
 	private void altPlayer() {
 		player.setSpeedX(0f);
-		player.setSpeedX(0f);
+		player.setSpeedY(0f);
 	}
 
 	public void endGame() {
@@ -100,22 +100,15 @@ public class GameWorld {
 	}
 
 	public void update() {
-		Boolean isenemy = false;
 		zOrder();
 		for (int i = 0; i < objects.size(); i++) {
-			if (objects.get(i) instanceof Enemy) {
-				isenemy = true;
-			} else {
-				isenemy = false;
-			}
 			if (((Actor) objects.get(i)).getLive() != 0) {
 				objects.get(i).update();
 				if (!arena.getEdge().contains(objects.get(i).getX(), objects.get(i).getY())) {
 					((Actor) objects.get(i)).setLive(0);
-					if (isenemy) {
+					if (objects.get(i) instanceof Enemy) {
 						enemies -= 1;
 					}
-
 				}
 			}
 		}

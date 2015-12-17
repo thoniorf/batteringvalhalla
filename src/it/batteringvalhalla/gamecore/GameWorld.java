@@ -12,24 +12,33 @@ import it.batteringvalhalla.gamecore.object.actor.Enemy;
 import it.batteringvalhalla.gamecore.object.actor.Player;
 
 public class GameWorld {
+
+	private static GameWorld world;
 	// Objects
-	Arena arena;
-	CopyOnWriteArrayList<AbstractGameObject> objects;
-	Actor player;
+	private Arena arena;
+	private Actor player;
+	private CopyOnWriteArrayList<AbstractGameObject> objects;
 
-	// behavior var
-	Integer match;
-	Integer enemies;
-	Integer n_enemy;
-	Integer state;
+	// behavior vars
+	private Integer match;
+	private Integer enemies;
+	private Integer n_enemy;
+	private static Integer state;
 
-	public GameWorld() {
-		reset();
+	private GameWorld() {
+		this.reset();
+	}
+
+	public static GameWorld instance() {
+		if (world == null) {
+			world = new GameWorld();
+		}
+		return world;
 	}
 
 	private void altPlayer() {
-		player.setSpeedX(0f);
-		player.setSpeedY(0f);
+		this.player.setSpeedX(0f);
+		this.player.setSpeedY(0f);
 	}
 
 	public void endGame() {
@@ -40,12 +49,12 @@ public class GameWorld {
 		return match;
 	}
 
-	public Integer getState() {
+	public static Integer getState() {
 		return state;
 	}
 
-	public void setState(Integer state) {
-		this.state = state;
+	public static void setState(Integer s) {
+		state = s;
 	}
 
 	public List<AbstractGameObject> getObjects() {
@@ -58,13 +67,13 @@ public class GameWorld {
 
 	// remember the enemies constant
 	public void newMatch(int n_enemies) {
-		altPlayer();
+		this.altPlayer();
 		this.match += 1;
 		this.enemies = n_enemies;
-		objects.clear();
-		player.setX(arena.getSpawn().get(0).x);
-		player.setY(arena.getSpawn().get(0).y);
-		objects.add(player);
+		this.objects.clear();
+		this.player.setX(arena.getSpawn().get(0).x);
+		this.player.setY(arena.getSpawn().get(0).y);
+		this.objects.add(player);
 		for (int i = 0; i < n_enemies && i < arena.getSpawn().size(); i++) {
 			Enemy tmp = new Enemy(arena.getSpawn().get(i + 1).x, arena.getSpawn().get(i + 1).y);
 			tmp.setIA(new IAFocus(tmp, arena, objects), match);
@@ -76,21 +85,21 @@ public class GameWorld {
 		this.match = new Integer(0);
 		this.enemies = new Integer(0);
 		this.n_enemy = new Integer(0);
-		this.state = new Integer(0);
-		arena = new Arena();
-		objects = new CopyOnWriteArrayList<AbstractGameObject>();
-		player = new Player(arena.getSpawn().get(0).x, arena.getSpawn().get(0).y);
+		state = new Integer(0);
+		this.arena = new Arena();
+		this.objects = new CopyOnWriteArrayList<AbstractGameObject>();
+		this.player = new Player(arena.getSpawn().get(0).x, arena.getSpawn().get(0).y);
 	}
 
 	public void nextMatch() {
-		altPlayer();
-		n_enemy = (n_enemy + 1) % 8;
-		newMatch(n_enemy);
+		this.altPlayer();
+		this.n_enemy = (n_enemy + 1) % 8;
+		this.newMatch(n_enemy);
 
 	}
 
 	public void paint(Graphics g) {
-		arena.paint(g);
+		this.arena.paint(g);
 		for (AbstractGameObject obj : objects) {
 			if (((Actor) obj).getLive() != 0) {
 				obj.paint(g);
@@ -100,7 +109,7 @@ public class GameWorld {
 	}
 
 	public void update() {
-		zOrder();
+		this.zOrder();
 		for (int i = 0; i < objects.size(); i++) {
 			if (((Actor) objects.get(i)).getLive() != 0) {
 				objects.get(i).update();
@@ -122,6 +131,6 @@ public class GameWorld {
 	}
 
 	public void zOrder() {
-		objects.sort(null);
+		this.objects.sort(null);
 	}
 }

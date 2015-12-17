@@ -1,29 +1,39 @@
 package it.batteringvalhalla.gamecore.input;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class InputHandler implements KeyListener {
+public class InputHandler extends KeyAdapter {
 
-	boolean keys[] = { false, false, false, false, false, false };
-	private static int N_keys = 6;
+	private static InputHandler handler;
+	private static boolean keys[] = { false, false, false, false, false, false };
+	private static final int N_keys = 5;
 
-	public InputHandler() {
+	private InputHandler() {
+
 	}
 
-	public void resetKeys() {
+	public static InputHandler instance() {
+		if (handler == null) {
+			handler = new InputHandler();
+		}
+		return handler;
+	}
+
+	public static void resetKeys() {
 		for (int i = 0; i <= N_keys; i++) {
 			keys[i] = false;
 		}
 
 	}
 
-	public boolean[] getKeys() {
+	public static boolean[] getKeys() {
 		return keys;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		super.keyPressed(e);
 		if (e.getKeyCode() == KeyEvent.VK_W)
 			keys[0] = true;
 		if (e.getKeyCode() == KeyEvent.VK_S)
@@ -40,6 +50,7 @@ public class InputHandler implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		super.keyReleased(e);
 		if (e.getKeyCode() == KeyEvent.VK_W)
 			keys[0] = false;
 		if (e.getKeyCode() == KeyEvent.VK_S)
@@ -52,11 +63,6 @@ public class InputHandler implements KeyListener {
 			keys[4] = false;
 		if (e.getKeyCode() == KeyEvent.VK_SPACE)
 			keys[5] = false;
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-
 	}
 
 }

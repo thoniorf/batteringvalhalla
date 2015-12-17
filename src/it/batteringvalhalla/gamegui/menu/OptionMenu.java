@@ -1,12 +1,5 @@
 package it.batteringvalhalla.gamegui.menu;
 
-import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamegui.CenterComp;
-import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
-import it.batteringvalhalla.gamegui.sound.Sound;
-
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -17,12 +10,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamegui.CenterComp;
+import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
+import it.batteringvalhalla.gamegui.sound.Sound;
+
 public class OptionMenu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints constraints;
 	private GameFrame frame;
-	private ManagerFilePlayer mfp;
 
 	// Sound graphics objects
 	private JLabel sound_header;
@@ -42,12 +41,10 @@ public class OptionMenu extends JPanel {
 	public OptionMenu() {
 		super(new GridBagLayout());
 		this.frame = GameFrame.instance();
-		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width,
-				height);
+		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
 		setOpaque(false);
 		constraints = new GridBagConstraints();
-		sound_on = new JButtonRound(ResourcesLoader.optionmenu_images.get(0),
-				ResourcesLoader.optionmenu_images.get(1));
+		sound_on = new JButtonRound(ResourcesLoader.optionmenu_images.get(0), ResourcesLoader.optionmenu_images.get(1));
 		sound_off = new JButtonRound(ResourcesLoader.optionmenu_images.get(2),
 				ResourcesLoader.optionmenu_images.get(3));
 		if (ManagerFilePlayer.soundOn()) {
@@ -60,15 +57,11 @@ public class OptionMenu extends JPanel {
 
 		}
 		sound_header = new JLabel("Sounds:");
-		sound_header.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 72));
+		sound_header.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 72));
 		controls_header = new JLabel("Controls");
-		controls_header.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 72));
-		keys_label = new JLabel(new ImageIcon(
-				ResourcesLoader.optionmenu_images.get(7)));
-		back = new JButtonRound(ResourcesLoader.optionmenu_images.get(5),
-				ResourcesLoader.optionmenu_images.get(6));
+		controls_header.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 72));
+		keys_label = new JLabel(new ImageIcon(ResourcesLoader.optionmenu_images.get(7)));
+		back = new JButtonRound(ResourcesLoader.optionmenu_images.get(5), ResourcesLoader.optionmenu_images.get(6));
 
 		constraints.weightx = 0.5;
 		constraints.weighty = 0.5;
@@ -144,8 +137,7 @@ public class OptionMenu extends JPanel {
 				Sound.button().start();
 			}
 			frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
-			frame.getLayeredPane().remove(
-					frame.getLayeredPane().getComponentsInLayer(2)[0]);
+			frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(2)[0]);
 		});
 	}
 }

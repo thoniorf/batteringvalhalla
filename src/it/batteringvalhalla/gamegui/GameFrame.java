@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.editorActor.EditorPanel;
@@ -18,8 +19,10 @@ import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.progress.Loading;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
-/*	0			0			2			2			2				3
+/*	0			0			1			2			2			  2				3
  * Loading -> Background -> MainMenu -> UserMenu -> OptionMenu -> EditorMenu -> Exit Menu
+ * 1			2			 3
+ * GamePanel -> PauseMenu -> ExitMenu
  */
 public class GameFrame extends JFrame {
 
@@ -194,7 +197,7 @@ public class GameFrame extends JFrame {
 		setUiBackground();
 		panel = new GamePanel();
 		addMenu(panel, 1);
-		((GamePanel) panel).getManager().start();
+		GameManager.startNewManager((GamePanel) panel);
 		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.stop();
 			Sound.battle.setRepeat(true);

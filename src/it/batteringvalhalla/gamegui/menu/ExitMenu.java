@@ -1,12 +1,5 @@
 package it.batteringvalhalla.gamegui.menu;
 
-import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamegui.CenterComp;
-import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
-import it.batteringvalhalla.gamegui.sound.Sound;
-
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -15,6 +8,14 @@ import java.awt.Insets;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import it.batteringvalhalla.gamecore.GameWorld;
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamegui.CenterComp;
+import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
+import it.batteringvalhalla.gamegui.sound.Sound;
 
 public class ExitMenu extends JPanel {
 
@@ -32,17 +33,13 @@ public class ExitMenu extends JPanel {
 	public ExitMenu() {
 		super(new GridBagLayout());
 		this.frame = GameFrame.instance();
-		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width,
-				height);
+		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
 		setOpaque(false);
 		constraints = new GridBagConstraints();
-		yes = new JButtonRound(ResourcesLoader.exitmenu_images.get(1),
-				ResourcesLoader.exitmenu_images.get(3));
-		no = new JButtonRound(ResourcesLoader.exitmenu_images.get(2),
-				ResourcesLoader.exitmenu_images.get(4));
+		yes = new JButtonRound(ResourcesLoader.exitmenu_images.get(1), ResourcesLoader.exitmenu_images.get(3));
+		no = new JButtonRound(ResourcesLoader.exitmenu_images.get(2), ResourcesLoader.exitmenu_images.get(4));
 		text = new JLabel("Are you sure ?");
-		text.setFont(new Font(ResourcesLoader.gothic.getName(),
-				ResourcesLoader.gothic.getStyle(), 72));
+		text.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 72));
 
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.weightx = 0.5;
@@ -73,18 +70,33 @@ public class ExitMenu extends JPanel {
 
 				Sound.button().start();
 			}
-			System.exit(0);
+			if (frame.getLayeredPane().getComponentsInLayer(1)[0] instanceof MainMenu) {
+				System.exit(0);
+			} else {
+				frame.restart();
+			}
 		});
 		no.addActionListener(e -> {
 			if (ManagerFilePlayer.soundOn()) {
 
 				Sound.button().start();
 			}
-			frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
-			frame.getLayeredPane().remove(
-					frame.getLayeredPane().getComponentsInLayer(3)[0]);
+			if (frame.getLayeredPane().getComponentsInLayer(1)[0] instanceof MainMenu) {
+				frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
+			} else {
+				GameWorld.instance().setState(1);
+			}
+			frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(3)[0]);
+			frame.getLayeredPane().repaint();
+			frame.repaint();
 		});
 
+	}
+
+	public void setText(String s) {
+		if (s.equals(""))
+			return;
+		text.setText(s);
 	}
 
 	@Override

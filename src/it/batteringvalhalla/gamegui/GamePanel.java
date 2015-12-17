@@ -1,6 +1,5 @@
 package it.batteringvalhalla.gamegui;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,23 +8,15 @@ import java.awt.RenderingHints;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.input.InputHandler;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamecore.object.actor.Direction;
 import it.batteringvalhalla.gamecore.object.actor.Player;
 
 public class GamePanel extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1568479702061945112L;
-	private GameFrame frame;
+	private static final long serialVersionUID = 1L;
 	private GameWorld world;
-	private GameManager manager;
-	private InputHandler inputkey;
 	private JLabel playerANDscore;
 
 	private int width = 1024;
@@ -33,28 +24,20 @@ public class GamePanel extends JPanel {
 
 	public GamePanel() {
 		super();
-		this.frame = GameFrame.instance();
-		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
-		this.setPreferredSize(new Dimension(1024, 768));
+		this.setOpaque(false);
 		this.setFocusable(true);
 		this.setFocusTraversalKeysEnabled(true);
+		this.addKeyListener(InputHandler.instance());
+		InputHandler.resetKeys();
+		this.setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
+		this.world = GameWorld.instance();
 
 		playerANDscore = new JLabel("Player 1    Match: 1");
 		playerANDscore.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 36));
 		playerANDscore.setAlignmentX(0.50f);
 		add(playerANDscore);
-		inputkey = new InputHandler();
-		addKeyListener(inputkey);
-		init();
-		this.setOpaque(false);
+
 		setVisible(true);
-
-	}
-
-	private void init() {
-		manager = new GameManager(this);
-		world = manager.getWorld();
-		manager.init();
 	}
 
 	@Override
@@ -63,53 +46,10 @@ public class GamePanel extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		world.paint(g);
-		paintUI();
+		refreshScoresLabel();
 	}
 
-	public GameManager getManager() {
-		return manager;
-	}
-
-	public GameFrame getFrame() {
-		return frame;
-	}
-
-	public void getInput() {
-		Boolean moving = Boolean.FALSE;
-		if (world.getState() == 1) {
-			if (inputkey.getKeys()[0]) {
-				moving = true;
-				world.getPlayer().setDirection(Direction.nord);
-			}
-			if (inputkey.getKeys()[1]) {
-				moving = true;
-				world.getPlayer().setDirection(Direction.sud);
-			}
-			if (inputkey.getKeys()[2]) {
-				moving = true;
-				world.getPlayer().setDirection(Direction.est);
-			}
-			if (inputkey.getKeys()[3]) {
-				moving = true;
-				world.getPlayer().setDirection(Direction.ovest);
-			}
-			if (inputkey.getKeys()[5]) {
-				moving = true;
-				world.getPlayer().tryCharge();
-			}
-		}
-		if (inputkey.getKeys()[4])
-			world.setState((world.getState() == 1 ? 2 : 1));
-
-		if (!moving)
-			world.getPlayer().setDirection(Direction.stop);
-	}
-
-	public void resetInput() {
-		inputkey.resetKeys();
-	}
-
-	private void paintUI() {
+	private void refreshScoresLabel() {
 		playerANDscore.setText(Player.getName() + "    Match: " + world.getMatch().toString());
 	}
 }

@@ -1,7 +1,12 @@
 package it.batteringvalhalla.gamegui.menu.button;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamegui.sound.Sound;
+
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -32,6 +37,16 @@ public class JButtonRound extends JButton {
 		setDisabledIcon(this.image);
 		this.circle = new Circle2D(width / 2, height / 2,
 				image.getWidth(null) / 2);
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				super.mouseReleased(e);
+				if (ManagerFilePlayer.soundOn()) {
+					Sound.button().setFramePosition(0);
+					Sound.button().start();
+				}
+			}
+		});
 	}
 
 	@Override

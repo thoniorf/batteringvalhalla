@@ -6,7 +6,6 @@ import it.batteringvalhalla.gamecore.object.actor.Player;
 import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
-import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -24,7 +23,7 @@ public class UsernameMenu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints constraints;
-	
+
 	private GameFrame frame;
 	private JButtonRound no;
 	private JButtonRound yes;
@@ -45,7 +44,7 @@ public class UsernameMenu extends JPanel {
 		no = new JButtonRound(ResourcesLoader.exitmenu_images.get(7),
 				ResourcesLoader.exitmenu_images.get(8));
 		userfield = new JTextField();
-		
+
 		userfield.setBorder(null);
 		userfield.setOpaque(false);
 		userfield.setFont(new Font(ResourcesLoader.gothic.getName(),
@@ -67,7 +66,7 @@ public class UsernameMenu extends JPanel {
 
 			}
 		});
-		
+
 		userfield.setText(ManagerFilePlayer.getName());
 
 		constraints.anchor = GridBagConstraints.CENTER;
@@ -103,9 +102,6 @@ public class UsernameMenu extends JPanel {
 
 	private void listenerLoader() {
 		yes.addActionListener(e -> {
-			if (ManagerFilePlayer.soundOn()) {
-				Sound.button().start();
-			}
 			Player.setName(userfield.getText());
 			ManagerFilePlayer.setName(userfield.getText());
 			frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
@@ -113,9 +109,6 @@ public class UsernameMenu extends JPanel {
 					frame.getLayeredPane().getComponentsInLayer(2)[0]);
 		});
 		no.addActionListener(e -> {
-			if (ManagerFilePlayer.soundOn()) {
-				Sound.button().start();
-			}
 			Player.setName(ManagerFilePlayer.getName());
 			frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
 			frame.getLayeredPane().remove(

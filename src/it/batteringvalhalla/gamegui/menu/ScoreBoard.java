@@ -1,5 +1,12 @@
 package it.batteringvalhalla.gamegui.menu;
 
+import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.object.actor.Player;
+import it.batteringvalhalla.gamecore.sqlite.ScoreFetch;
+import it.batteringvalhalla.gamegui.CenterComp;
+import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,15 +18,6 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamecore.object.actor.Player;
-import it.batteringvalhalla.gamecore.sqlite.ScoreFetch;
-import it.batteringvalhalla.gamegui.CenterComp;
-import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
-import it.batteringvalhalla.gamegui.sound.Sound;
 
 public class ScoreBoard extends JPanel {
 
@@ -38,16 +36,20 @@ public class ScoreBoard extends JPanel {
 	public ScoreBoard() {
 		super(new GridBagLayout());
 		this.frame = GameFrame.instance();
-		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
+		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width,
+				height);
 		setOpaque(false);
 		constraints = new GridBagConstraints();
 		labels = new ArrayList<JLabel>();
 		loadScores();
 
-		restart = new JButtonRound(ResourcesLoader.scoreboard_images.get(0), ResourcesLoader.scoreboard_images.get(1));
-		exit = new JButtonRound(ResourcesLoader.exitmenu_images.get(7), ResourcesLoader.exitmenu_images.get(8));
+		restart = new JButtonRound(ResourcesLoader.scoreboard_images.get(0),
+				ResourcesLoader.scoreboard_images.get(1));
+		exit = new JButtonRound(ResourcesLoader.exitmenu_images.get(7),
+				ResourcesLoader.exitmenu_images.get(8));
 		JLabel score_header = new JLabel("Scoreboard");
-		score_header.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 72));
+		score_header.setFont(new Font(ResourcesLoader.gothic.getName(),
+				ResourcesLoader.gothic.getStyle(), 72));
 
 		constraints.weightx = 0.5;
 		constraints.weighty = 0.5;
@@ -99,10 +101,12 @@ public class ScoreBoard extends JPanel {
 		scores = new ArrayList<String>();
 		ScoreFetch scorefetch = new ScoreFetch();
 		scorefetch.insertScore(Player.getScore(), Player.getName());
-		scorefetch.execQuery("Select * from scores order by match desc limit 8;", scores);
+		scorefetch.execQuery(
+				"Select * from scores order by match desc limit 8;", scores);
 		for (String score : scores) {
 			jAppoggio = new JLabel(score);
-			jAppoggio.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 36));
+			jAppoggio.setFont(new Font(ResourcesLoader.gothic.getName(),
+					ResourcesLoader.gothic.getStyle(), 36));
 			labels.add(jAppoggio);
 		}
 	}
@@ -110,21 +114,16 @@ public class ScoreBoard extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.drawImage(ResourcesLoader.optionmenu_images.get(4), 0, 0, null);
 	}
 
 	private void listenerLoader() {
 		restart.addActionListener(e -> {
-			if (ManagerFilePlayer.soundOn()) {
-				Sound.button().start();
-			}
 			frame.startGame();
 		});
 		exit.addActionListener(e -> {
-			if (ManagerFilePlayer.soundOn()) {
-				Sound.button().start();
-			}
 			frame.restart();
 		});
 

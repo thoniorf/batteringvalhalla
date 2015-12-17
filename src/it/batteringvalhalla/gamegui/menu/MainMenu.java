@@ -6,7 +6,6 @@ import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonCustom;
 import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
-import it.batteringvalhalla.gamegui.sound.Sound;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -87,34 +86,18 @@ public class MainMenu extends JPanel {
 
 	private void listenerLoader() {
 		play.addActionListener(e -> {
-			if (ManagerFilePlayer.soundOn()) {
-				Sound.button().setFramePosition(0);
-				Sound.button().start();
-			}
 			setEnabled(false);
 			frame.startGame();
 		});
 		options.addActionListener(e -> {
-			if (ManagerFilePlayer.soundOn()) {
-				Sound.button().setFramePosition(0);
-				Sound.button().start();
-			}
 			setEnabled(false);
 			frame.showOptions();
 		});
 		editor.addActionListener(e -> {
-			if (ManagerFilePlayer.soundOn()) {
-				Sound.button().setFramePosition(0);
-				Sound.button().start();
-			}
 			setEnabled(false);
 			frame.showEditor();
 		});
 		exit.addActionListener(e -> {
-			if (ManagerFilePlayer.soundOn()) {
-				Sound.button().setFramePosition(0);
-				Sound.button().start();
-			}
 			setEnabled(false);
 			frame.showExit();
 		});

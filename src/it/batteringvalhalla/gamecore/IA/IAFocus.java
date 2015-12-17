@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.object.AbstractGameObject;
+import it.batteringvalhalla.gamecore.object.actor.Actor;
 import it.batteringvalhalla.gamecore.object.actor.Direction;
 import it.batteringvalhalla.gamecore.object.actor.Enemy;
 
@@ -20,12 +21,14 @@ public class IAFocus extends AbstractIA {
 
 	}
 
-	protected AbstractGameObject getEnemyClose() {
+	protected AbstractGameObject getMyEnemy() {
 		AbstractGameObject tmp = null;
-
 		int radiusTmp, radiusPlayer;
 		for (int i = 0; i < players.size(); i++) {
-			if (npc != players.get(i)) {
+		
+			
+			if(players.get(i) instanceof Actor){
+			if (npc != players.get(i)&& ((Actor) players.get(i)).getLive()>0) {
 				if (tmp != null) {
 					radiusTmp = Math.abs(tmp.getX() - npc.getX()) + Math.abs(tmp.getY() - npc.getY());
 					radiusPlayer = Math.abs(players.get(i).getX() - npc.getX())
@@ -34,7 +37,7 @@ public class IAFocus extends AbstractIA {
 						tmp = players.get(i);
 				} else
 					tmp = players.get(i);
-			}
+			}}
 		}
 		return tmp;
 	}
@@ -46,7 +49,7 @@ public class IAFocus extends AbstractIA {
 
 	@Override
 	public void update() {
-		myEnemy = getEnemyClose();
+		myEnemy = getMyEnemy();
 
 		currentime = System.currentTimeMillis();
 

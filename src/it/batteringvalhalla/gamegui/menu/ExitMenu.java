@@ -73,6 +73,7 @@ public class ExitMenu extends JPanel {
 			if (frame.getLayeredPane().getComponentsInLayer(1)[0] instanceof MainMenu) {
 				System.exit(0);
 			} else {
+				GameWorld.setState(5);
 				frame.restart();
 			}
 		});
@@ -84,7 +85,7 @@ public class ExitMenu extends JPanel {
 			if (frame.getLayeredPane().getComponentsInLayer(1)[0] instanceof MainMenu) {
 				frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
 			} else {
-				GameWorld.instance().setState(1);
+				GameWorld.setState(1);
 			}
 			frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(3)[0]);
 			frame.getLayeredPane().repaint();

@@ -63,7 +63,15 @@ public class GameManager extends Thread {
 				GameWorld.setState(2);
 				GameFrame.instance().showExit();
 				((ExitMenu) GameFrame.instance().getLayeredPane().getComponentsInLayer(3)[0])
-						.setText("Return to Main Menu ?");
+						.setText("Leave the game ?");
+			} else {
+				InputHandler.resetKeys();
+				GameWorld.setState(1);
+				GameFrame.instance().getLayeredPane()
+						.remove(GameFrame.instance().getLayeredPane().getComponentsInLayer(3)[0]);
+				GameFrame.instance().getLayeredPane().repaint();
+				GameFrame.instance().repaint();
+
 			}
 		}
 
@@ -120,7 +128,10 @@ public class GameManager extends Thread {
 				nextMatch();
 			}
 			this.getInput();
-			System.out.println("running - " + GameWorld.getState());
+			// premature thread exit
+			if (GameWorld.getState().equals(5)) {
+				return;
+			}
 		}
 		Player.setScore(world.getMatch());
 		GameFrame.instance().showScores();

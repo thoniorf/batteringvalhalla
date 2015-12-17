@@ -11,6 +11,7 @@ public class ManagerFilePlayer {
 private static File f;
 private static int top,mid,bot;
 private static String sound;
+private static String name;
 private final int  ASCIICODE;
 
 public ManagerFilePlayer() {
@@ -25,6 +26,7 @@ public ManagerFilePlayer() {
     		f.createNewFile();
     		top=mid=bot=0;
     		sound="0";
+    		name="Player1";
     		save();
     		
     	}catch (IOException e) {
@@ -40,9 +42,8 @@ public void load(){
 		top=s.charAt(0)-ASCIICODE;
 		mid=s.charAt(1)-ASCIICODE;
 		bot=s.charAt(2)-ASCIICODE;
-		
 		sound=br.readLine();
-	
+		name=br.readLine();
 		br.close();
 	}
 	catch (IOException e) {
@@ -55,7 +56,8 @@ public static void save(){
 		BufferedWriter bw=new BufferedWriter(w);
 	
 		bw.write(top+""+mid+""+bot+"\n");
-		bw.write(sound);
+		bw.write(sound+"\n");
+		bw.write(name);
 		
 	    bw.flush();
 		
@@ -98,6 +100,14 @@ public static boolean soundOn(){
 	if(sound.equals("1"))
 		return true;
 	return false;
+}
+
+public static String getName() {
+	return name;
+}
+public static void setName(String name) {
+	ManagerFilePlayer.name = name;
+	save();
 }
 
 }

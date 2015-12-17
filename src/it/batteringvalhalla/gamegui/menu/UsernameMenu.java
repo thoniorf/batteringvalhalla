@@ -24,7 +24,7 @@ public class UsernameMenu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints constraints;
-	private ManagerFilePlayer mfp;
+	
 	private GameFrame frame;
 	private JButtonRound no;
 	private JButtonRound yes;
@@ -45,7 +45,7 @@ public class UsernameMenu extends JPanel {
 		no = new JButtonRound(ResourcesLoader.exitmenu_images.get(7),
 				ResourcesLoader.exitmenu_images.get(8));
 		userfield = new JTextField();
-
+		
 		userfield.setBorder(null);
 		userfield.setOpaque(false);
 		userfield.setFont(new Font(ResourcesLoader.gothic.getName(),
@@ -67,7 +67,8 @@ public class UsernameMenu extends JPanel {
 
 			}
 		});
-		userfield.setText("Player 1");
+		
+		userfield.setText(ManagerFilePlayer.getName());
 
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -106,6 +107,7 @@ public class UsernameMenu extends JPanel {
 				Sound.button().start();
 			}
 			Player.setName(userfield.getText());
+			ManagerFilePlayer.setName(userfield.getText());
 			frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
 			frame.getLayeredPane().remove(
 					frame.getLayeredPane().getComponentsInLayer(2)[0]);
@@ -114,7 +116,7 @@ public class UsernameMenu extends JPanel {
 			if (ManagerFilePlayer.soundOn()) {
 				Sound.button().start();
 			}
-			Player.setName("Player 1");
+			Player.setName(ManagerFilePlayer.getName());
 			frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
 			frame.getLayeredPane().remove(
 					frame.getLayeredPane().getComponentsInLayer(2)[0]);

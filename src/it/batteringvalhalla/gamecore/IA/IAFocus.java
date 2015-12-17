@@ -39,6 +39,8 @@ public class IAFocus extends AbstractIA {
 					tmp = players.get(i);
 			}}
 		}
+		if(tmp==null)
+			tmp=npc;
 		return tmp;
 	}
 

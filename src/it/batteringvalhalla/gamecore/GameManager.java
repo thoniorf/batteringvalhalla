@@ -18,11 +18,6 @@ public class GameManager extends Thread {
 	private final static int MAX_FRAME_SKIP = 5;
 	private final static int FRAME_PERIOD = 1000 / MAX_FPS;
 
-	private long beginTime; // the time when the cycle begun
-	private long timeDiff; // the time it took for the cycle to execute
-	private int sleepTime; // ms to sleep (<0 if we're behind)
-	private int framesSkipped; // number of frames being skipped
-
 	private GameWorld world;
 	private GamePanel panel;
 	private CollisionHandler collisiondander;
@@ -34,28 +29,29 @@ public class GameManager extends Thread {
 
 	public void getInput() {
 		Boolean moving = Boolean.FALSE;
-		if (GameWorld.getState().equals(1)) {
-			if (InputHandler.getKeys()[0]) {
-				moving = true;
-				world.getPlayer().setDirection(Direction.nord);
-			}
-			if (InputHandler.getKeys()[1]) {
-				moving = true;
-				world.getPlayer().setDirection(Direction.sud);
-			}
-			if (InputHandler.getKeys()[2]) {
-				moving = true;
-				world.getPlayer().setDirection(Direction.est);
-			}
-			if (InputHandler.getKeys()[3]) {
-				moving = true;
-				world.getPlayer().setDirection(Direction.ovest);
-			}
-			if (InputHandler.getKeys()[5] && (InputHandler.getKeys()[0] || InputHandler.getKeys()[1]
-					|| InputHandler.getKeys()[2] || InputHandler.getKeys()[3])) {
-				moving = true;
-				world.getPlayer().tryCharge();
-			}
+		if (!GameWorld.getState().equals(1)) {
+			return;
+		}
+		if (InputHandler.getKeys()[0]) {
+			moving = true;
+			world.getPlayer().setDirection(Direction.nord);
+		}
+		if (InputHandler.getKeys()[1]) {
+			moving = true;
+			world.getPlayer().setDirection(Direction.sud);
+		}
+		if (InputHandler.getKeys()[2]) {
+			moving = true;
+			world.getPlayer().setDirection(Direction.est);
+		}
+		if (InputHandler.getKeys()[3]) {
+			moving = true;
+			world.getPlayer().setDirection(Direction.ovest);
+		}
+		if (InputHandler.getKeys()[5] && (InputHandler.getKeys()[0] || InputHandler.getKeys()[1]
+				|| InputHandler.getKeys()[2] || InputHandler.getKeys()[3])) {
+			moving = true;
+			world.getPlayer().tryCharge();
 		}
 		if (InputHandler.getKeys()[4]) {
 			if (GameWorld.getState().equals(1)) {
@@ -86,7 +82,7 @@ public class GameManager extends Thread {
 	private void nextMatch() {
 		try {
 			Thread.sleep(1500);
-			world.setState(1);
+			GameWorld.setState(1);
 			world.nextMatch();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -96,7 +92,10 @@ public class GameManager extends Thread {
 	@Override
 	public void run() {
 		super.run();
-		sleepTime = 0;
+		long beginTime = 0; // the time when the cycle begun
+		long timeDiff = 0; // the time it took for the cycle to execute
+		int sleepTime = 0; // ms to sleep (<0 if we're behind)
+		int framesSkipped = 0; // number of frames being skipped
 		panel.requestFocus();
 		while (GameWorld.getState() != 4) {
 			while (GameWorld.getState() == 1) {
@@ -132,6 +131,7 @@ public class GameManager extends Thread {
 			if (GameWorld.getState().equals(5)) {
 				return;
 			}
+			// System.out.println("Running");
 		}
 		Player.setScore(world.getMatch());
 		GameFrame.instance().showScores();

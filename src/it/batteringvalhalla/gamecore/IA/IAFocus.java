@@ -1,6 +1,7 @@
 package it.batteringvalhalla.gamecore.IA;
 
 import java.util.List;
+import java.util.Random;
 
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.object.AbstractGameObject;
@@ -76,7 +77,23 @@ public class IAFocus extends AbstractIA {
 		} else if (currentime - startime >= timeMove + timePause) {
 			startime = currentime;
 		}
+		else if(currentime - startime == timeMove)
+			randomMove();
+		else {
+			while(!rightDir(Direction.toInt(npc.getDirection()))){
+				randomMove();
+			}
+		}
+		
 
 	}
+
+	private void randomMove() {
+		int dir=new Random().nextInt(5)+1;
+		npc.setDirection(Direction.fromInt(dir));
+		
+	}
+	
+	
 
 }

@@ -26,13 +26,13 @@ public class AbstractIA {
 
 	public void update() {
 		currentime = System.currentTimeMillis();
-		int dir = 4;
+		int dir = 5;
 		
 		if (currentime - startime <= 5000) {
 			startime = currentime;
-			dir = new Random().nextInt(5);
+			dir = new Random().nextInt(6)+1;
 			if (!rightDir(dir)) {
-				dir = 4;
+				dir = 5;
 			}
 		}
 
@@ -45,15 +45,15 @@ public class AbstractIA {
 		return false;
 	}
 
-	private boolean rightDir(int dir) {
+	protected boolean rightDir(int dir) {
 		switch (dir) {
-		case 0:
-			return canMove(npc.getX(), npc.getY() - npc.getMaxSpeed());
 		case 1:
-			return canMove(npc.getX(), npc.getY() + npc.getMaxSpeed());
+			return canMove(npc.getX(), npc.getY() - npc.getMaxSpeed());
 		case 2:
-			return canMove(npc.getX() + npc.getMaxSpeed(), npc.getY());
+			return canMove(npc.getX(), npc.getY() + npc.getMaxSpeed());
 		case 3:
+			return canMove(npc.getX() + npc.getMaxSpeed(), npc.getY());
+		case 4:
 			return canMove(npc.getX() - npc.getMaxSpeed(), npc.getY());
 		default:
 			break;

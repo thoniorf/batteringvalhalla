@@ -18,5 +18,21 @@ public enum Direction {
 		}
 		return stop;
 	}
+	
+	public static int toInt(Direction d){
+		switch(d){
+			case nord:
+				return 1;
+			case sud:
+				return 2;
+			case ovest:
+				return 3;
+			case est:
+				return 4;
+			default:
+				return 5;
+				
+					
+	}}
 
 }

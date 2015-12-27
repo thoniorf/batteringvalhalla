@@ -1,4 +1,5 @@
 package it.batteringvalhalla.gamecore.network;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,7 +34,6 @@ public class ClientWorker extends Thread {
 
 						PrintWriter outToClient = new PrintWriter(socket.getOutputStream());
 						m = inFromClient.readLine();
-						System.out.println(m);
 						if (inFromClient != null && !m.equals(" ")) {
 							outToClient.println(m + '\n');
 							outToClient.flush();

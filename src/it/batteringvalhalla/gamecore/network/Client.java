@@ -1,4 +1,5 @@
 package it.batteringvalhalla.gamecore.network;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -28,7 +29,6 @@ public class Client {
 
 				}
 				messaggio = inFromServer.readLine();
-				System.out.println(messaggio + " gatta");
 				System.out.println("FROM " + socket.getInetAddress() + messaggio);
 
 			}

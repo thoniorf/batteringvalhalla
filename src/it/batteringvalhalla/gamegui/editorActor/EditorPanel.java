@@ -86,12 +86,12 @@ public class EditorPanel extends JPanel {
 		header = new JLabel("Editor Valhalla");
 		header.setFont(new Font(ResourcesLoader.gothic.getName(),
 				ResourcesLoader.gothic.getStyle(), 144));
-
+	
 		
 		constraints.weightx = 1;
 		constraints.weighty = 1;
 		constraints.gridx = 2;
-		constraints.gridy = 1;
+		constraints.gridy = 0;
 		constraints.gridwidth = 3;
 		constraints.gridheight = 1;
 		add(header, constraints);
@@ -100,7 +100,7 @@ public class EditorPanel extends JPanel {
 		constraints.weightx = 0.5;
 		constraints.weighty = 0.5;
 		constraints.gridx = 4;
-		constraints.gridy = 2;
+		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		
@@ -109,7 +109,7 @@ public class EditorPanel extends JPanel {
 		constraints.weighty = 0.5;
 		constraints.weightx = 0.5;
 		constraints.gridx = 2;
-		constraints.gridy = 2;
+		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		add(button1s, constraints);
@@ -117,7 +117,7 @@ public class EditorPanel extends JPanel {
 		constraints.weightx = 0.5;
 		constraints.weighty = 0.5;
 		constraints.gridx = 4;
-		constraints.gridy = 3;
+		constraints.gridy = 2;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		
@@ -126,7 +126,7 @@ public class EditorPanel extends JPanel {
 		constraints.weighty = 0.5;
 		constraints.weightx = 0.5;
 		constraints.gridx = 2;
-		constraints.gridy = 3;
+		constraints.gridy = 2;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		add(button2s, constraints);
@@ -134,7 +134,7 @@ public class EditorPanel extends JPanel {
 		constraints.weightx = 0.5;
 		constraints.weighty = 0.5;
 		constraints.gridx = 4;
-		constraints.gridy = 4;
+		constraints.gridy = 3;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		add(button3d, constraints);
@@ -142,7 +142,7 @@ public class EditorPanel extends JPanel {
 		constraints.weighty = 0.5;
 		constraints.weightx = 0.5;
 		constraints.gridx = 2;
-		constraints.gridy = 4;
+		constraints.gridy = 3;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		add(button3s, constraints);
@@ -152,11 +152,13 @@ public class EditorPanel extends JPanel {
 		constraints.weighty = 0.5;
 		constraints.weightx = 0.5;
 		constraints.gridx = 3;
-		constraints.gridy = 5;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
+		constraints.insets.bottom=30;
 		add(exit, constraints);
-
+		
+		
 
 		setVisible(true);
 		listenerLoader();
@@ -221,6 +223,7 @@ public class EditorPanel extends JPanel {
 		button2s.setEnabled(enabled);
 		button3d.setEnabled(enabled);
 		button3s.setEnabled(enabled);
+		exit.setEnabled(enabled);
 	
 	}
 	@Override
@@ -228,7 +231,7 @@ public class EditorPanel extends JPanel {
 	
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		g.drawImage(ResourcesLoader.optionmenu_images.get(4), 0, 0,WIDTHSFONDO,HEIGHTSFONDO, null);
+		g.drawImage(ResourcesLoader.optionmenu_images.get(4), 0,0,WIDTHSFONDO,HEIGHTSFONDO, null);
 		
 		
 

@@ -31,6 +31,7 @@ public class Loading extends JPanel {
 
 	public Loading() {
 		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
+		this.setOpaque(false);
 		loaderMethods = new ArrayList<Method>();
 		current = 0;
 		try {
@@ -68,10 +69,8 @@ public class Loading extends JPanel {
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
-			Thread.sleep(2500);
 			current = (current + 1) % max;
 			repaint();
 		}
-		Thread.sleep(2500);
 	}
 }

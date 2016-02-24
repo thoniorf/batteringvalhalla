@@ -1,110 +1,115 @@
 package it.batteringvalhalla.gamecore;
 
-import java.awt.Rectangle;
+import javax.swing.JPanel;
 
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
-import it.batteringvalhalla.gamecore.input.InputHandler;
-import it.batteringvalhalla.gamecore.object.actor.Direction;
-import it.batteringvalhalla.gamecore.object.actor.Player;
+import it.batteringvalhalla.gamecore.input.PlayerControls;
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.object.actor.player.Player;
+import it.batteringvalhalla.gamecore.object.direction.Direction;
 import it.batteringvalhalla.gamegui.GameFrame;
-import it.batteringvalhalla.gamegui.GamePanel;
-import it.batteringvalhalla.gamegui.menu.ExitMenu;
 
-public class GameManager extends Thread {
-
-	private static GameManager manager;
-
+public class GameManager implements Runnable {
 	private final static int MAX_FPS = 33;
 	private final static int MAX_FRAME_SKIP = 5;
 	private final static int FRAME_PERIOD = 1000 / MAX_FPS;
 
-	private GameWorld world;
-	private GamePanel panel;
-	private CollisionHandler collisiondander;
+	public static void main(String[] args) {
+		// game frame
+		GameFrame frame = GameFrame.instance();
+		// options loader
+		new ManagerFilePlayer();
+		// loading menu
+		frame.showLoading();
+		frame.start();
+
+	}
+
+	private static GameManager manager;
+	private static Integer round;
+	private static State state;
+
+	private JPanel viewport;
+
+	public static GameManager getManager() {
+		if (manager == null) {
+			manager = new GameManager();
+		}
+
+		return manager;
+	}
+
+	public static Integer getRound() {
+		return round;
+	}
+
+	public static State getState() {
+		return state;
+	}
+
+	public static void setRound(Integer round) {
+		GameManager.round = round;
+	}
+
+	public static void setState(State state) {
+		GameManager.state = state;
+	}
+
+	public JPanel getViewport() {
+		return viewport;
+	}
+
+	public void setViewport(JPanel viewport) {
+		this.viewport = viewport;
+	}
 
 	private GameManager() {
-		this.world = GameWorld.instance();
-		this.collisiondander = new CollisionHandler(new Rectangle(1024, 768));
+		GameManager.setState(State.Ready);
 	}
 
-	public void getInput() {
-		Boolean moving = Boolean.FALSE;
-		if (!GameWorld.getState().equals(1)) {
-			return;
-		}
-		if (InputHandler.getKeys()[0]) {
-			moving = true;
-			world.getPlayer().setDirection(Direction.nord);
-		}
-		if (InputHandler.getKeys()[1]) {
-			moving = true;
-			world.getPlayer().setDirection(Direction.sud);
-		}
-		if (InputHandler.getKeys()[2]) {
-			moving = true;
-			world.getPlayer().setDirection(Direction.est);
-		}
-		if (InputHandler.getKeys()[3]) {
-			moving = true;
-			world.getPlayer().setDirection(Direction.ovest);
-		}
-		if (InputHandler.getKeys()[5] && (InputHandler.getKeys()[0] || InputHandler.getKeys()[1]
-				|| InputHandler.getKeys()[2] || InputHandler.getKeys()[3])) {
-			moving = true;
-			world.getPlayer().tryCharge();
-		}
-		if (InputHandler.getKeys()[4]) {
-			if (GameWorld.getState().equals(1)) {
-				InputHandler.resetKeys();
-				GameWorld.setState(2);
-				GameFrame.instance().showExit();
-				((ExitMenu) GameFrame.instance().getLayeredPane().getComponentsInLayer(3)[0])
-						.setText("Leave the game ?");
+	public static void getInput() {
+		if (PlayerControls.getKeys().get("W")[0] == 1) {
+			GameWorld.getPlayer().setMoveDirection(Direction.nord);
+		} else if (PlayerControls.getKeys().get("A")[0] == 1) {
+			GameWorld.getPlayer().setMoveDirection(Direction.ovest);
+		} else if (PlayerControls.getKeys().get("S")[0] == 1) {
+			GameWorld.getPlayer().setMoveDirection(Direction.sud);
+		} else if (PlayerControls.getKeys().get("D")[0] == 1) {
+			GameWorld.getPlayer().setMoveDirection(Direction.est);
+		} else if (PlayerControls.getKeys().get("SPACE")[0] == 1) {
+			GameWorld.getPlayer().charge();
+		} else if (PlayerControls.getKeys().get("ESCAPE")[0] == 1) {
+			if (!state.equals(State.Pause)) {
+				state = State.Pause;
 			} else {
-				InputHandler.resetKeys();
-				GameWorld.setState(1);
-				GameFrame.instance().getLayeredPane()
-						.remove(GameFrame.instance().getLayeredPane().getComponentsInLayer(3)[0]);
-				GameFrame.instance().getLayeredPane().repaint();
-				GameFrame.instance().repaint();
-
+				state = State.Run;
 			}
-		}
-
-		if (!moving)
-			world.getPlayer().setDirection(Direction.stop);
-	}
-
-	public GamePanel getPanel() {
-		return panel;
-	}
-
-	private void nextMatch() {
-		try {
-			Thread.sleep(1500);
-			GameWorld.setState(1);
-			world.nextMatch();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} else {
+			GameWorld.getPlayer().setMoveDirection(Direction.stop);
 		}
 	}
 
 	@Override
 	public void run() {
-		super.run();
+		// set times and frames for constant FPS
 		long beginTime = 0; // the time when the cycle begun
 		long timeDiff = 0; // the time it took for the cycle to execute
 		int sleepTime = 0; // ms to sleep (<0 if we're behind)
 		int framesSkipped = 0; // number of frames being skipped
-		panel.requestFocus();
-		while (GameWorld.getState() != 4) {
-			while (GameWorld.getState() == 1) {
+		// start first level
+		GameManager.setState(State.Run);
+		// main loop
+		while (!state.equals(State.Stop)) {
+			while (state.equals(State.Run)) {
+				// frame start time
 				beginTime = System.currentTimeMillis();
 				framesSkipped = 0;
-				world.update();
-				collisiondander.checkCollisions(world.getObjects());
-				panel.repaint();
-				this.getInput();
+				// main cycle
+				GameManager.getInput();
+				GameWorld.update();
+				CollisionHandler.check();
+				viewport.repaint();
+				// frame diff after cycle
 				timeDiff = System.currentTimeMillis() - beginTime;
 				sleepTime = (int) (FRAME_PERIOD - timeDiff);
 
@@ -118,40 +123,21 @@ public class GameManager extends Thread {
 					}
 				}
 				while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIP) {
-					world.update();
+					GameWorld.update();
 					sleepTime += FRAME_PERIOD;
 					framesSkipped++;
 				}
 			}
-			if (GameWorld.getState().equals(3)) {
-				nextMatch();
+			if (state.equals(State.Next)) {
+				Player.incScore();
+				GameWorld.makeLevel(GameWorld.getMax_enemy() + 1);
+				GameManager.setState(State.Run);
+			} else {
+				break;
 			}
-			this.getInput();
-			// premature thread exit
-			if (GameWorld.getState().equals(5)) {
-				return;
-			}
-			// System.out.println("Running");
+
 		}
-		Player.setScore(world.getMatch());
-		GameFrame.instance().showScores();
-
+		System.exit(0);
 	}
 
-	public void setPanel(GamePanel panel) {
-		this.panel = panel;
-	}
-
-	public static GameManager instance() {
-		return manager;
-	}
-
-	public static void startNewManager(GamePanel panel) {
-		manager = new GameManager();
-		manager.setPanel(panel);
-		GameWorld.instance().reset();
-		GameWorld.setState(1);
-		GameWorld.instance().newMatch(1);
-		manager.start();
-	}
 }

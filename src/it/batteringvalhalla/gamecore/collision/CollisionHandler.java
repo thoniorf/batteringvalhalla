@@ -1,125 +1,124 @@
 package it.batteringvalhalla.gamecore.collision;
 
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.List;
 
-import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamecore.object.AbstractGameObject;
-import it.batteringvalhalla.gamecore.object.actor.Actor;
-import it.batteringvalhalla.gamegui.sound.Sound;
+import it.batteringvalhalla.gamecore.GameWorld;
+import it.batteringvalhalla.gamecore.object.AbstractEntity;
+import it.batteringvalhalla.gamecore.object.Entity;
+import it.batteringvalhalla.gamecore.object.actor.AbstractActor;
+import it.batteringvalhalla.gamecore.vector2d.Vector2D;
 
 public class CollisionHandler {
-	QuadTree quadtree;
 
-	ArrayList<AbstractGameObject> returnsobjects;
-
-	public CollisionHandler(Rectangle rect) {
-		quadtree = new QuadTree(0, rect);
-		returnsobjects = new ArrayList<AbstractGameObject>();
-
-	}
-
-	@SuppressWarnings("unused")
-	private void checkWithQuads(List<AbstractGameObject> arrayList) {
-		quadtree.clear();
-		for (int i = 0; i < arrayList.size(); i++) {
-			quadtree.insert(arrayList.get(i));
-		}
-
-		for (int i = 0; i < arrayList.size(); i++) {
-			returnsobjects.clear();
-			quadtree.retrieve(returnsobjects, arrayList.get(i));
-			for (int j = 0; j < returnsobjects.size(); j++) {
-				if (arrayList.get(i).getCollisionShape().intersecable()
-						&& returnsobjects.get(i).getCollisionShape().intersecable() && i != j
-						&& arrayList.get(i).getCollisionShape().intersects(returnsobjects.get(j).getCollisionShape())) {
-
-					arrayList.get(i).getCollisionShape().updateCollisionpoint();
-					arrayList.get(j).getCollisionShape().updateCollisionpoint();
-					postCollision((Actor) arrayList.get(i), (Actor) arrayList.get(j));
-
+	public static void check() {
+		// get world objects
+		ArrayList<Entity> objects = GameWorld.getObjects();
+		// check loop
+		for (int i = 0; i < objects.size(); i++) {
+			for (int j = i + 1; j < objects.size(); j++) {
+				if (objects.get(i).getAlive() && objects.get(j).getAlive()) {
+					// detect collision
+					if (detect(objects.get(i), objects.get(j))) {
+						// resolve
+						resolve((AbstractEntity) objects.get(i), (AbstractEntity) objects.get(j));
+					}
 				}
+
 			}
 		}
 	}
 
-	private void checkWithoutQuads(List<AbstractGameObject> arrayList) {
+	private static boolean detect(Entity first, Entity second) {
+		// return shape intersection
+		return first.getShape().intersects((Rectangle2D) second.getShape());
+	}
 
-		for (int i = 0; i < arrayList.size(); i++) {
-			for (int j = 0; j < arrayList.size(); j++) {
-				if (i != j && ((Actor) arrayList.get(i)).getLive() != 0 && ((Actor) arrayList.get(j)).getLive() != 0
-						&& arrayList.get(i).getCollisionShape().intersecable()
-						&& arrayList.get(j).getCollisionShape().intersecable()
-						&& arrayList.get(i).getCollisionShape().intersects(arrayList.get(j).getCollisionShape())) {
+	private static Vector2D penetrationDepth(AbstractEntity first, AbstractEntity second) {
+		// collision axis
+		int x_depth = 0;
+		int y_depth = 0;
+		// penetration side
+		if (first.getOrigin().x <= second.getOrigin().x) {
+			// LEFT
+			x_depth = second.getOrigin().x - (first.getOrigin().x + first.getWidth()) - 1;
+		} else {
+			// RIGHT
+			x_depth = (second.getOrigin().x + second.getShape().getBounds().width) - first.getOrigin().x + 1;
+		}
+		if (first.getOrigin().y <= second.getOrigin().y) {
+			// TOP
+			y_depth = second.getOrigin().y - (first.getOrigin().y + first.getHeight()) - 1;
+		} else {
+			// BOTTOM
+			y_depth = (second.getOrigin().y + second.getShape().getBounds().height) - first.getOrigin().y + 1;
+		}
 
-					arrayList.get(i).getCollisionShape().updateCollisionpoint();
-					arrayList.get(j).getCollisionShape().updateCollisionpoint();
-					fixCollision((Actor) arrayList.get(i), (Actor) arrayList.get(j));
-					postCollision((Actor) arrayList.get(i), (Actor) arrayList.get(j));
-				}
+		return new Vector2D(x_depth, y_depth);
+	}
+
+	private static Vector2D computeMtd(AbstractEntity first, AbstractEntity second) {
+		// init minimum translation distance vector
+		Vector2D mtd = new Vector2D(0, 0);
+		// compute penetration depth
+		Vector2D depth = penetrationDepth(first, second);
+		// set mtd values
+		if (Math.abs(depth.getComponents().x) <= Math.abs(depth.getComponents().y)) {
+			mtd.setX(depth.getComponents().x);
+		}
+		if (Math.abs(depth.getComponents().y) <= Math.abs(depth.getComponents().x)) {
+			mtd.setY(depth.getComponents().y);
+		}
+		// return the mtd vector
+		return mtd;
+	}
+
+	private static Vector2D fixOverlap(AbstractEntity first, AbstractEntity second) {
+		// compute mtd;
+		Vector2D mtd = computeMtd(first, second);
+		// translate
+		first.getOrigin().move(first.getOrigin().x + mtd.getComponents().x,
+				first.getOrigin().y + mtd.getComponents().y);
+		// return again the mtd vector
+		return mtd;
+	}
+
+	private static void resolve(AbstractEntity first, AbstractEntity second) {
+		// TODO add sound effect
+		// fix overlap an get the mtd vector
+		Vector2D response = fixOverlap(first, second);
+
+		// old velocity
+		Vector2D oldVel_first = new Vector2D(0, 0);
+		Vector2D oldVel_second = new Vector2D(0, 0);
+
+		if (first instanceof AbstractActor && second instanceof AbstractActor) {
+			// cast
+			AbstractActor a1 = (AbstractActor) first;
+			AbstractActor a2 = (AbstractActor) second;
+			// TODO actor->actor
+			oldVel_first = new Vector2D(a1.getVelocity().getComponents().x, a1.getVelocity().getComponents().y);
+			oldVel_second = new Vector2D(a2.getVelocity().getComponents().x, a2.getVelocity().getComponents().y);
+
+			// check if mtd is along x-axis
+			if (response.getComponents().x != 0) {
+				a1.setVelocity(new Vector2D((oldVel_first.getComponents().x + 2 * oldVel_second.getComponents().x) * -1,
+						a1.getVelocity().getComponents().y));
+				a2.setVelocity(new Vector2D(oldVel_second.getComponents().x + 2 * oldVel_first.getComponents().x,
+						a2.getVelocity().getComponents().y));
 			}
-		}
-	}
-
-	public void checkCollisions(List<AbstractGameObject> arrayList) {
-		checkWithoutQuads(arrayList);
-	}
-
-	private void fixCollision(Actor a1, Actor a2) {
-		Vector2D mtd = new Vector2D();
-		// collision side
-		float left = a2.getX() - (a1.getX() + a1.getWidth());
-		float right = (a2.getX() + a2.getWidth()) - a1.getX();
-		float top = a2.getY() - (a1.getY() + a1.getHeight());
-		float bottom = (a2.getY() + a2.getHeight()) - a1.getY();
-
-		// find the Minimum Translation Distance vector
-		if (Math.abs(left) < right) {
-			mtd.x = (int) (left - a1.getSpeedX() - 1);
-		} else {
-			mtd.x = (int) (right + a1.getSpeedX() + 1);
-		}
-		if (Math.abs(top) < bottom) {
-			mtd.y = (int) (top - a1.getSpeedY() - 1);
-		} else {
-			mtd.y = (int) (bottom + a1.getSpeedY() + 1);
-		}
-
-		if (Math.abs(mtd.x) < Math.abs(mtd.y)) {
-			mtd.y = 0;
-		} else {
-			mtd.x = 0;
+			// check if mtd is along y-axis
+			if (response.getComponents().y != 0) {
+				a1.setVelocity(new Vector2D(a1.getVelocity().getComponents().x,
+						(oldVel_first.getComponents().y + 2 * oldVel_second.getComponents().y) * -1));
+				a2.setVelocity(new Vector2D(a2.getVelocity().getComponents().x,
+						oldVel_second.getComponents().y + 2 * oldVel_first.getComponents().y));
+			}
 
 		}
-		a1.setX(a1.getX() + mtd.x);
-		a1.setY(a1.getY() + mtd.y);
-	}
-
-	private void postCollision(Actor a1, Actor a2) {
-		if (ManagerFilePlayer.soundOn()) {
-			Sound.collision().setFramePosition(0);
-			Sound.collision().start();
-		}
-		float newSpx1 = a1.getSpeedX() + 2 * a2.getSpeedX();
-		float newSpy1 = a1.getSpeedY() + 2 * a2.getSpeedY();
-		float newSpx2 = a2.getSpeedX() + 2 * a1.getSpeedX();
-		float newSpy2 = a2.getSpeedY() + 2 * a1.getSpeedY();
-		a1.setSpeedX(newSpx1);
-		a1.setSpeedY(newSpy1);
-		a2.setSpeedX(newSpx2);
-		a2.setSpeedY(newSpy2);
-		a1.postCollision();
-		a2.postCollision();
 
 	}
 
-	class Vector2D {
-
-		public int x;
-		public int y;
-
-		Vector2D() {
-		}
+	private CollisionHandler() {
 	}
 }

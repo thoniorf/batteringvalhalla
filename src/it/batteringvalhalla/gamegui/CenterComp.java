@@ -6,15 +6,15 @@ public class CenterComp {
 	}
 
 	public static int centerX(int width) {
-		if (width == 0 || width > GameFrame.instance().getScreenWidth())
-			width = GameFrame.instance().getScreenWidth();
-		return GameFrame.instance().getScreenWidth() / 2 - width / 2;
+		if (width == 0 || width > GameFrame.size.width)
+			width = GameFrame.size.width;
+		return GameFrame.size.width / 2 - width / 2;
 	}
 
 	public static int centerY(int height) {
-		if (height == 0 || height > GameFrame.instance().getScreenHeight())
-			height = GameFrame.instance().getScreenHeight();
-		return GameFrame.instance().getScreenHeight() / 2 - height / 2;
+		if (height == 0 || height > GameFrame.size.height)
+			height = GameFrame.size.height;
+		return GameFrame.size.height / 2 - height / 2;
 	}
 
 }

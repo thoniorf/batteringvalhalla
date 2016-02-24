@@ -7,7 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-import it.batteringvalhalla.gamecore.object.actor.Direction;
+import it.batteringvalhalla.gamecore.object.direction.Direction;
 
 public class Sprite {
 
@@ -31,16 +31,16 @@ public class Sprite {
 	private BufferedImage img;
 	private Direction imgDir;
 
-	public Sprite(Image img, Integer imageWidth, Integer imageHeight, Integer frameWidth, Integer frameHeight,
-			Integer frameSpeed, Integer endFrame, Integer offxleft, Integer offxright, Integer offy) {
+	public Sprite(Image img, Integer frameWidth, Integer frameHeight, Integer frameSpeed, Integer endFrame,
+			Integer offset_left_x, Integer offset_right_x, Integer offset_y) {
 		this.imgDir = Direction.est;
-		this.imageWidth = new Integer(imageWidth);
-		this.imageHeight = new Integer(imageHeight);
+		this.imageWidth = new Integer(img.getWidth(null));
+		this.imageHeight = new Integer(img.getHeight(null));
 		this.frameWidth = new Integer(frameWidth);
 		this.frameHeight = new Integer(frameHeight);
-		this.spriteoffsetxleft = new Integer(offxleft);
-		this.spriteoffsetxright = new Integer(offxright);
-		this.spriteoffsety = new Integer(offy);
+		this.spriteoffsetxleft = new Integer(offset_left_x);
+		this.spriteoffsetxright = new Integer(offset_right_x);
+		this.spriteoffsety = new Integer(offset_y);
 		this.currentoffsetx = spriteoffsetxright;
 		this.frameRow = new Integer(0);
 		this.frameCol = new Integer(0);

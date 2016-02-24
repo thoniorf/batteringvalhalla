@@ -11,7 +11,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import it.batteringvalhalla.gamecore.animation.Sprite;
-import it.batteringvalhalla.gamecore.object.actor.Direction;
+import it.batteringvalhalla.gamecore.object.direction.Direction;
 
 public class ResourcesLoader {
 
@@ -243,16 +243,14 @@ public class ResourcesLoader {
 		// imageHead.add(tmp.getFrame());
 		// }
 		for (int i = 0; i < ResourcesLoader.actor_weapon.size(); i++) {
-			tmp = new Sprite(ResourcesLoader.actor_weapon.get(i), ResourcesLoader.actor_weapon.get(i).getWidth(null),
-					ResourcesLoader.actor_weapon.get(i).getHeight(null), 103, 76, 1, 3, 0, 0, 0);
+			tmp = new Sprite(ResourcesLoader.actor_weapon.get(i), 103, 76, 1, 3, 0, 0, 0);
 			tmp.update(Direction.est);
 			tmp.update(Direction.est);
 
 			imageBust.add(tmp.getFrame());
 		}
 		for (int i = 0; i < ResourcesLoader.actor_mount.size(); i++) {
-			tmp = new Sprite(ResourcesLoader.actor_mount.get(i), ResourcesLoader.actor_mount.get(i).getWidth(null),
-					ResourcesLoader.actor_mount.get(i).getHeight(null), 117, 88, 1, 1, 0, 0, 0);
+			tmp = new Sprite(ResourcesLoader.actor_mount.get(i), 117, 88, 1, 1, 0, 0, 0);
 			tmp.update(Direction.est);
 			imageGoat.add(tmp.getFrame());
 

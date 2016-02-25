@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import it.batteringvalhalla.gamecore.arena.Arena;
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.Entity;
 import it.batteringvalhalla.gamecore.object.actor.Enemy;
 import it.batteringvalhalla.gamecore.object.actor.player.Player;
+import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
 
 public class GameWorld {
 	private static GameWorld world;
@@ -17,7 +19,18 @@ public class GameWorld {
 	private static Integer max_enemy;
 	private static Integer enemies;
 	private static Player player;
-	private static Integer freq_friction;
+	// friction time in ms
+	private static Integer freq_friction = 250;
+	// custom level
+	private static String customLevel = "";
+
+	public static String getCustomLevel() {
+		return customLevel;
+	}
+
+	public static void setCustomLevel(String levelname) {
+		customLevel = levelname;
+	}
 
 	private static void drawOrder() {
 		objects.sort(null);
@@ -78,6 +91,16 @@ public class GameWorld {
 			// ((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy)
 			// objects.get(i + 1), arena, objects));
 		}
+		if (!customLevel.equals(""))
+			loadCustomLevel(customLevel);
+	}
+
+	public static void loadCustomLevel(String map_name) {
+		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(map_name);
+		for (int i = 0; i < walls.size(); i++) {
+			objects.add(walls.get(i));
+		}
+
 	}
 
 	public static void setMax_enemy(Integer max_enemies) {
@@ -114,7 +137,7 @@ public class GameWorld {
 	}
 
 	private GameWorld() {
-		freq_friction = new Integer(750);
+		customLevel = "test";
 		makeLevel(1);
 	}
 }

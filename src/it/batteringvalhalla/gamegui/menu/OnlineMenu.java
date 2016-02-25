@@ -1,5 +1,6 @@
 package it.batteringvalhalla.gamegui.menu;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
@@ -13,6 +14,8 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -31,7 +34,7 @@ public class OnlineMenu extends JPanel {
 	private JLabel header;
 	private JComboBox<String> comboBox;
 	private JButtonRound exit;
-	private File f;
+	private String[] f;
 	public OnlineMenu() {
 		super(new GridBagLayout());
 		this.frame = GameFrame.instance();
@@ -39,10 +42,7 @@ public class OnlineMenu extends JPanel {
 		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width,
 				height);
 		setOpaque(false);
-		f=new File("Maps");
-		if(!f.exists()){
-			f.mkdir();
-		}
+		f=ManagerFilePlayer.loadNameOfMaps();
 		constraints = new GridBagConstraints();
 		joinRoom = new JButtonCustom(ResourcesLoader.mainmenu_images.get(0),
 				ResourcesLoader.mainmenu_images.get(1),
@@ -50,7 +50,7 @@ public class OnlineMenu extends JPanel {
 		newRoom = new JButtonCustom(ResourcesLoader.mainmenu_images.get(0),
 				ResourcesLoader.mainmenu_images.get(1),
 				ResourcesLoader.mainmenu_images.get(2));
-		comboBox=new JComboBox<String>(f.list());
+		comboBox=new JComboBox<String>(f);
 		
 		ipRoom=new JTextField();
 		ipRoom.setText("IP Room");

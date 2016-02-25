@@ -46,9 +46,12 @@ public class GameFrame extends JFrame {
 
 	private GameFrame() {
 		this.setTitle("Battering Valhalla");
-		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		device.setFullScreenWindow(this);
+		this.setLocationRelativeTo(null);
+		this.setPreferredSize(size);
+		this.setUndecorated(true);
+		this.setResizable(false);
+		// device.setFullScreenWindow(this);
 		this.setVisible(true);
 		layers = getLayeredPane();
 	}
@@ -58,6 +61,7 @@ public class GameFrame extends JFrame {
 		panel.updateUI();
 		panel.requestFocus();
 		pack();
+		setLocationRelativeTo(null);
 	}
 
 	public void restart() {

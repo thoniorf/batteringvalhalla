@@ -18,10 +18,6 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 	protected static final long charge_countdown = 5000;
 	protected static int curret_max_velocity = max_velocity;
 
-	public static int getMaxVelocity() {
-		return curret_max_velocity;
-	}
-
 	protected Vector2D velocity;
 	protected Direction face_dir;
 	protected Direction move_dir;
@@ -33,6 +29,10 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 	protected Sprite head, body, mount;
 	// friction time
 	protected long friction_time;
+
+	public static int getMaxVelocity() {
+		return curret_max_velocity;
+	}
 
 	public AbstractActor(Point origin, int idHead, int idBody, int idMount) {
 		super(origin);

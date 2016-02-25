@@ -7,6 +7,7 @@ import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.object.AbstractEntity;
 import it.batteringvalhalla.gamecore.object.Entity;
 import it.batteringvalhalla.gamecore.object.actor.AbstractActor;
+import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
 import it.batteringvalhalla.gamecore.vector2d.Vector2D;
 
 public class CollisionHandler {
@@ -44,14 +45,14 @@ public class CollisionHandler {
 			x_depth = second.getOrigin().x - (first.getOrigin().x + first.getWidth()) - 1;
 		} else {
 			// RIGHT
-			x_depth = (second.getOrigin().x + second.getShape().getBounds().width) - first.getOrigin().x + 1;
+			x_depth = (second.getOrigin().x + second.getWidth()) - first.getOrigin().x + 1;
 		}
 		if (first.getOrigin().y <= second.getOrigin().y) {
 			// TOP
 			y_depth = second.getOrigin().y - (first.getOrigin().y + first.getHeight()) - 1;
 		} else {
 			// BOTTOM
-			y_depth = (second.getOrigin().y + second.getShape().getBounds().height) - first.getOrigin().y + 1;
+			y_depth = (second.getOrigin().y + second.getHeight()) - first.getOrigin().y + 1;
 		}
 
 		return new Vector2D(x_depth, y_depth);
@@ -115,6 +116,20 @@ public class CollisionHandler {
 						oldVel_second.getComponents().y + 2 * oldVel_first.getComponents().y));
 			}
 
+		} else if (first instanceof AbstractActor && second instanceof VerySquareWall) {
+			AbstractActor a1 = (AbstractActor) first;
+			oldVel_first = new Vector2D(a1.getVelocity().getComponents().x, a1.getVelocity().getComponents().y);
+
+			// check if mtd is along x-axis
+			if (response.getComponents().x != 0) {
+				a1.setVelocity(new Vector2D((oldVel_first.getComponents().x) * -1, a1.getVelocity().getComponents().y));
+
+			}
+			// check if mtd is along y-axis
+			if (response.getComponents().y != 0) {
+				a1.setVelocity(new Vector2D(a1.getVelocity().getComponents().x, (oldVel_first.getComponents().y) * -1));
+
+			}
 		}
 
 	}

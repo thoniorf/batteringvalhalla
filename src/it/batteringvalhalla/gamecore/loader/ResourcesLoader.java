@@ -27,6 +27,7 @@ public class ResourcesLoader {
 	public static ArrayList<Image> exitmenu_images;
 	public static ArrayList<Image> optionmenu_images;
 	public static ArrayList<Image> scoreboard_images;
+	public static ArrayList<Image> walls_images;
 	public static Font gothic;
 
 	// editor
@@ -62,6 +63,9 @@ public class ResourcesLoader {
 					.getResource("it/batteringvalhalla/assets/actor/weapons/weapon" + i + ".png")));
 		}
 
+		walls_images = new ArrayList<Image>();
+		walls_images.add(ImageIO
+				.read(ResourcesLoader.class.getClassLoader().getResource("it/batteringvalhalla/assets/wall/wall.png")));
 	}
 
 	public static synchronized void loadMainMenuImages() throws IOException {

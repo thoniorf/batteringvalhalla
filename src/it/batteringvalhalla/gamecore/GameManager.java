@@ -17,6 +17,10 @@ public class GameManager implements Runnable {
 	public static void main(String[] args) {
 		// game frame
 		GameFrame frame = GameFrame.instance();
+		// game world
+		GameWorld.getWorld();
+		// game manager
+		GameManager.getManager();
 		// options loader
 		new ManagerFilePlayer();
 		// loading menu
@@ -64,7 +68,6 @@ public class GameManager implements Runnable {
 	}
 
 	private GameManager() {
-		GameManager.setState(State.Ready);
 	}
 
 	public static void getInput() {
@@ -132,12 +135,11 @@ public class GameManager implements Runnable {
 				Player.incScore();
 				GameWorld.makeLevel(GameWorld.getMax_enemy() + 1);
 				GameManager.setState(State.Run);
-			} else {
+			} else if (state.equals(State.Over)) {
+				GameFrame.instance().showScores();
 				break;
 			}
-
 		}
-		System.exit(0);
 	}
 
 }

@@ -137,7 +137,5 @@ public class GameWorld {
 	}
 
 	private GameWorld() {
-		customLevel = "test";
-		makeLevel(1);
 	}
 }

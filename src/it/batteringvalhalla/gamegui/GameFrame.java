@@ -12,9 +12,11 @@ import javax.swing.JPanel;
 
 import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.GameWorld;
+import it.batteringvalhalla.gamecore.State;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.editorActor.EditorPanel;
+import it.batteringvalhalla.gamegui.editorMap.EditorMapPanel;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
@@ -70,6 +72,7 @@ public class GameFrame extends JFrame {
 			Sound.menu.play();
 		}
 		layers.removeAll();
+		GameManager.setState(State.Stop);
 		showMenu();
 	}
 
@@ -90,6 +93,10 @@ public class GameFrame extends JFrame {
 
 	public void showEditor() {
 		addMenu(new EditorPanel(), 2);
+	}
+
+	public void showEditorMap() {
+		addMenu(new EditorMapPanel(), 2);
 	}
 
 	public void showExit() {
@@ -148,8 +155,8 @@ public class GameFrame extends JFrame {
 		panel = new GamePanel();
 		addMenu(panel, 1);
 		// set viewport for the manager
-		GameManager.getManager();
-		GameWorld.getWorld();
+		GameManager.setState(State.Run);
+		GameWorld.makeLevel(1);
 		GameManager.getManager().setViewport(panel);
 		// start the game
 		new Thread(GameManager.getManager()).start();

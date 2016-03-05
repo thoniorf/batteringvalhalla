@@ -1,7 +1,9 @@
 package it.batteringvalhalla.gamecore.loader;
 
+import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -127,7 +129,7 @@ public static void setName(String name) {
 	ManagerFilePlayer.name = name;
 	save();
 }
-public static void saveMap(Integer attrito, List<VerySquareWall> wall, String nomeMap) {
+public static void saveMap(Integer attrito, List<VerySquareWall> wall, List<Player> players, String nomeMap) {
 //TODO Calendar gc=Calendar.getInstance();
 	try{
 		FileWriter w;
@@ -138,6 +140,11 @@ public static void saveMap(Integer attrito, List<VerySquareWall> wall, String no
 		BufferedWriter bw=new BufferedWriter(w);
 	
 		bw.write(attrito+"\n");
+		for (int i=0;i<players.size();i++){
+			bw.write(((int)players.get(i).getOrigin().getX())+"\n");
+			bw.write(((int)players.get(i).getOrigin().getY())+"\n");
+			}
+		
 		for (int i=0;i<wall.size();i++ ){
 			bw.write(wall.get(i).getOrigin().x+"\n");
 			bw.write(wall.get(i).getOrigin().y+"\n");
@@ -187,7 +194,7 @@ public static List<VerySquareWall> getWallsInTheMap(String selectedItem) {
 	
 	List<VerySquareWall> wall=new ArrayList<VerySquareWall>();
 	
-	for(int i=1;i+2<listaMuri.size();i+=3){
+	for(int i=9;i+2<listaMuri.size();i+=3){
 		
 		wall.add(new VerySquareWall(Integer.decode(listaMuri.get(i)), Integer.decode(listaMuri.get(i+1)), Integer.decode(listaMuri.get(i+2))));
 	}
@@ -207,6 +214,19 @@ public static boolean mapExist(String string) {
 	else 
 		return false;
 	
+}
+public static List<Player> getSpawnInTheMap(String selectedItem) {
+	List <String> listaSpawn=new ArrayList<String>();
+	listaSpawn.addAll(getMap(selectedItem));
+	
+	List<Player> players=new ArrayList<Player>();
+	
+	for(int i=1;i+1<9;i+=2){
+		
+		players.add(new Player(new Point((Integer.decode(listaSpawn.get(i))), Integer.decode(listaSpawn.get(i+1)))));
+		
+		}
+	return players;
 }
 
 }

@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
@@ -37,6 +38,7 @@ public class EditorMapPanel extends JPanel {
 	private JButtonCustom muro1;
 	private JComboBox<String> maps;
 	private JButtonCustom carica;
+	private JTextField nomeMappa;
 	private Integer state;
 	private Integer attrito;
 	private List<VerySquareWall> wall;
@@ -45,14 +47,14 @@ public class EditorMapPanel extends JPanel {
 	private JButtonRound exit;
 	private int height = 50;
 	private int width = 50;
-	private String nomeMap;
+	
 
 	private Image imageCubo0;
 	private Image imageCubo1;
 	private Rectangle rectangle;
 	private Image sfondoSelezionato;
 	private int distanzaLeft;
-	private static final double scartoAltezza = 0.87;
+	
 	private static final int widthmappa = 824;
 	private static final int heightMappa = 658;
 
@@ -70,10 +72,10 @@ public class EditorMapPanel extends JPanel {
 		state = 0;
 		attrito = 2;
 		distanzaLeft = 40;
-		nomeMap = new String();
+		
 
 		header = new JLabel("EditorMap Valhalla");
-		header.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 40));
+		header.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 30));
 		rectangle = new Rectangle(300, 30, widthmappa, heightMappa);
 		imageSfondo1 = ResourcesLoader.mainmenu_images.get(9).getScaledInstance(widthmappa, heightMappa, 0);
 
@@ -84,7 +86,7 @@ public class EditorMapPanel extends JPanel {
 		a = new Arena(sfondoSelezionato);
 		imageSfondo2 = ResourcesLoader.mainmenu_images.get(10);
 		sfondo2 = new JButtonCustom(imageSfondo2, imageSfondo2, imageSfondo2);
-
+		
 		imageCubo0 = new VerySquareWall(1, 1, -1).getImage();
 		muro0 = new JButtonCustom(imageCubo0, imageCubo0, imageCubo0);
 		imageCubo1 = new VerySquareWall(0, 0, 1).getImage();
@@ -94,7 +96,8 @@ public class EditorMapPanel extends JPanel {
 				ResourcesLoader.mainmenu_images.get(8).getScaledInstance(width, height, 0));
 		save = new JButtonRound(ResourcesLoader.exitmenu_images.get(5).getScaledInstance(width, height, 0),
 				ResourcesLoader.exitmenu_images.get(6).getScaledInstance(width, height, 0));
-
+		nomeMappa=new  JTextField();
+		nomeMappa.setText(newNome());
 		spawns = new ArrayList<Rectangle>();
 		for (int i = 0; i < 4; i++) {
 			spawns.add(new Rectangle(a.getSpawn().get(i).x, a.getSpawn().get(i).y, 80, 80));
@@ -103,7 +106,7 @@ public class EditorMapPanel extends JPanel {
 		maps = new JComboBox<String>(ManagerFilePlayer.loadNameOfMaps());
 		maps.addItem("new");
 		maps.setSelectedItem("new");
-		nomeMap = (String) maps.getSelectedItem();
+		
 		carica = new JButtonCustom(ResourcesLoader.mainmenu_images.get(0).getScaledInstance(width, height, 0),
 				ResourcesLoader.mainmenu_images.get(1).getScaledInstance(width, height, 0),
 				ResourcesLoader.mainmenu_images.get(2).getScaledInstance(width, height, 0));
@@ -117,10 +120,11 @@ public class EditorMapPanel extends JPanel {
 		add(header);
 		add(maps);
 		add(carica);
+		add(nomeMappa);
 		setBounds(CenterComp.centerX(WIDTHSFONDO), CenterComp.centerY(HEIGHTSFONDO), WIDTHSFONDO, HEIGHTSFONDO);
 		setOpaque(false);
 
-		sfondo1.setBounds(distanzaLeft, 80, width, height);
+		sfondo1.setBounds(distanzaLeft, 100, width, height);
 
 		sfondo2.setBounds(distanzaLeft, 160, width, height);
 		muro0.setBounds(distanzaLeft, 220, width, height);
@@ -128,10 +132,11 @@ public class EditorMapPanel extends JPanel {
 
 		maps.setBounds(distanzaLeft, 360, 120, 30);
 		carica.setBounds(distanzaLeft, 400, width + 20, height);
+		nomeMappa.setBounds(distanzaLeft,540,150,30);
 		exit.setBounds(distanzaLeft + 50, 600, width, height);
 		save.setBounds(distanzaLeft - 10, 600, width, height);
 
-		header.setBounds(distanzaLeft, 30, 800, 50);
+		header.setBounds(distanzaLeft, 30, 700, 50);
 		setVisible(true);
 		repaint();
 		listenerLoader();
@@ -139,17 +144,27 @@ public class EditorMapPanel extends JPanel {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if (rectangle.contains(e.getX(), e.getY()) && state != 0) {
-					if (state == -1)
-						nuovoMuro = new VerySquareWall(e.getX(), e.getY(), -1);
-					if (state == 2)
-						nuovoMuro = new VerySquareWall(e.getX(), e.getY(), 2);
-
-					if (canAdd()) {
-						wall.add(nuovoMuro);
-						repaint();
+				if(e.getButton()==MouseEvent.BUTTON1){	
+					if (rectangle.contains(e.getX(), e.getY()) && state != 0) {
+						if (state == -1)
+							nuovoMuro = new VerySquareWall(e.getX(), e.getY(), -1);
+						if (state == 2)
+							nuovoMuro = new VerySquareWall(e.getX(), e.getY(), 2);
+	
+						if (canAdd()) {
+							wall.add(nuovoMuro);
+							repaint();
+						}
 					}
-
+				}
+				if(e.getButton()==MouseEvent.BUTTON3){
+					
+					for(int i=0;i<wall.size();i++){
+						if(wall.get(i).getRectangle().contains(e.getPoint())){
+							wall.remove(i);
+							repaint();
+						}
+					}
 				}
 			}
 
@@ -179,6 +194,18 @@ public class EditorMapPanel extends JPanel {
 		});
 	}
 
+	private String newNome() {
+		int i=0;
+		
+		while(ManagerFilePlayer.mapExist("new"+i)){
+			i++;
+			}
+		System.out.println("new"+i);
+		return "new"+i;
+		
+		
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -204,6 +231,7 @@ public class EditorMapPanel extends JPanel {
 		maps.setVisible(aFlag);
 		carica.setVisible(aFlag);
 		save.setVisible(aFlag);
+		nomeMappa.setVisible(aFlag);
 	}
 
 	public void showExitConfirm() {
@@ -257,12 +285,13 @@ public class EditorMapPanel extends JPanel {
 
 		});
 		save.addActionListener(e -> {
-			for (int i = 0; i < wall.size(); i++) {
-				wall.get(i).getOrigin().x += rectangle.getX();
-				wall.get(i).getOrigin().y += rectangle.getY();
-			}
+			if (!maps.getSelectedItem().equals("new")) {
+				for (int i = 0; i < wall.size(); i++) {
+					wall.get(i).getOrigin().x -= rectangle.getX();
+					wall.get(i).getOrigin().y -= rectangle.getY();
+				}}
 
-			ManagerFilePlayer.saveMap(attrito, wall, nomeMap);
+			ManagerFilePlayer.saveMap(attrito, wall, nomeMappa.getText());
 			Chiudere();
 		});
 
@@ -283,10 +312,11 @@ public class EditorMapPanel extends JPanel {
 				for (int i = 0; i < wall.size(); i++) {
 					wall.get(i).getOrigin().x += rectangle.getX();
 					wall.get(i).getOrigin().y += rectangle.getY();
+					wall.get(i).update();
 
 				}
 			}
-			nomeMap = (String) maps.getSelectedItem();
+			nomeMappa.setText ((String) maps.getSelectedItem());
 			repaint();
 		});
 

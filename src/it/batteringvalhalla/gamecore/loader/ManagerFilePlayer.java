@@ -128,12 +128,12 @@ public static void setName(String name) {
 	save();
 }
 public static void saveMap(Integer attrito, List<VerySquareWall> wall, String nomeMap) {
-	Calendar gc=Calendar.getInstance();
+//TODO Calendar gc=Calendar.getInstance();
 	try{
 		FileWriter w;
-		if(nomeMap.equals("new"))
-			w=new FileWriter(maps+"/"+ManagerFilePlayer.getName()+" "+gc.get(Calendar.DAY_OF_MONTH)+" "+Integer.toString(gc.get(Calendar.MONTH+1))+" "+gc.get(Calendar.YEAR)+" "+gc.get(Calendar.HOUR)+" "+gc.get(Calendar.MINUTE)+" "+gc.get(Calendar.SECOND));
-		else
+//		if(nomeMap.equals("new"))
+//			w=new FileWriter(maps+"/"+ManagerFilePlayer.getName()+" "+gc.get(Calendar.DAY_OF_MONTH)+" "+Integer.toString(gc.get(Calendar.MONTH+1))+" "+gc.get(Calendar.YEAR)+" "+gc.get(Calendar.HOUR)+" "+gc.get(Calendar.MINUTE)+" "+gc.get(Calendar.SECOND));
+		
 			w=new FileWriter(maps+"/"+nomeMap);
 		BufferedWriter bw=new BufferedWriter(w);
 	
@@ -197,6 +197,16 @@ public static Integer getAttritoMap(String selectedItem) {
 	List <String> listaMuri=new ArrayList<String>();
 	listaMuri.addAll(getMap(selectedItem));
 	return Integer.decode(listaMuri.get(0));
+}
+
+public static boolean mapExist(String string) {
+	File file;
+	file = new File(dir.getName()+"/"+maps.getName()+"/"+string);
+	if(file.exists())
+			return true;
+	else 
+		return false;
+	
 }
 
 }

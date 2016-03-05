@@ -6,9 +6,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+
+
+
 
 
 
@@ -16,7 +21,6 @@ import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
-
 import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
 
 public class EditorPanel extends JPanel {
@@ -68,18 +72,23 @@ public class EditorPanel extends JPanel {
 		setOpaque(false);
 		
 		
-		//this.frame = GameFrame.instance();
+		
 		ie = new ImageEditor();
 		
 		setBackground(Color.PINK);
 		constraints = new GridBagConstraints();
-
-		button1s=new JButtonRound(ResourcesLoader.leftArrow.get(0), ResourcesLoader.leftArrow.get(1));
-		button1d=new JButtonRound(ResourcesLoader.rightArrow.get(0), ResourcesLoader.rightArrow.get(1));
-		button2s=new JButtonRound(ResourcesLoader.leftArrow.get(0), ResourcesLoader.leftArrow.get(1));
-		button2d=new JButtonRound(ResourcesLoader.rightArrow.get(0), ResourcesLoader.rightArrow.get(1));
-		button3s=new JButtonRound(ResourcesLoader.leftArrow.get(0), ResourcesLoader.leftArrow.get(1));
-		button3d=new JButtonRound(ResourcesLoader.rightArrow.get(0), ResourcesLoader.rightArrow.get(1));
+		int sizeButtom=80;
+		Image frecciaSinistra1=ResourcesLoader.leftArrow.get(0).getScaledInstance(sizeButtom,sizeButtom, 0);
+		Image frecciaSinistra2=ResourcesLoader.leftArrow.get(1).getScaledInstance(sizeButtom,sizeButtom, 0);
+		Image frecciaDestra1=ResourcesLoader.rightArrow.get(0).getScaledInstance(sizeButtom,sizeButtom, 0);
+		Image frecciaDestra2=ResourcesLoader.rightArrow.get(1).getScaledInstance(sizeButtom,sizeButtom, 0);
+		
+		button1s=new JButtonRound(frecciaSinistra1, frecciaSinistra2);
+		button1d=new JButtonRound(frecciaDestra1, frecciaDestra2);
+		button2s=new JButtonRound(frecciaSinistra1, frecciaSinistra2);
+		button2d=new JButtonRound(frecciaDestra1, frecciaDestra2);
+		button3s=new JButtonRound(frecciaSinistra1, frecciaSinistra2);
+		button3d=new JButtonRound(frecciaDestra1, frecciaDestra2);
 		exit=new JButtonRound(ResourcesLoader.mainmenu_images.get(7),
 				ResourcesLoader.mainmenu_images.get(8));
 		
@@ -94,7 +103,10 @@ public class EditorPanel extends JPanel {
 		constraints.gridy = 0;
 		constraints.gridwidth = 3;
 		constraints.gridheight = 1;
+		constraints.insets.top=30;
 		add(header, constraints);
+		
+		constraints.insets.top=0;
 		
 		
 		constraints.weightx = 0.5;

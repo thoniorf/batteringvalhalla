@@ -13,23 +13,24 @@ public class JButtonCustom extends JButton {
 	private static final long serialVersionUID = 1L;
 	private int width;
 	private int height;
-	private ImageIcon image, imageHover, selectedHover;
+	private ImageIcon image, imageHover, imageSelected;
 
-	public JButtonCustom(Image image, Image imageHover, Image selectedHover) {
+	public JButtonCustom(Image image, Image imageHover, Image imageSelected) {
 		this.width = image.getWidth(null);
 		this.height = image.getHeight(null);
 		this.image = new ImageIcon(image);
 		this.imageHover = new ImageIcon(imageHover);
-		this.selectedHover = new ImageIcon(selectedHover);
+		this.imageSelected = new ImageIcon(imageSelected);
 		setPreferredSize(new Dimension(width, height));
+		setSize(width, height);
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		setBorderPainted(false);
 		setContentAreaFilled(false);
 		setFocusPainted(false);
 		setIcon(this.image);
 		setRolloverIcon(this.imageHover);
-		setPressedIcon(this.selectedHover);
-		setDisabledIcon(new ImageIcon(image));
+		setPressedIcon(this.imageSelected);
+		setDisabledIcon(this.image);
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {

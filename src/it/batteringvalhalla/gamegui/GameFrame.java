@@ -99,6 +99,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showEditor() {
+		layers.remove(layers.getComponentsInLayer(2)[0]);
 		addMenu(new EditorPanel(), 2);
 	}
 
@@ -107,6 +108,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showEditorMap() {
+		layers.remove(layers.getComponentsInLayer(2)[0]);
 		addMenu(new EditorMapPanel(), 2);
 	}
 

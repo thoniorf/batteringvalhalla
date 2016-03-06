@@ -26,6 +26,7 @@ import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonCustom;
 import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
+import it.batteringvalhalla.gamegui.menu.customcomponents.JCustomComboBox;
 
 public class EditorMapPanel extends JPanel {
 	/**
@@ -39,7 +40,7 @@ public class EditorMapPanel extends JPanel {
 	private JButtonCustom sfondo2;
 	private JButtonCustom muro0;
 	private JButtonCustom muro1;
-	private JComboBox<String> maps;
+	private JCustomComboBox maps;
 	private JButtonCustom carica;
 	private JTextField nomeMappa;
 	private Integer state;
@@ -76,7 +77,7 @@ public class EditorMapPanel extends JPanel {
 		wall = new ArrayList<VerySquareWall>();
 		state = -2;
 		attrito = 2;
-		distanzaLeft = 40;
+		distanzaLeft = 50;
 		
 		sfondoSelezionato = ResourcesLoader.mainmenu_images.get(9);
 		header = new JLabel("EditorMap Valhalla");
@@ -97,8 +98,8 @@ public class EditorMapPanel extends JPanel {
 		imageCubo1 = new VerySquareWall(0, 0, 1).getImage();
 
 		muro1 = new JButtonCustom(imageCubo1, imageCubo1, imageCubo1);
-		exit = new JButtonRound(ResourcesLoader.mainmenu_images.get(7).getScaledInstance(width, height, 0),
-				ResourcesLoader.mainmenu_images.get(8).getScaledInstance(width, height, 0));
+		exit = new JButtonRound(ResourcesLoader.images.get("exit").getScaledInstance(width, height, 0),
+				ResourcesLoader.images.get("exit_hover").getScaledInstance(width, height, 0));
 		save = new JButtonRound(ResourcesLoader.exitmenu_images.get(5).getScaledInstance(width, height, 0),
 				ResourcesLoader.exitmenu_images.get(6).getScaledInstance(width, height, 0));
 		nomeMappa=new  JTextField();
@@ -113,7 +114,8 @@ public class EditorMapPanel extends JPanel {
 //			players.get(i).update();}
 //TODO perche va senza??
 		
-		maps = new JComboBox<String>(ManagerFilePlayer.loadNameOfMaps());
+		maps = new JCustomComboBox(ManagerFilePlayer.loadNameOfMaps());
+		
 		maps.addItem("new");
 		maps.setSelectedItem("new");
 		
@@ -142,8 +144,8 @@ public class EditorMapPanel extends JPanel {
 		muro0.setBounds(distanzaLeft, 220, width, height);
 		muro1.setBounds(distanzaLeft, 280, width, height);
 
-		maps.setBounds(distanzaLeft, 360, 120, 30);
-		carica.setBounds(distanzaLeft, 400, width + 20, height);
+		maps.setBounds(distanzaLeft, 360, 200, 70);
+		carica.setBounds(distanzaLeft, 440, width + 20, height);
 		nomeMappa.setBounds(distanzaLeft,540,150,30);
 		exit.setBounds(distanzaLeft + 50, 600, width, height);
 		save.setBounds(distanzaLeft - 10, 600, width, height);
@@ -336,8 +338,9 @@ public class EditorMapPanel extends JPanel {
 
 		});
 		save.addActionListener(e -> {
-			if (!maps.getSelectedItem().equals("new")) {
+			if (!nomeMappa.getText().equals("new")) {
 				for (int i = 0; i < wall.size(); i++) {
+					
 					wall.get(i).getOrigin().x -= rectangle.getX();
 					wall.get(i).getOrigin().y -= rectangle.getY();
 				}}
@@ -350,9 +353,9 @@ public class EditorMapPanel extends JPanel {
 		});
 
 		carica.addActionListener(e -> {
-
+			wall.removeAll(wall);
 			if (!maps.getSelectedItem().equals("new")) {
-				wall.removeAll(wall);
+				
 				players.removeAll(players);
 				if (ManagerFilePlayer.getAttritoMap((String) maps.getSelectedItem()) == 2) {
 					attrito = 2;
@@ -375,17 +378,22 @@ public class EditorMapPanel extends JPanel {
 				for(int i=0;i<players.size();i++){
 					players.get(i).update();
 				}
-			}
+			
 			nomeMappa.setText ((String) maps.getSelectedItem());
 			for(int i=0;i<players.size();i++){
+				
 				players.get(i).getOrigin().x+=rectangle.getX();
 				players.get(i).getOrigin().y+=rectangle.getY();
 				players.get(i).update();}
 			
+			
+			}
+			
 			repaint();
-		});
+			});
+			}
 
-	}
+	
 
 	public void Chiudere() {
 

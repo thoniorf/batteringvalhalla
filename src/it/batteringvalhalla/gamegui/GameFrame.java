@@ -17,8 +17,11 @@ import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamegui.editorActor.EditorPanel;
 import it.batteringvalhalla.gamegui.editorMap.EditorMapPanel;
+import it.batteringvalhalla.gamegui.menu.ArcadeMenu;
+import it.batteringvalhalla.gamegui.menu.EditorsMenu;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
+import it.batteringvalhalla.gamegui.menu.OnlineMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
 import it.batteringvalhalla.gamegui.menu.ScoreBoard;
 import it.batteringvalhalla.gamegui.menu.UsernameMenu;
@@ -91,8 +94,16 @@ public class GameFrame extends JFrame {
 		addMenu(background, 0);
 	}
 
+	public void showArcadeEditor() {
+		addMenu(new ArcadeMenu(), 2);
+	}
+
 	public void showEditor() {
 		addMenu(new EditorPanel(), 2);
+	}
+
+	public void showEditorsMenu() {
+		addMenu(new EditorsMenu(), 2);
 	}
 
 	public void showEditorMap() {
@@ -125,6 +136,10 @@ public class GameFrame extends JFrame {
 
 	public void showScores() {
 		addMenu(new ScoreBoard(), 2);
+	}
+
+	public void showOnline() {
+		addMenu(new OnlineMenu(), 2);
 	}
 
 	public void start() {

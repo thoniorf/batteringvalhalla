@@ -9,7 +9,7 @@ import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.input.PlayerControls;
 
 public class GamePanel extends JPanel {
-	private static final long serialVersionUID = 999L;
+	private static final long serialVersionUID = 1L;
 
 	public GamePanel() {
 		super();

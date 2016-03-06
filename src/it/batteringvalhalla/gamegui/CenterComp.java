@@ -2,9 +2,6 @@ package it.batteringvalhalla.gamegui;
 
 public class CenterComp {
 
-	public CenterComp() {
-	}
-
 	public static int centerX(int width) {
 		if (width == 0 || width > GameFrame.size.width)
 			width = GameFrame.size.width;

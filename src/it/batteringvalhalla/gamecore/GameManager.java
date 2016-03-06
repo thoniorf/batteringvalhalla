@@ -30,7 +30,7 @@ public class GameManager implements Runnable {
 	}
 
 	private static GameManager manager;
-	private static Integer round;
+	private static Integer round = 0;
 	private static State state;
 
 	private JPanel viewport;
@@ -67,7 +67,7 @@ public class GameManager implements Runnable {
 		this.viewport = viewport;
 	}
 
-	private GameManager() {
+	public GameManager() {
 	}
 
 	public static void getInput() {
@@ -99,6 +99,7 @@ public class GameManager implements Runnable {
 		long timeDiff = 0; // the time it took for the cycle to execute
 		int sleepTime = 0; // ms to sleep (if < 0 we're behind)
 		int framesSkipped = 0; // number of frames being skipped
+		GameManager.setRound(0);
 		GameManager.setState(State.Run);
 		// main loop
 		while (!state.equals(State.Stop)) {
@@ -131,7 +132,8 @@ public class GameManager implements Runnable {
 				}
 			}
 			if (state.equals(State.Next)) {
-				Player.incScore();
+				round++;
+				Player.setScore(round);
 				GameWorld.makeLevel(GameWorld.getMax_enemy() + 1);
 				GameManager.setState(State.Run);
 			} else if (state.equals(State.Over)) {

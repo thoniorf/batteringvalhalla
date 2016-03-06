@@ -4,8 +4,10 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -29,6 +31,10 @@ public class ResourcesLoader {
 	public static ArrayList<Image> scoreboard_images;
 	public static ArrayList<Image> walls_images;
 	public static Font gothic;
+	// header
+	public static Image header;
+	// icons
+	public static HashMap<String, Image> images = new HashMap<>();
 
 	// editor
 	public static List<Image> imageHead;
@@ -117,6 +123,104 @@ public class ResourcesLoader {
 				.getResource("it/batteringvalhalla/assets/gui/background-ui.png")));
 	}
 
+	public static synchronized void loadIcons() throws IOException {
+		String base_path = "gui/menu/icon/";
+		// play icons
+		images.put("play", read(base_path, "play.png"));
+		images.put("play_hover", read(base_path, "play_hover.png"));
+		images.put("play_selected", read(base_path, "play_selected.png"));
+		// online icons
+		images.put("online", read(base_path, "online.png"));
+		images.put("online_hover", read(base_path, "online_hover.png"));
+		images.put("online_selected", read(base_path, "online_selected.png"));
+		// editor icons
+		images.put("editor", read(base_path, "editor.png"));
+		images.put("editor_hover", read(base_path, "editor_hover.png"));
+		images.put("editor_selected", read(base_path, "editor_selected.png"));
+		// options icons
+		images.put("options", read(base_path, "options.png"));
+		images.put("options_hover", read(base_path, "options_hover.png"));
+		images.put("options_selected", read(base_path, "options_selected.png"));
+		// exit icons
+		images.put("exit", read(base_path, "exit.png"));
+		images.put("exit_hover", read(base_path, "exit_hover.png"));
+		images.put("exit_selected", read(base_path, "exit_selected.png"));
+
+	}
+
+	public static synchronized void loadEditorIcons() throws IOException {
+		String base_path = "gui/menu/icon/";
+		// player editor icons
+		images.put("player_editor", read(base_path, "player_editor.png"));
+		images.put("player_editor_hover", read(base_path, "player_editor_hover.png"));
+		images.put("player_editor_selected", read(base_path, "player_editor_selected.png"));
+		// map editor icons
+		images.put("map_editor", read(base_path, "map_editor.png"));
+		images.put("map_editor_hover", read(base_path, "map_editor_hover.png"));
+		images.put("map_editor_selected", read(base_path, "map_editor_selected.png"));
+
+	}
+
+	public static synchronized void loadRoundIcons() throws IOException {
+		String base_path = "gui/menu/icon/round/";
+		// back icons
+		images.put("back", read(base_path, "back.png"));
+		images.put("back_hover", read(base_path, "back_hover.png"));
+		// forward icons
+		images.put("forward", read(base_path, "forward.png"));
+		images.put("forward_hover", read(base_path, "forward_hover.png"));
+		// down icons
+		// scaled 60x60
+		images.put("down", read(base_path, "down.png").getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+		images.put("down_hover", read(base_path, "down_hover.png").getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+		// sound on icons
+		images.put("sound_on", read(base_path, "sound_on.png"));
+		images.put("sound_on_hover", read(base_path, "sound_on_hover.png"));
+		// sound off icons
+		images.put("sound_of", read(base_path, "sound_off.png"));
+		images.put("sound_off_hover", read(base_path, "sound_off_hover.png"));
+		// exit icons
+		// scaled 60x60
+		images.put("exit_round", read(base_path, "exit.png").getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+		images.put("exit_round_hover", read(base_path, "exit_hover.png").getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+		// scaled 100x100
+		images.put("exit_red", read(base_path, "exit_red.png").getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+		images.put("exit_red_hover",
+				read(base_path, "exit_red_hover.png").getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+		// scaled 100x100
+		images.put("exit_blue", read(base_path, "exit_blue.png").getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+		images.put("exit_blue_hover",
+				read(base_path, "exit_blue_hover.png").getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+		// confirm icons
+		// scaled 100x100
+		images.put("confirm_blue", read(base_path, "confirm_blue.png").getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+		images.put("confirm_blue_hover",
+				read(base_path, "confirm_blue_hover.png").getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+		// scaled 100x100
+		images.put("confirm_red", read(base_path, "confirm_red.png").getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+		images.put("confirm_red_hover",
+				read(base_path, "confirm_red_hover.png").getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+		// restart icons
+		images.put("restart", read(base_path, "restart.png"));
+		images.put("restart_hover", read(base_path, "restart_hover.png"));
+	}
+
+	public static synchronized void loadBackgrounds() throws IOException {
+		String base_path = "gui/menu/background/";
+		// 600 x 600
+		images.put("background_6x6", read(base_path, "background_600x600.png"));
+		// 600 x 400
+		images.put("background_6x4", read(base_path, "background_600x400.png"));
+		// 512 x 256
+		images.put("background_5x2", read(base_path, "background_512x256.png"));
+
+	}
+
+	public static synchronized BufferedImage read(String path, String file) throws IOException {
+		return ImageIO
+				.read(ResourcesLoader.class.getClassLoader().getResource("it/batteringvalhalla/assets/" + path + file));
+	}
+
 	public static synchronized void loadOptionMenuImages() throws IOException {
 		optionmenu_images = new ArrayList<Image>();
 
@@ -159,7 +263,7 @@ public class ResourcesLoader {
 
 		exitmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/gui/menu/background/exit_background.png"))
+						.getResource("it/batteringvalhalla/assets/gui/menu/background/background_512x256.png"))
 				.getScaledInstance(512, 256, Image.SCALE_SMOOTH));
 		exitmenu_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
@@ -228,6 +332,23 @@ public class ResourcesLoader {
 			System.out.println("Invalid Font Format, please pay attention");
 			e.printStackTrace();
 		}
+	}
+
+	public static synchronized void loadHeaders() throws IOException {
+		String base_path = "gui/menu/header/";
+		// game header
+		header = read("gui/", "header.png");
+		// editors menu header
+		images.put("editors_header", read(base_path, "editors_header.png"));
+		// exit menu header
+		images.put("exit_header", read(base_path, "exit_header.png"));
+		// userfield header
+		images.put("userfield_header", read(base_path, "userfield_header.png"));
+		// arcade header
+		images.put("arcade_header", read(base_path, "arcade_header.png"));
+		// maplist header
+		images.put("maplist_header", read(base_path, "maplist_header.png"));
+
 	}
 
 	public static synchronized void loadEditorImages() throws IOException {

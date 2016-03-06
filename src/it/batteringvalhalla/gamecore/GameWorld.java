@@ -2,7 +2,6 @@ package it.batteringvalhalla.gamecore;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Random;
 
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
@@ -76,6 +75,8 @@ public class GameWorld {
 	public static void makeLevel(int n_enemies) {
 		// Initialize arena
 		arena = new Arena(ResourcesLoader.mainmenu_images.get(9));
+		// get spawn point
+		// arena.setSpawn(ManagerFilePlayer.getSpawnInTheMap(customLevel));
 		// level max enemies
 		max_enemy = new Integer(n_enemies);
 		// level enemies number
@@ -84,23 +85,18 @@ public class GameWorld {
 		objects = new ArrayList<Entity>();
 		// spawn Player
 		player = new Player(arena.getSpawn().get(0));
+		Player.setScore(GameManager.getRound());
 		objects.add(player);
 		// spawn enemies
 		for (int i = 0; i < enemies; i++) {
-			objects.add(new Enemy(arena.getSpawn().get(Math.abs((new Random()).nextInt() % 4 + 1))));
+			objects.add(new Enemy(arena.getSpawn().get(i + 1)));
 			// ((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy)
 			// objects.get(i + 1), arena, objects));
 		}
-		if (!customLevel.equals(""))
-			loadCustomLevel(customLevel);
-	}
-
-	public static void loadCustomLevel(String map_name) {
-		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(map_name);
+		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(customLevel);
 		for (int i = 0; i < walls.size(); i++) {
 			objects.add(walls.get(i));
 		}
-
 	}
 
 	public static void setMax_enemy(Integer max_enemies) {

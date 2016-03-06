@@ -339,17 +339,19 @@ public class EditorMapPanel extends JPanel {
 		});
 		save.addActionListener(e -> {
 			if (!nomeMappa.getText().equals("new")) {
-				for (int i = 0; i < wall.size(); i++) {
-					
-					wall.get(i).getOrigin().x -= rectangle.getX();
-					wall.get(i).getOrigin().y -= rectangle.getY();
-				}}
-			for(int i=0;i<players.size();i++){
-				players.get(i).getOrigin().x-=rectangle.getX();
-				players.get(i).getOrigin().y-=rectangle.getY();
-			}
-			ManagerFilePlayer.saveMap(attrito, wall,players, nomeMappa.getText());
+//				for (int i = 0; i < wall.size(); i++) {
+//					
+//					wall.get(i).getOrigin().x -= rectangle.getX();
+//					wall.get(i).getOrigin().y -= rectangle.getY();
+//				}
+				
+//			for(int i=0;i<players.size();i++){
+//				players.get(i).getOrigin().x-=rectangle.getX();
+//				players.get(i).getOrigin().y-=rectangle.getY();
+//			}
+			ManagerFilePlayer.saveMap(attrito, wall,players, nomeMappa.getText(),(int)rectangle.x,(int)rectangle.y);
 			Chiudere();
+			}
 		});
 
 		carica.addActionListener(e -> {
@@ -366,25 +368,25 @@ public class EditorMapPanel extends JPanel {
 				}
 				
 				List<VerySquareWall> tmp=new ArrayList<VerySquareWall>();
-				tmp.addAll(ManagerFilePlayer.getWallsInTheMap((String) maps.getSelectedItem()));
+				wall.addAll(ManagerFilePlayer.getWallsInTheMap((String) maps.getSelectedItem(),(int)rectangle.x,(int)rectangle.y));
 
 				for (int i = 0; i < tmp.size(); i++) {
-					wall.add(new VerySquareWall((int)(tmp.get(i).getOrigin().x+rectangle.getX()), (int)(tmp.get(i).getOrigin().y+rectangle.getY()), tmp.get(i).getMaxLife())); 
+//					wall.add(new VerySquareWall((int)(tmp.get(i).getOrigin().x+rectangle.getX()), (int)(tmp.get(i).getOrigin().y+rectangle.getY()), tmp.get(i).getMaxLife())); 
 					wall.get(i).update();
 
 				}
 				
-				players.addAll(ManagerFilePlayer.getSpawnInTheMap((String) maps.getSelectedItem()));
+				players.addAll(ManagerFilePlayer.getSpawnInTheMap((String) maps.getSelectedItem(),rectangle.x,rectangle.y));
 				for(int i=0;i<players.size();i++){
 					players.get(i).update();
 				}
 			
 			nomeMappa.setText ((String) maps.getSelectedItem());
-			for(int i=0;i<players.size();i++){
-				
-				players.get(i).getOrigin().x+=rectangle.getX();
-				players.get(i).getOrigin().y+=rectangle.getY();
-				players.get(i).update();}
+//			for(int i=0;i<players.size();i++){
+//				
+//				players.get(i).getOrigin().x+=rectangle.getX();
+//				players.get(i).getOrigin().y+=rectangle.getY();
+//				players.get(i).update();}
 			
 			
 			}

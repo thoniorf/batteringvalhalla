@@ -21,12 +21,12 @@ private static File f;
 private static int top,mid,bot;
 private static String sound;
 private static String name;
-private final int  ASCIICODE;
+private final static int  ASCIICODE=48;
 private static File dir;
 private static File maps;
 public ManagerFilePlayer() {
 	
-	ASCIICODE=48;
+	
 	dir=new File("Conf");
 	if(!dir.exists())
 		dir.mkdir();
@@ -129,7 +129,7 @@ public static void setName(String name) {
 	ManagerFilePlayer.name = name;
 	save();
 }
-public static void saveMap(Integer attrito, List<VerySquareWall> wall, List<Player> players, String nomeMap) {
+public static void saveMap(Integer attrito, List<VerySquareWall> wall, List<Player> players, String nomeMap,Integer x, Integer y) {
 //TODO Calendar gc=Calendar.getInstance();
 	try{
 		FileWriter w;
@@ -141,13 +141,13 @@ public static void saveMap(Integer attrito, List<VerySquareWall> wall, List<Play
 	
 		bw.write(attrito+"\n");
 		for (int i=0;i<players.size();i++){
-			bw.write(((int)players.get(i).getOrigin().getX())+"\n");
-			bw.write(((int)players.get(i).getOrigin().getY())+"\n");
+			bw.write(((int)players.get(i).getOrigin().getX())-x+"\n");
+			bw.write(((int)players.get(i).getOrigin().getY())-y+"\n");
 			}
 		
 		for (int i=0;i<wall.size();i++ ){
-			bw.write(wall.get(i).getOrigin().x+"\n");
-			bw.write(wall.get(i).getOrigin().y+"\n");
+			bw.write(wall.get(i).getOrigin().x-x+"\n");
+			bw.write(wall.get(i).getOrigin().y-y+"\n");
 			bw.write(wall.get(i).getMaxLife()+"\n");
 		}
 		
@@ -188,7 +188,7 @@ private static List<String> getMap(String selectedItem) {
 	
 	return lista;
 }
-public static List<VerySquareWall> getWallsInTheMap(String selectedItem) {
+public static List<VerySquareWall> getWallsInTheMap(String selectedItem,Integer x,Integer y) {
 	List <String> listaMuri=new ArrayList<String>();
 	listaMuri.addAll(getMap(selectedItem));
 	
@@ -196,7 +196,7 @@ public static List<VerySquareWall> getWallsInTheMap(String selectedItem) {
 	
 	for(int i=9;i+2<listaMuri.size();i+=3){
 		
-		wall.add(new VerySquareWall(Integer.decode(listaMuri.get(i)), Integer.decode(listaMuri.get(i+1)), Integer.decode(listaMuri.get(i+2))));
+		wall.add(new VerySquareWall(Integer.decode(listaMuri.get(i))+x, Integer.decode(listaMuri.get(i+1))-y, Integer.decode(listaMuri.get(i+2))));
 	}
 	return wall;
 }
@@ -215,7 +215,7 @@ public static boolean mapExist(String string) {
 		return false;
 	
 }
-public static List<Player> getSpawnInTheMap(String selectedItem) {
+public static List<Player> getSpawnInTheMap(String selectedItem,Integer x,Integer y) {
 	List <String> listaSpawn=new ArrayList<String>();
 	listaSpawn.addAll(getMap(selectedItem));
 	
@@ -223,7 +223,7 @@ public static List<Player> getSpawnInTheMap(String selectedItem) {
 	
 	for(int i=1;i+1<9;i+=2){
 		
-		players.add(new Player(new Point((Integer.decode(listaSpawn.get(i))), Integer.decode(listaSpawn.get(i+1)))));
+		players.add(new Player(new Point((Integer.decode(listaSpawn.get(i)))+x, Integer.decode(listaSpawn.get(i+1))+y)));
 		
 		}
 	return players;

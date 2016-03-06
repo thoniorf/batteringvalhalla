@@ -1,8 +1,5 @@
 package it.batteringvalhalla.gamegui.menu.button;
 
-import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamegui.sound.Sound;
-
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -11,6 +8,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamegui.sound.Sound;
 
 public class JButtonRound extends JButton {
 	private static final long serialVersionUID = 1L;
@@ -22,6 +22,7 @@ public class JButtonRound extends JButton {
 		ImageIcon image = new ImageIcon(img);
 		ImageIcon imageHover = new ImageIcon(imghover);
 		setPreferredSize(new Dimension(width, height));
+		setSize(new Dimension(width, height));
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		setBorderPainted(false);
 		setContentAreaFilled(false);

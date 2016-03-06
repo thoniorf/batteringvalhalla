@@ -97,9 +97,8 @@ public class GameManager implements Runnable {
 		// set times and frames for constant FPS
 		long beginTime = 0; // the time when the cycle begun
 		long timeDiff = 0; // the time it took for the cycle to execute
-		int sleepTime = 0; // ms to sleep (<0 if we're behind)
+		int sleepTime = 0; // ms to sleep (if < 0 we're behind)
 		int framesSkipped = 0; // number of frames being skipped
-		// start first level
 		GameManager.setState(State.Run);
 		// main loop
 		while (!state.equals(State.Stop)) {

@@ -6,7 +6,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
+import java.util.List;
 
+import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamegui.GameFrame;
 
 public class Arena {
@@ -52,6 +54,13 @@ public class Arena {
 
 	public ArrayList<Point> getSpawn() {
 		return spawn;
+	}
+
+	public void setSpawn(List<Player> map_spawn) {
+		spawn.clear();
+		for (Player p : map_spawn) {
+			spawn.add(p.getOrigin());
+		}
 	}
 
 	public void paint(Graphics2D g) {

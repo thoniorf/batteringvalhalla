@@ -42,6 +42,11 @@ public class Loading extends JPanel {
 			loaderMethods.add(ResourcesLoader.class.getMethod("loadExitMenuImages"));
 			loaderMethods.add(ResourcesLoader.class.getMethod("loadOptionMenuImages"));
 			loaderMethods.add(ResourcesLoader.class.getMethod("loadEditorImages"));
+			loaderMethods.add(ResourcesLoader.class.getMethod("loadIcons"));
+			loaderMethods.add(ResourcesLoader.class.getMethod("loadRoundIcons"));
+			loaderMethods.add(ResourcesLoader.class.getMethod("loadEditorIcons"));
+			loaderMethods.add(ResourcesLoader.class.getMethod("loadBackgrounds"));
+			loaderMethods.add(ResourcesLoader.class.getMethod("loadHeaders"));
 			loaderMethods.add(Sound.class.getMethod("loadSound"));
 		} catch (NoSuchMethodException | SecurityException | IOException e) {
 			e.printStackTrace();

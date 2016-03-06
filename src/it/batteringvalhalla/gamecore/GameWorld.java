@@ -76,7 +76,7 @@ public class GameWorld {
 		// Initialize arena
 		arena = new Arena(ResourcesLoader.mainmenu_images.get(9));
 		// get spawn point
-		// arena.setSpawn(ManagerFilePlayer.getSpawnInTheMap(customLevel));
+		arena.setSpawn(ManagerFilePlayer.getSpawnInTheMap(customLevel));
 		// level max enemies
 		max_enemy = new Integer(n_enemies);
 		// level enemies number
@@ -96,6 +96,7 @@ public class GameWorld {
 		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(customLevel);
 		for (int i = 0; i < walls.size(); i++) {
 			objects.add(walls.get(i));
+
 		}
 	}
 

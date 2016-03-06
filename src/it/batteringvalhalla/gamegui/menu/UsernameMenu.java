@@ -2,9 +2,6 @@ package it.batteringvalhalla.gamegui.menu;
 
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -22,7 +19,6 @@ import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
 public class UsernameMenu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private GridBagConstraints constraints;
 
 	private GameFrame frame;
 	private JButtonRound no;
@@ -33,18 +29,19 @@ public class UsernameMenu extends JPanel {
 	private int height = 256;
 
 	public UsernameMenu() {
-		super(new GridBagLayout());
+		super(null);
 		this.frame = GameFrame.instance();
 		setBounds(CenterComp.centerX(width), CenterComp.centerY(height), width, height);
 		setOpaque(false);
-		constraints = new GridBagConstraints();
-		yes = new JButtonRound(ResourcesLoader.exitmenu_images.get(5), ResourcesLoader.exitmenu_images.get(6));
-		no = new JButtonRound(ResourcesLoader.exitmenu_images.get(7), ResourcesLoader.exitmenu_images.get(8));
+		// initialize
+		yes = new JButtonRound(ResourcesLoader.images.get("confirm_blue"),
+				ResourcesLoader.images.get("confirm_blue_hover"));
+		no = new JButtonRound(ResourcesLoader.images.get("exit_red"), ResourcesLoader.images.get("exit_red_hover"));
 		userfield = new JTextField();
 
 		userfield.setBorder(null);
 		userfield.setOpaque(false);
-		userfield.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 72));
+		userfield.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 54));
 		userfield.setHorizontalAlignment(JTextField.CENTER);
 		userfield.setDocument(new PlainDocument() {
 			private static final long serialVersionUID = 1L;
@@ -61,29 +58,15 @@ public class UsernameMenu extends JPanel {
 
 			}
 		});
-
 		userfield.setText(ManagerFilePlayer.getName());
+		// setting bounds
+		userfield.setBounds(82, 40, 313, 56);
+		yes.setBounds(105, 123, yes.getWidth(), yes.getHeight());
+		no.setBounds(274, 123, no.getWidth(), no.getHeight());
 
-		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 0.5;
-		constraints.weighty = 0.5;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		constraints.gridwidth = 4;
-		constraints.gridheight = 1;
-		constraints.insets = new Insets(30, 0, 0, 0);
-		this.add(userfield, constraints);
-
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		constraints.gridwidth = 2;
-		constraints.insets = new Insets(0, 0, 8, 0);
-		add(yes, constraints);
-		constraints.gridx = 2;
-		constraints.gridwidth = 2;
-		add(no, constraints);
+		add(userfield);
+		add(yes);
+		add(no);
 
 		setVisible(true);
 		listenerLoader();
@@ -92,7 +75,8 @@ public class UsernameMenu extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(ResourcesLoader.exitmenu_images.get(0), 0, 0, null);
+		g.drawImage(ResourcesLoader.images.get("background_5x2"), 0, 0, null);
+		g.drawImage(ResourcesLoader.images.get("userfield_header"), 55, 20, null);
 	}
 
 	private void listenerLoader() {

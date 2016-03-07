@@ -54,7 +54,7 @@ public abstract class AbstractEntity implements Entity, Comparable<Entity> {
 	public int compareTo(Entity e) {
 		if (this.getOrigin().y > e.getOrigin().y) {
 			return 1;
-		} else if (this.getOrigin().y > e.getOrigin().y) {
+		} else if (this.getOrigin().y < e.getOrigin().y) {
 			return -1;
 		} else {
 			return 0;

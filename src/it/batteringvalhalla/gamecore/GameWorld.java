@@ -73,14 +73,16 @@ public class GameWorld {
 	}
 
 	public static void makeLevel(int n_enemies) {
+		// freq_friction = ManagerFilePlayer.getAttritoMap(customLevel);
 		// Initialize arena
 		arena = new Arena(ResourcesLoader.mainmenu_images.get(9));
 		// get spawn point
-		arena.setSpawn(ManagerFilePlayer.getSpawnInTheMap(customLevel));
+		arena.setSpawn(ManagerFilePlayer.getSpawnInTheMap(customLevel, arena.getShape().getBounds().x,
+				arena.getShape().getBounds().y));
 		// level max enemies
-		max_enemy = new Integer(n_enemies);
+		setMax_enemy(n_enemies);
 		// level enemies number
-		enemies = new Integer(max_enemy);
+		enemies = max_enemy;
 		// object list
 		objects = new ArrayList<Entity>();
 		// spawn Player
@@ -93,7 +95,8 @@ public class GameWorld {
 			// ((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy)
 			// objects.get(i + 1), arena, objects));
 		}
-		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(customLevel);
+		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(customLevel,
+				arena.getShape().getBounds().x, arena.getShape().getBounds().y);
 		for (int i = 0; i < walls.size(); i++) {
 			objects.add(walls.get(i));
 
@@ -101,8 +104,8 @@ public class GameWorld {
 	}
 
 	public static void setMax_enemy(Integer max_enemies) {
-		if (max_enemies > 8) {
-			max_enemy = max_enemies;
+		if (max_enemies > arena.getSpawn().size()) {
+			max_enemy = arena.getSpawn().size() - 1;
 		} else {
 			max_enemy = max_enemies;
 		}

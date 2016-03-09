@@ -2,8 +2,8 @@ package it.batteringvalhalla.gamecore.collision;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.List;
 
-import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.object.AbstractEntity;
 import it.batteringvalhalla.gamecore.object.Entity;
 import it.batteringvalhalla.gamecore.object.actor.AbstractActor;
@@ -11,10 +11,13 @@ import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
 import it.batteringvalhalla.gamecore.vector2d.Vector2D;
 
 public class CollisionHandler {
+	private static List<Entity> objects = null;
+
+	public static void setObjects(List<Entity> objects) {
+		CollisionHandler.objects = new ArrayList<>(objects);
+	}
 
 	public static void check() {
-		// get world objects
-		ArrayList<Entity> objects = GameWorld.getObjects();
 		// check loop
 		for (int i = 0; i < objects.size(); i++) {
 			for (int j = i + 1; j < objects.size(); j++) {

@@ -2,8 +2,10 @@ package it.batteringvalhalla.gamecore;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import it.batteringvalhalla.gamecore.arena.Arena;
+import it.batteringvalhalla.gamecore.collision.CollisionHandler;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.Entity;
@@ -101,6 +103,7 @@ public class GameWorld {
 			objects.add(walls.get(i));
 
 		}
+		CollisionHandler.setObjects(new CopyOnWriteArrayList<Entity>(objects));
 	}
 
 	public static void setMax_enemy(Integer max_enemies) {

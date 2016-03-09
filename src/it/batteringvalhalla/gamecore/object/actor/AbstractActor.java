@@ -14,7 +14,7 @@ import it.batteringvalhalla.gamecore.vector2d.Vector2D;
 
 public abstract class AbstractActor extends AbstractEntity implements Actor {
 	protected static final int max_velocity = 4;
-	protected static final int charge_velocity = 20;
+	protected static final int charge_velocity = 10;
 	protected static final long charge_countdown = 5000;
 	protected static int curret_max_velocity = max_velocity;
 
@@ -37,6 +37,7 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 	public AbstractActor(Point origin, int idHead, int idBody, int idMount) {
 		super(origin);
 		this.velocity = new Vector2D(0, 0);
+		curret_max_velocity = max_velocity;
 		this.move_dir = Direction.stop;
 		this.face_dir = Direction.est;
 		this.charge_time = 0L;
@@ -44,9 +45,11 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		this.charge = Boolean.FALSE;
 		this.strategy = null;
 		// sprite
-		this.body = new Sprite(ResourcesLoader.actor_body, 115, 94, 3, 1, 115 / 2, 115 / 2, 77);
+		// w=115 h=94
+		this.body = new Sprite(ResourcesLoader.actor_body, 115, 94, 3, 1, 115 / 2, 115 / 2, -77);
+		// w=117 h= 88
 		this.mount = new Sprite(ResourcesLoader.actor_mount.get(idMount), 117, 88, 3, 16, 110 / 2, 110 / 2, 88 / 2);
-		this.head = new Sprite(ResourcesLoader.actor_weapon.get(idHead), 103, 76, 1, 16, 36, 66, 48);
+		this.head = new Sprite(ResourcesLoader.actor_weapon.get(idHead), 103, 76, 1, 16, 36, 66, -48);
 		// friction
 		friction_time = 0L;
 	}
@@ -57,8 +60,12 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 
 	public void charge() {
 		if (can_charge) {
+			can_charge = Boolean.FALSE;
 			charge = Boolean.TRUE;
+			charge_time = System.currentTimeMillis();
+			curret_max_velocity = charge_velocity;
 		}
+
 	}
 
 	@Override
@@ -148,38 +155,55 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		if (System.currentTimeMillis() - charge_time >= charge_countdown) {
 			can_charge = Boolean.TRUE;
 		}
-		int addendum = 1;
-		// if (charge) {
-		// charge = Boolean.FALSE;
-		// can_charge = Boolean.FALSE;
-		// charge_time = System.currentTimeMillis();
-		// curret_max_velocity = charge_velocity;
-		// addendum = curret_max_velocity;
-		// } else {
-		// curret_max_velocity = max_velocity;
-		// }
+		// face direction
+		face_dir = (!Direction.stop.equals(move_dir)) ? move_dir : face_dir;
+
+		// Charge
+		if (charge) {
+			if (velocity.getComponents().x == charge_velocity || velocity.getComponents().y == charge_velocity) {
+				charge = Boolean.FALSE;
+				curret_max_velocity = max_velocity;
+			}
+			switch (face_dir) {
+			case est:
+				incVelX(1);
+				break;
+			case nord:
+				incVelY(-1);
+				break;
+			case ovest:
+				incVelX(-1);
+				break;
+			case sud:
+				incVelY(1);
+				break;
+			default:
+				break;
+
+			}
+		}
 		// Movement
 		switch (move_dir) {
 		case est:
-			incVelX(addendum);
+			incVelX(1);
 			break;
 		case nord:
-			incVelY(-1 * addendum);
+			incVelY(-1);
 			break;
 		case ovest:
-			incVelX(-1 * addendum);
+			incVelX(-1);
 			break;
 		case sud:
-			incVelY(addendum);
+			incVelY(1);
 			break;
 		case stop:
+			// friction
 			long now = System.currentTimeMillis();
 			if (now - friction_time >= GameWorld.getFreq_friction()) {
 				friction_time = now;
 				velocity.getComponents().x *= 0.99;
 				velocity.getComponents().y *= 0.99;
 			}
-
 			break;
 		default:
 			break;
@@ -191,17 +215,16 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		origin.y += velocity.getComponents().y;
 		// set shape bounds
 		((Rectangle) shape).setBounds(origin.x - width / 2, origin.y - height / 2, width, height);
-		// face direction
-		face_dir = move_dir;
 		// sprite updates
-		head.update(face_dir);
-		body.update(face_dir);
-		mount.update(face_dir);
+		head.update(move_dir);
+		body.update(move_dir);
+		mount.update(move_dir);
 	}
 
 	@Override
 	public void paint(Graphics2D g) {
-		g.drawImage(head.getFrame(), shape.getBounds().x, shape.getBounds().y, null);
+		// g.drawImage(head.getFrame(), shape.getBounds().x,
+		// shape.getBounds().y, null);
 		g.drawImage(body.getFrame(), shape.getBounds().x, shape.getBounds().y, null);
 		g.drawImage(mount.getFrame(), shape.getBounds().x, shape.getBounds().y, null);
 

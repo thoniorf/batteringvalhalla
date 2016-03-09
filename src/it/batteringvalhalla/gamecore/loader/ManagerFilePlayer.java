@@ -196,7 +196,7 @@ public static List<VerySquareWall> getWallsInTheMap(String selectedItem,Integer 
 	
 	for(int i=9;i+2<listaMuri.size();i+=3){
 		
-		wall.add(new VerySquareWall(Integer.decode(listaMuri.get(i))+x, Integer.decode(listaMuri.get(i+1))-y, Integer.decode(listaMuri.get(i+2))));
+		wall.add(new VerySquareWall(Integer.decode(listaMuri.get(i))+x, Integer.decode(listaMuri.get(i+1))+y, Integer.decode(listaMuri.get(i+2))));
 	}
 	return wall;
 }

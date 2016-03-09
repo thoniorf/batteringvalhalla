@@ -9,6 +9,9 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +54,7 @@ public class EditorMapPanel extends JPanel {
 	private JButtonRound exit;
 	private int height = 50;
 	private int width = 50;
-	
+	private VerySquareWall tmp;
 
 	private Image imageCubo0;
 	private Image imageCubo1;
@@ -59,8 +62,7 @@ public class EditorMapPanel extends JPanel {
 	private Image sfondoSelezionato;
 	private int distanzaLeft;
 	
-//	private static final int widthmappa = 824;
-//	private static final int heightMappa = 658;
+
 
 	private JButtonRound save;
 	private JLabel header;
@@ -108,11 +110,7 @@ public class EditorMapPanel extends JPanel {
 		for (int i = 0; i < 4; i++) {
 			players.add(new Player(new Point( (int) (a.getSpawn().get(i).x), (int )(a.getSpawn().get(i).y))));
 			players.get(i).update();}
-//		for(int i=0;i<players.size();i++){
-//			players.get(i).getOrigin().x+=rectangle.getX();
-//			players.get(i).getOrigin().y+=rectangle.getY();
-//			players.get(i).update();}
-//TODO perche va senza??
+
 		
 		maps = new JCustomComboBox(ManagerFilePlayer.loadNameOfMaps());
 		
@@ -195,27 +193,51 @@ public class EditorMapPanel extends JPanel {
 				
 				clickSpawn(e.getPoint());
 				
-
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-
+				
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-
+				
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-
+			
 			}
 		});
+		
+		addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				
+				if(state>=0){
+					tmp.getOrigin().setLocation(e.getX(), e.getY());
+					tmp.update();
+				}
+				repaint();
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				
+				if(state==-1){
+					players.get(indexSpwan).getOrigin().move(e.getX(), e.getY());
+					players.get(indexSpwan).update();
+					}
+				
+			repaint();
+			}
+		});
+		
 	}
 	
 	private void clickSpawn(Point p){
@@ -259,7 +281,7 @@ public class EditorMapPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+	
 		g.drawImage(ResourcesLoader.optionmenu_images.get(4), 0, 0, WIDTHSFONDO, HEIGHTSFONDO, null);
 		g.drawImage(sfondoSelezionato, (int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(),
 				(int) rectangle.getHeight(), null);
@@ -270,6 +292,8 @@ public class EditorMapPanel extends JPanel {
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).paint(g2d);
 		}
+		if(state>=0)
+			tmp.paint(g2d);
 	}
 
 	@Override
@@ -311,13 +335,14 @@ public class EditorMapPanel extends JPanel {
 	private void listenerLoader() {
 		muro0.addActionListener(e -> {
 			state = 0;
-
+			tmp=new VerySquareWall(-50, -50, -1);
 			repaint();
 		});
 		;
 
 		muro1.addActionListener(e -> {
 			state = 2;
+			 tmp=new VerySquareWall(-50, -50, 2);
 			repaint();
 		});
 
@@ -339,17 +364,8 @@ public class EditorMapPanel extends JPanel {
 		});
 		save.addActionListener(e -> {
 			if (!nomeMappa.getText().equals("new")) {
-//				for (int i = 0; i < wall.size(); i++) {
-//					
-//					wall.get(i).getOrigin().x -= rectangle.getX();
-//					wall.get(i).getOrigin().y -= rectangle.getY();
-//				}
-				
-//			for(int i=0;i<players.size();i++){
-//				players.get(i).getOrigin().x-=rectangle.getX();
-//				players.get(i).getOrigin().y-=rectangle.getY();
-//			}
-			ManagerFilePlayer.saveMap(attrito, wall,players, nomeMappa.getText(),(int)rectangle.x,(int)rectangle.y);
+
+			ManagerFilePlayer.saveMap(attrito, wall,players, nomeMappa.getText(),rectangle.x,rectangle.y);
 			Chiudere();
 			}
 		});
@@ -367,11 +383,10 @@ public class EditorMapPanel extends JPanel {
 					sfondoSelezionato = imageSfondo2;
 				}
 				
-				List<VerySquareWall> tmp=new ArrayList<VerySquareWall>();
-				wall.addAll(ManagerFilePlayer.getWallsInTheMap((String) maps.getSelectedItem(),(int)rectangle.x,(int)rectangle.y));
+				
+				wall.addAll(ManagerFilePlayer.getWallsInTheMap((String) maps.getSelectedItem(),rectangle.x,rectangle.y));
 
-				for (int i = 0; i < tmp.size(); i++) {
-//					wall.add(new VerySquareWall((int)(tmp.get(i).getOrigin().x+rectangle.getX()), (int)(tmp.get(i).getOrigin().y+rectangle.getY()), tmp.get(i).getMaxLife())); 
+				for (int i = 0; i < wall.size(); i++) {
 					wall.get(i).update();
 
 				}
@@ -382,11 +397,6 @@ public class EditorMapPanel extends JPanel {
 				}
 			
 			nomeMappa.setText ((String) maps.getSelectedItem());
-//			for(int i=0;i<players.size();i++){
-//				
-//				players.get(i).getOrigin().x+=rectangle.getX();
-//				players.get(i).getOrigin().y+=rectangle.getY();
-//				players.get(i).update();}
 			
 			
 			}

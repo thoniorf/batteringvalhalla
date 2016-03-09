@@ -1,18 +1,19 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
 import java.awt.Point;
+import java.util.Random;
 
 import it.batteringvalhalla.gamecore.ia.AbstractIA;
 
 public class Enemy extends AbstractActor {
 
 	public Enemy(Point origin, AbstractIA strategy) {
-		super(origin, 0, 0, 0);
+		super(origin, new Random().nextInt(1), 0, new Random().nextInt(1));
 		this.strategy = strategy;
 	}
 
 	public Enemy(Point origin) {
-		super(origin, 0, 0, 0);
+		super(origin, new Random().nextInt(1), 0, new Random().nextInt(1));
 		this.strategy = null;
 	}
 

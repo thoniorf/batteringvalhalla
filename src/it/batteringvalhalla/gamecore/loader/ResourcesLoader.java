@@ -179,6 +179,10 @@ public class ResourcesLoader {
 		// sound off icons
 		images.put("sound_of", read(base_path, "sound_off.png"));
 		images.put("sound_off_hover", read(base_path, "sound_off_hover.png"));
+		// pause icons
+		// scaled 60x60
+		images.put("pause", read(base_path, "pause.png").getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+		images.put("pause_hover", read(base_path, "pause_hover.png").getScaledInstance(60, 60, Image.SCALE_SMOOTH));
 		// exit icons
 		// scaled 60x60
 		images.put("exit_round", read(base_path, "exit.png").getScaledInstance(60, 60, Image.SCALE_SMOOTH));
@@ -348,7 +352,8 @@ public class ResourcesLoader {
 		images.put("arcade_header", read(base_path, "arcade_header.png"));
 		// maplist header
 		images.put("maplist_header", read(base_path, "maplist_header.png"));
-
+		// game header
+		images.put("game_header", read(base_path, "game_header.png"));
 	}
 
 	public static synchronized void loadEditorImages() throws IOException {

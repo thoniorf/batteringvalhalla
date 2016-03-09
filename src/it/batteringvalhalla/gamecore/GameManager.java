@@ -8,11 +8,17 @@ import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamecore.object.direction.Direction;
 import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.GamePanel;
 
 public class GameManager implements Runnable {
 	private final static int MAX_FPS = 33;
 	private final static int MAX_FRAME_SKIP = 5;
 	private final static int FRAME_PERIOD = 1000 / MAX_FPS;
+	private static GameManager manager;
+	private static Integer round = new Integer(1);
+	private static State state;
+
+	private GamePanel viewport;
 
 	public static void main(String[] args) {
 		// game frame
@@ -28,12 +34,6 @@ public class GameManager implements Runnable {
 		frame.start();
 
 	}
-
-	private static GameManager manager;
-	private static Integer round = 0;
-	private static State state;
-
-	private JPanel viewport;
 
 	public static GameManager getManager() {
 		if (manager == null) {
@@ -64,43 +64,39 @@ public class GameManager implements Runnable {
 	}
 
 	public void setViewport(JPanel viewport) {
-		this.viewport = viewport;
+		this.viewport = (GamePanel) viewport;
 	}
 
 	public GameManager() {
 	}
 
 	public static void getInput() {
+		GameWorld.getPlayer().setMoveDirection(Direction.stop);
 		if (PlayerControls.getKeys().get("W")[0] == 1) {
 			GameWorld.getPlayer().setMoveDirection(Direction.nord);
-		} else if (PlayerControls.getKeys().get("A")[0] == 1) {
+		}
+		if (PlayerControls.getKeys().get("A")[0] == 1) {
 			GameWorld.getPlayer().setMoveDirection(Direction.ovest);
-		} else if (PlayerControls.getKeys().get("S")[0] == 1) {
+		}
+		if (PlayerControls.getKeys().get("S")[0] == 1) {
 			GameWorld.getPlayer().setMoveDirection(Direction.sud);
-		} else if (PlayerControls.getKeys().get("D")[0] == 1) {
+		}
+		if (PlayerControls.getKeys().get("D")[0] == 1) {
 			GameWorld.getPlayer().setMoveDirection(Direction.est);
-		} else if (PlayerControls.getKeys().get("SPACE")[0] == 1) {
+		}
+		if (PlayerControls.getKeys().get("SPACE")[0] == 1) {
 			GameWorld.getPlayer().charge();
-		} else if (PlayerControls.getKeys().get("ESCAPE")[0] == 1) {
-			if (!state.equals(State.Pause)) {
-				state = State.Pause;
-			} else {
-				state = State.Run;
-			}
-		} else {
-			GameWorld.getPlayer().setMoveDirection(Direction.stop);
 		}
 	}
 
 	@Override
 	public void run() {
+		GameManager.setState(State.Run);
 		// set times and frames for constant FPS
 		long beginTime = 0; // the time when the cycle begun
 		long timeDiff = 0; // the time it took for the cycle to execute
 		int sleepTime = 0; // ms to sleep (if < 0 we're behind)
 		int framesSkipped = 0; // number of frames being skipped
-		GameManager.setRound(0);
-		GameManager.setState(State.Run);
 		// main loop
 		while (!state.equals(State.Stop)) {
 			while (state.equals(State.Run)) {
@@ -108,9 +104,11 @@ public class GameManager implements Runnable {
 				beginTime = System.currentTimeMillis();
 				framesSkipped = 0;
 				// main cycle
+				// viewport.requestFocusInWindow();
 				GameManager.getInput();
 				GameWorld.update();
 				CollisionHandler.check();
+				viewport.setCharge(GameWorld.getPlayer().canCharge());
 				viewport.repaint();
 				// frame diff after cycle
 				timeDiff = System.currentTimeMillis() - beginTime;
@@ -134,6 +132,7 @@ public class GameManager implements Runnable {
 			if (state.equals(State.Next)) {
 				round++;
 				Player.setScore(round);
+				viewport.setScore(round.toString());
 				GameWorld.makeLevel(GameWorld.getMax_enemy() + 1);
 				GameManager.setState(State.Run);
 			} else if (state.equals(State.Over)) {

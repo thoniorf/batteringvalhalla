@@ -141,10 +141,18 @@ public class ResourcesLoader {
 		images.put("options", read(base_path, "options.png"));
 		images.put("options_hover", read(base_path, "options_hover.png"));
 		images.put("options_selected", read(base_path, "options_selected.png"));
+		// resume icons
+		images.put("resume", read(base_path, "resume.png"));
+		images.put("resume_hover", read(base_path, "resume_hover.png"));
+		images.put("resume_selected", read(base_path, "resume_selected.png"));
 		// exit icons
 		images.put("exit", read(base_path, "exit.png"));
 		images.put("exit_hover", read(base_path, "exit_hover.png"));
 		images.put("exit_selected", read(base_path, "exit_selected.png"));
+		// exit big icons
+		images.put("exit_big", read(base_path, "exit_big.png"));
+		images.put("exit_big_hover", read(base_path, "exit_big_hover.png"));
+		images.put("exit_big_selected", read(base_path, "exit_big_selected.png"));
 
 	}
 
@@ -352,6 +360,8 @@ public class ResourcesLoader {
 		images.put("arcade_header", read(base_path, "arcade_header.png"));
 		// maplist header
 		images.put("maplist_header", read(base_path, "maplist_header.png"));
+		// pause header
+		images.put("pause_header", read(base_path, "pause_header.png"));
 		// game header
 		images.put("game_header", read(base_path, "game_header.png"));
 	}

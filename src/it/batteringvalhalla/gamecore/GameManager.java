@@ -99,6 +99,7 @@ public class GameManager implements Runnable {
 		int framesSkipped = 0; // number of frames being skipped
 		// main loop
 		while (!state.equals(State.Stop)) {
+			viewport.requestFocus();
 			while (state.equals(State.Run)) {
 				// frame start time
 				beginTime = System.currentTimeMillis();

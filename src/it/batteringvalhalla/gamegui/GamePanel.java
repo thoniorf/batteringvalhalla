@@ -61,14 +61,12 @@ public class GamePanel extends JPanel {
 
 	private void listenerLoader() {
 		pause.addActionListener(e -> {
-			setEnabled(false);
 			if (State.Pause.equals(GameManager.getState())) {
 				GameManager.setState(State.Run);
-				System.out.println("Run");
 				updateUI();
 			} else {
 				GameManager.setState(State.Pause);
-				System.out.println("Pause");
+				GameFrame.instance().showPause();
 			}
 		});
 	}

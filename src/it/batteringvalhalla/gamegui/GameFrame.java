@@ -23,6 +23,7 @@ import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.OnlineMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
+import it.batteringvalhalla.gamegui.menu.PauseMenu;
 import it.batteringvalhalla.gamegui.menu.ScoreBoard;
 import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.progress.Loading;
@@ -186,5 +187,9 @@ public class GameFrame extends JFrame {
 			Sound.battle.stop();
 		}
 
+	}
+
+	public void showPause() {
+		addMenu(new PauseMenu(), 3);
 	}
 }

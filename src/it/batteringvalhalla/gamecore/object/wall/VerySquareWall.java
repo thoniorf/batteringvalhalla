@@ -17,8 +17,10 @@ public class VerySquareWall extends AbstractEntity {
 		super(new Point(x, y));
 		this.maxLife = maxLife;
 		life = maxLife;
-		image = ResourcesLoader.walls_images.get(0);
-	}
+		if(maxLife>0)
+			image = ResourcesLoader.walls_images.get(0);
+		else
+			image=ResourcesLoader.walls_images.get(1);}
 
 	public Rectangle getRectangle() {
 		return (Rectangle) shape;

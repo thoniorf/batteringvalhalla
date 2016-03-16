@@ -72,6 +72,8 @@ public class ResourcesLoader {
 		walls_images = new ArrayList<Image>();
 		walls_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader().getResource("it/batteringvalhalla/assets/wall/wall.png")));
+		walls_images.add(ImageIO
+				.read(ResourcesLoader.class.getClassLoader().getResource("it/batteringvalhalla/assets/wall/wall2.png")));
 	}
 
 	public static synchronized void loadMainMenuImages() throws IOException {

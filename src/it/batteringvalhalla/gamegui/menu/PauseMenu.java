@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.State;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
-import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonCustom;
@@ -51,7 +50,6 @@ public class PauseMenu extends JPanel {
 		});
 		exit.addActionListener(e -> {
 			setEnabled(false);
-			Player.setScore(1);
 			GameFrame.instance().restart();
 		});
 

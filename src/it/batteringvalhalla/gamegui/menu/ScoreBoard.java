@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import it.batteringvalhalla.gamecore.GameManager;
+import it.batteringvalhalla.gamecore.State;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamecore.sqlite.ScoreFetch;
@@ -96,7 +98,7 @@ public class ScoreBoard extends JPanel {
 		JLabel jAppoggio;
 		scores = new ArrayList<String>();
 		ScoreFetch scorefetch = new ScoreFetch();
-		scorefetch.insertScore(Player.getScore(), Player.getUsername());
+		scorefetch.insertScore(GameManager.getRound(), Player.getUsername());
 		scorefetch.execQuery("Select * from scores order by match desc limit 8;", scores);
 		for (String score : scores) {
 			jAppoggio = new JLabel(score);
@@ -114,9 +116,11 @@ public class ScoreBoard extends JPanel {
 
 	private void listenerLoader() {
 		restart.addActionListener(e -> {
+			GameManager.setState(State.Stop);
 			frame.startGame();
 		});
 		exit.addActionListener(e -> {
+			GameManager.setState(State.Stop);
 			frame.restart();
 		});
 

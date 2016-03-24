@@ -37,7 +37,7 @@ public class GamePanel extends JPanel {
 		scores = new JLabel();
 		scores.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 36));
 		scores.setAlignmentY(JLabel.CENTER_ALIGNMENT);
-		scores.setText(Player.getScore().toString());
+		scores.setText(GameManager.getRound().toString());
 
 		charge = new JLabel();
 		charge.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 36));

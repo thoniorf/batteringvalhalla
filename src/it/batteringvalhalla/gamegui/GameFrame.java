@@ -20,6 +20,8 @@ import it.batteringvalhalla.gamegui.editorMap.EditorMapPanel;
 import it.batteringvalhalla.gamegui.menu.ArcadeMenu;
 import it.batteringvalhalla.gamegui.menu.EditorsMenu;
 import it.batteringvalhalla.gamegui.menu.ExitMenu;
+import it.batteringvalhalla.gamegui.menu.HostMenu;
+import it.batteringvalhalla.gamegui.menu.JoinMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
 import it.batteringvalhalla.gamegui.menu.OnlineMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
@@ -191,5 +193,17 @@ public class GameFrame extends JFrame {
 
 	public void showPause() {
 		addMenu(new PauseMenu(), 3);
+	}
+
+	public void showJoin() {
+		layers.remove(layers.getComponentsInLayer(2)[0]);
+		addMenu(new JoinMenu(), 2);
+
+	}
+
+	public void showHost() {
+		layers.remove(layers.getComponentsInLayer(2)[0]);
+		addMenu(new HostMenu(), 2);
+
 	}
 }

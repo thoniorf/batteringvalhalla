@@ -72,8 +72,8 @@ public class ResourcesLoader {
 		walls_images = new ArrayList<Image>();
 		walls_images.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader().getResource("it/batteringvalhalla/assets/wall/wall.png")));
-		walls_images.add(ImageIO
-				.read(ResourcesLoader.class.getClassLoader().getResource("it/batteringvalhalla/assets/wall/wall2.png")));
+		walls_images.add(ImageIO.read(
+				ResourcesLoader.class.getClassLoader().getResource("it/batteringvalhalla/assets/wall/wall2.png")));
 	}
 
 	public static synchronized void loadMainMenuImages() throws IOException {
@@ -147,6 +147,14 @@ public class ResourcesLoader {
 		images.put("resume", read(base_path, "resume.png"));
 		images.put("resume_hover", read(base_path, "resume_hover.png"));
 		images.put("resume_selected", read(base_path, "resume_selected.png"));
+		// host icons
+		images.put("host", read(base_path, "host.png"));
+		images.put("host_hover", read(base_path, "host_hover.png"));
+		images.put("host_selected", read(base_path, "host_selected.png"));
+		// join icons
+		images.put("join", read(base_path, "join.png"));
+		images.put("join_hover", read(base_path, "join_hover.png"));
+		images.put("join_selected", read(base_path, "join_selected.png"));
 		// exit icons
 		images.put("exit", read(base_path, "exit.png"));
 		images.put("exit_hover", read(base_path, "exit_hover.png"));
@@ -366,6 +374,12 @@ public class ResourcesLoader {
 		images.put("pause_header", read(base_path, "pause_header.png"));
 		// game header
 		images.put("game_header", read(base_path, "game_header.png"));
+		// online header
+		images.put("online_header", read(base_path, "online_header.png"));
+		// host header
+		images.put("host_header", read(base_path, "host_header.png"));
+		// join header
+		images.put("join_header", read(base_path, "join_header.png"));
 	}
 
 	public static synchronized void loadEditorImages() throws IOException {

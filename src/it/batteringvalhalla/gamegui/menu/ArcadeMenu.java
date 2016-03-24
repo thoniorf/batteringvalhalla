@@ -49,7 +49,7 @@ public class ArcadeMenu extends JPanel {
 	private void listenerLoader() {
 		play.addActionListener(e -> {
 			setEnabled(false);
-			GameWorld.setCustomLevel((String) maps.getSelectedItem());
+			GameWorld.setLevelName((String) maps.getSelectedItem());
 			GameFrame.instance().startGame();
 		});
 

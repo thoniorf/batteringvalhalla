@@ -23,18 +23,22 @@ public class GameWorld {
 	// friction time in ms
 	private static Integer freq_friction = 250;
 	// custom level
-	private static String customLevel = "";
-
-	public static String getCustomLevel() {
-		return customLevel;
-	}
-
-	public static void setCustomLevel(String levelname) {
-		customLevel = levelname;
-	}
+	private static String levelName = "";
 
 	private static void drawOrder() {
 		objects.sort(null);
+	}
+
+	public static Arena getArena() {
+		return arena;
+	}
+
+	public static Integer getFreq_friction() {
+		return freq_friction;
+	}
+
+	public static String getLevelName() {
+		return levelName;
 	}
 
 	public static Integer getMax_enemy() {
@@ -49,19 +53,42 @@ public class GameWorld {
 		return player;
 	}
 
-	public static Integer getFreq_friction() {
-		return freq_friction;
-	}
-
-	public static void setFreq_friction(Integer freq_friction) {
-		GameWorld.freq_friction = freq_friction;
-	}
-
 	public static GameWorld getWorld() {
 		if (world == null) {
 			world = new GameWorld();
 		}
 		return world;
+	}
+
+	public static void makeLevel(int n_enemies) {
+		// freq_friction = ManagerFilePlayer.getAttritoMap(customLevel);
+		// Initialize arena
+		arena = new Arena(ResourcesLoader.mainmenu_images.get(9));
+		// get spawn point
+		arena.setSpawn(ManagerFilePlayer.getSpawnInTheMap(levelName, arena.getShape().getBounds().x,
+				arena.getShape().getBounds().y));
+		// level max enemies
+		setMax_enemy(n_enemies);
+		// level enemies number
+		enemies = max_enemy;
+		// object list
+		objects = new ArrayList<Entity>();
+		// spawn Player
+		player = new Player(arena.getSpawn().get(0));
+		objects.add(player);
+		// spawn enemies
+		for (int i = 0; i < enemies; i++) {
+			objects.add(new Enemy(arena.getSpawn().get(i + 1)));
+			// ((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy)
+			// objects.get(i + 1), arena, objects));
+		}
+		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName,
+				arena.getShape().getBounds().x, arena.getShape().getBounds().y);
+		for (int i = 0; i < walls.size(); i++) {
+			objects.add(walls.get(i));
+
+		}
+		CollisionHandler.setObjects(new CopyOnWriteArrayList<Entity>(objects));
 	}
 
 	public static void paint(Graphics2D g) {
@@ -74,40 +101,20 @@ public class GameWorld {
 		}
 	}
 
-	public static void makeLevel(int n_enemies) {
-		// freq_friction = ManagerFilePlayer.getAttritoMap(customLevel);
-		// Initialize arena
-		arena = new Arena(ResourcesLoader.mainmenu_images.get(9));
-		// get spawn point
-		arena.setSpawn(ManagerFilePlayer.getSpawnInTheMap(customLevel, arena.getShape().getBounds().x,
-				arena.getShape().getBounds().y));
-		// level max enemies
-		setMax_enemy(n_enemies);
-		// level enemies number
-		enemies = max_enemy;
-		// object list
-		objects = new ArrayList<Entity>();
-		// spawn Player
-		player = new Player(arena.getSpawn().get(0));
-		Player.setScore(GameManager.getRound());
-		objects.add(player);
-		// spawn enemies
-		for (int i = 0; i < enemies; i++) {
-			objects.add(new Enemy(arena.getSpawn().get(i + 1)));
-			// ((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy)
-			// objects.get(i + 1), arena, objects));
-		}
-		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(customLevel,
-				arena.getShape().getBounds().x, arena.getShape().getBounds().y);
-		for (int i = 0; i < walls.size(); i++) {
-			objects.add(walls.get(i));
+	public static void setArena(Arena arena) {
+		GameWorld.arena = arena;
+	}
 
-		}
-		CollisionHandler.setObjects(new CopyOnWriteArrayList<Entity>(objects));
+	public static void setFreq_friction(Integer freq_friction) {
+		GameWorld.freq_friction = freq_friction;
+	}
+
+	public static void setLevelName(String name) {
+		levelName = name;
 	}
 
 	public static void setMax_enemy(Integer max_enemies) {
-		if (max_enemies > arena.getSpawn().size()) {
+		if (max_enemies > arena.getSpawn().size() - 1) {
 			max_enemy = arena.getSpawn().size() - 1;
 		} else {
 			max_enemy = max_enemies;
@@ -139,6 +146,6 @@ public class GameWorld {
 
 	}
 
-	private GameWorld() {
+	public GameWorld() {
 	}
 }

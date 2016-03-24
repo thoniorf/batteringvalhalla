@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
 import it.batteringvalhalla.gamecore.input.PlayerControls;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamecore.object.direction.Direction;
 import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.GamePanel;
@@ -92,6 +91,8 @@ public class GameManager implements Runnable {
 	@Override
 	public void run() {
 		GameManager.setState(State.Run);
+		GameManager.setRound(1);
+		viewport.setScore(round.toString());
 		// set times and frames for constant FPS
 		long beginTime = 0; // the time when the cycle begun
 		long timeDiff = 0; // the time it took for the cycle to execute
@@ -131,8 +132,7 @@ public class GameManager implements Runnable {
 				}
 			}
 			if (state.equals(State.Next)) {
-				round++;
-				Player.setScore(round);
+				GameManager.setRound(GameManager.getRound() + 1);
 				viewport.setScore(round.toString());
 				GameWorld.makeLevel(GameWorld.getMax_enemy() + 1);
 				GameManager.setState(State.Run);

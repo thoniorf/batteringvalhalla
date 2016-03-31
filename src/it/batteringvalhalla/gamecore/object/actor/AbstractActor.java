@@ -13,6 +13,7 @@ import it.batteringvalhalla.gamecore.object.direction.Direction;
 import it.batteringvalhalla.gamecore.vector2d.Vector2D;
 
 public abstract class AbstractActor extends AbstractEntity implements Actor {
+	private static final long serialVersionUID = -9187125124331413775L;
 	protected static final int max_velocity = 4;
 	protected static final int charge_velocity = 10;
 	protected static final long charge_countdown = 5000;
@@ -36,6 +37,9 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 
 	public AbstractActor(Point origin, int idHead, int idBody, int idMount) {
 		super(origin);
+		this.width = 112;
+		this.height = 50;
+		((Rectangle) shape).setBounds(origin.x - width / 2, origin.y - height / 2, width, height);
 		this.velocity = new Vector2D(0, 0);
 		curret_max_velocity = max_velocity;
 		this.move_dir = Direction.stop;
@@ -45,10 +49,10 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		this.charge = Boolean.FALSE;
 		this.strategy = null;
 		// sprite
-		// w=115 h=94
-		this.body = new Sprite(ResourcesLoader.actor_body, 115, 94, 3, 1, 115 / 2, 115 / 2, -77);
+		// w=117 h=122
+		this.body = new Sprite(ResourcesLoader.actor_body, 117, 122, 3, 1, 0, 0, -34);
 		// w=117 h= 88
-		this.mount = new Sprite(ResourcesLoader.actor_mount.get(idMount), 117, 88, 3, 16, 110 / 2, 110 / 2, 88 / 2);
+		this.mount = new Sprite(ResourcesLoader.actor_mount.get(idMount), 117, 88, 3, 16, 0, 0, -10);
 		this.head = new Sprite(ResourcesLoader.actor_weapon.get(idHead), 103, 76, 1, 16, 36, 66, -48);
 		// friction
 		friction_time = 0L;
@@ -225,12 +229,7 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 	public void paint(Graphics2D g) {
 		// g.drawImage(head.getFrame(), shape.getBounds().x,
 		// shape.getBounds().y, null);
-		g.drawImage(body.getFrame(), shape.getBounds().x, shape.getBounds().y, null);
-		g.drawImage(mount.getFrame(), shape.getBounds().x, shape.getBounds().y, null);
-
-		// debug
-		g.draw(shape);
-		g.drawString(Boolean.toString(alive), origin.x, origin.y);
-		g.drawString(velocity.getComponents().x + " " + velocity.getComponents().y, origin.x, origin.y + 20);
+		g.drawImage(mount.getFrame(), shape.getBounds().x, shape.getBounds().y + mount.getOffsetY(), null);
+		g.drawImage(body.getFrame(), shape.getBounds().x, shape.getBounds().y + body.getOffsetY(), null);
 	}
 }

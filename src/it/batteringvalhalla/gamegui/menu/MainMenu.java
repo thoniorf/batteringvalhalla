@@ -41,20 +41,20 @@ public class MainMenu extends JPanel {
 		exit = new JButtonCustom(ResourcesLoader.images.get("exit"), ResourcesLoader.images.get("exit_hover"),
 				ResourcesLoader.images.get("exit_selected"));
 
-		play.setBounds(CenterComp.centerX(play.getWidth()) - play.getWidth() / 2,
-				ResourcesLoader.header.getHeight(null) + 50, play.getWidth(), play.getHeight());
+		play.setBounds(CenterComp.relativeCenterX(play.getWidth(), width), ResourcesLoader.header.getHeight(null) + 50,
+				play.getWidth(), play.getHeight());
 		add(play);
-		online.setBounds(CenterComp.centerX(online.getWidth()) - online.getWidth() / 2,
-				play.getY() + play.getHeight() + 20, online.getWidth(), online.getHeight());
+		online.setBounds(CenterComp.relativeCenterX(play.getWidth(), width), play.getY() + play.getHeight() + 20,
+				online.getWidth(), online.getHeight());
 		add(online);
-		editor.setBounds(CenterComp.centerX(editor.getWidth()) - editor.getWidth() / 2,
-				online.getY() + online.getHeight() + 20, editor.getWidth(), editor.getHeight());
+		editor.setBounds(CenterComp.relativeCenterX(editor.getWidth(), width), online.getY() + online.getHeight() + 20,
+				editor.getWidth(), editor.getHeight());
 		add(editor);
-		options.setBounds(CenterComp.centerX(options.getWidth()) - options.getWidth() / 2,
+		options.setBounds(CenterComp.relativeCenterX(options.getWidth(), width),
 				editor.getY() + editor.getHeight() + 20, options.getWidth(), options.getHeight());
 		add(options);
-		exit.setBounds(CenterComp.centerX(exit.getWidth()) + 180, options.getY() + options.getHeight(), exit.getWidth(),
-				exit.getHeight());
+		exit.setBounds(CenterComp.relativeCenterX(exit.getWidth(), width) + (int) (exit.getWidth() * 1.5f),
+				options.getY() + options.getHeight(), exit.getWidth(), exit.getHeight());
 		add(exit);
 
 		revalidate();

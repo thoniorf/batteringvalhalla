@@ -18,13 +18,12 @@ import it.batteringvalhalla.gamecore.object.direction.Direction;
 public class ResourcesLoader {
 
 	public static Image player;
-	public static Image actor_body;
-	public static ArrayList<Image> actor_head;
-	private static int N_head = 0;
+	private static int N_head = 3;
 	private static int N_mount = 4;
-	private static int N_weapon = 1;
+	private static int N_body = 3;
+	public static ArrayList<Image> actor_head;
 	public static ArrayList<Image> actor_mount;
-	public static ArrayList<Image> actor_weapon;
+	public static ArrayList<Image> actor_body;
 	public static ArrayList<Image> mainmenu_images;
 	public static ArrayList<Image> exitmenu_images;
 	public static ArrayList<Image> optionmenu_images;
@@ -50,13 +49,11 @@ public class ResourcesLoader {
 	public static synchronized void loadPlayerImages() throws IOException {
 		actor_head = new ArrayList<Image>();
 		actor_mount = new ArrayList<Image>();
-		actor_weapon = new ArrayList<Image>();
-		actor_body = ImageIO.read(ResourcesLoader.class.getClassLoader()
-				.getResource("it/batteringvalhalla/assets/actor/bodies/player.png"));
+		actor_body = new ArrayList<Image>();
 
 		for (int i = 1; i <= N_head; i++) {
 			actor_head.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
-					.getResource("it/batteringvalhalla/assets/actor/heads/#########")));
+					.getResource("it/batteringvalhalla/assets/actor/heads/head_" + i + ".png")));
 		}
 
 		for (int i = 1; i <= N_mount; i++) {
@@ -64,9 +61,13 @@ public class ResourcesLoader {
 					.getResource("it/batteringvalhalla/assets/actor/rams/mount" + i + ".png")));
 		}
 
-		for (int i = 1; i <= N_weapon; i++) {
-			actor_weapon.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
-					.getResource("it/batteringvalhalla/assets/actor/weapons/weapon" + i + ".png")));
+		for (int i = 1; i <= N_body; i++) {
+			// body
+			actor_body.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+					.getResource("it/batteringvalhalla/assets/actor/bodies/body_" + i + ".png")));
+			// arm
+			actor_body.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+					.getResource("it/batteringvalhalla/assets/actor/bodies/arm_" + i + ".png")));
 		}
 
 		walls_images = new ArrayList<Image>();
@@ -398,8 +399,8 @@ public class ResourcesLoader {
 		// tmp.update(Direction.est);
 		// imageHead.add(tmp.getFrame());
 		// }
-		for (int i = 0; i < ResourcesLoader.actor_weapon.size(); i++) {
-			tmp = new Sprite(ResourcesLoader.actor_weapon.get(i), 103, 76, 1, 3, 0, 0, 0);
+		for (int i = 0; i < ResourcesLoader.actor_body.size(); i++) {
+			tmp = new Sprite(ResourcesLoader.actor_body.get(i), 103, 76, 1, 3, 0, 0, 0);
 			tmp.update(Direction.est);
 			tmp.update(Direction.est);
 

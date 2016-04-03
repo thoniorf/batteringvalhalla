@@ -27,7 +27,7 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 	protected long charge_time;
 	protected AbstractIA strategy;
 	// sprite images
-	protected Sprite head, body, mount;
+	protected Sprite head, body, arm, mount;
 	// friction time
 	protected long friction_time;
 
@@ -50,10 +50,12 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		this.strategy = null;
 		// sprite
 		// w=117 h=122
-		this.body = new Sprite(ResourcesLoader.actor_body, 117, 122, 3, 1, 0, 0, -34);
+		this.body = new Sprite(ResourcesLoader.actor_body.get(0), 117, 122, 3, 1, 0, 0, -45);
+		// w=117 h=122
+		this.arm = new Sprite(ResourcesLoader.actor_body.get(0 + 1), 117, 122, 3, 1, 0, 0, -45);
 		// w=117 h= 88
-		this.mount = new Sprite(ResourcesLoader.actor_mount.get(idMount), 117, 88, 3, 16, 0, 0, -10);
-		this.head = new Sprite(ResourcesLoader.actor_weapon.get(idHead), 103, 76, 1, 16, 36, 66, -48);
+		this.mount = new Sprite(ResourcesLoader.actor_mount.get(0), 117, 88, 3, 16, 0, 0, -10);
+		this.head = new Sprite(ResourcesLoader.actor_head.get(0), 117, 122, 3, 1, 0, 0, -45);
 		// friction
 		friction_time = 0L;
 	}
@@ -220,6 +222,7 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		// set shape bounds
 		((Rectangle) shape).setBounds(origin.x - width / 2, origin.y - height / 2, width, height);
 		// sprite updates
+		arm.update(move_dir);
 		head.update(move_dir);
 		body.update(move_dir);
 		mount.update(move_dir);
@@ -227,9 +230,9 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 
 	@Override
 	public void paint(Graphics2D g) {
-		// g.drawImage(head.getFrame(), shape.getBounds().x,
-		// shape.getBounds().y, null);
 		g.drawImage(mount.getFrame(), shape.getBounds().x, shape.getBounds().y + mount.getOffsetY(), null);
 		g.drawImage(body.getFrame(), shape.getBounds().x, shape.getBounds().y + body.getOffsetY(), null);
+		g.drawImage(head.getFrame(), shape.getBounds().x, shape.getBounds().y + body.getOffsetY(), null);
+		g.drawImage(arm.getFrame(), shape.getBounds().x, shape.getBounds().y + body.getOffsetY(), null);
 	}
 }

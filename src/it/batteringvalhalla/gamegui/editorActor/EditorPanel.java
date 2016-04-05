@@ -40,8 +40,8 @@ public class EditorPanel extends JPanel {
 	private static final int WIDTHCAPRA = 100;
 
 	
-	private static final int yTesta = 250;
-	private static final int yBusto = 300;
+	private static final int yTesta = 255;
+	private static final int yBusto = 270;
 	private static final int yCapra = 305;
 
 	private static final int xImage = 480;
@@ -248,11 +248,13 @@ public class EditorPanel extends JPanel {
 		
 
 		g2d.drawImage(ie.getImageGoat(), xImage,yCapra,(int) (WIDTHCAPRA*1.5),(int) (HEIGHTCAPRA*1.5), null);
+		
+		g2d.drawImage(ie.getImageBust(), xImage, yBusto, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
+		g2d.drawImage(ie.getImageBust1(), xImage, yBusto+10, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
+		
+
 		g2d.drawImage(ie.getImageHead(), xImage,yTesta,(int) (WIDTHTESTA*1.5), (int)(HEIGHTESTA*1.5), null);
 		
-		g2d.drawImage(ie.getImageBust(), xImage, yBusto-10, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
-		g2d.drawImage(ie.getImageBust1(), xImage, yBusto+10, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
-
 		g.setColor(Color.BLACK);
 
 	

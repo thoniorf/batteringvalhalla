@@ -21,8 +21,7 @@ public class ImageEditor  {
 private static int IndexHead;
 private static int IndexBust;
 private static int IndexGoat;
-private static int IndexExit;
-private static int IndexSave;
+
 
 
 
@@ -30,11 +29,10 @@ public ImageEditor(){
 	
 	
 
-//	IndexHead=ManagerFilePlayer.getTop();
-//	IndexBust=ManagerFilePlayer.getMid();
-//	IndexGoat=ManagerFilePlayer.getBot();
-	IndexBust=IndexHead=IndexGoat=0;
-	IndexSave=IndexExit=0;
+	IndexHead=ManagerFilePlayer.getTop();
+	IndexBust=ManagerFilePlayer.getMid();
+	IndexGoat=ManagerFilePlayer.getBot();
+	
 	
 	
 	
@@ -45,7 +43,7 @@ public Image getImageBust() {
 	}
 
 public Image getImageBust1() {
-	return  ResourcesLoader.imageBust.get(IndexBust+ResourcesLoader.imageBust.size()/2);
+	return  ResourcesLoader.imageBust.get(IndexBust+1);
 	}
 public Image getImageGoat() {
 	 
@@ -58,12 +56,6 @@ public Image getImageHead() {
 
 
 
-public Image getExit() {
-	return ResourcesLoader.mainmenu_images.get(IndexExit);
-}
-public Image getSave() {
-	return ResourcesLoader.mainmenu_images.get(IndexSave+4);
-}
 
 	
 
@@ -75,9 +67,10 @@ public void spostaHead(int i){
 
 	}
 public void spostaBust(int i){
-	IndexBust=(IndexBust+i)%ResourcesLoader.imageBust.size()/2;
+	IndexBust=(IndexBust+(i*2))%ResourcesLoader.imageBust.size();
+	
 	if (IndexBust<0){
-		IndexBust=+ResourcesLoader.imageBust.size()/2-1;
+		IndexBust=+ResourcesLoader.imageBust.size()-1;
 	}
 }
 public void spostaGoat(int i){
@@ -86,20 +79,7 @@ public void spostaGoat(int i){
 		IndexGoat=+ResourcesLoader.imageGoat.size()-1;
 	}
 }
-void pushExit(){
-	IndexExit=(IndexExit+1)%2;
-	
-}
-public void resetExit(){
-	IndexExit=0;
-}
-void pushSave(){
-	IndexSave=(IndexSave+1)%2;
-	
-}
-public void resetSave(){
-	IndexSave=0;
-}
+
 public String getNameTesta(){
 	return "testa"+IndexHead+".png";
 }

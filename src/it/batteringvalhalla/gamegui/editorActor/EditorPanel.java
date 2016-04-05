@@ -89,8 +89,8 @@ public class EditorPanel extends JPanel {
 		button2d=new JButtonRound(frecciaDestra1, frecciaDestra2);
 		button3s=new JButtonRound(frecciaSinistra1, frecciaSinistra2);
 		button3d=new JButtonRound(frecciaDestra1, frecciaDestra2);
-		exit=new JButtonRound(ResourcesLoader.mainmenu_images.get(7),
-				ResourcesLoader.mainmenu_images.get(8));
+		exit=new JButtonRound(ResourcesLoader.images.get("exit"),
+				ResourcesLoader.images.get("exit_hover"));
 		
 		header = new JLabel("Editor Valhalla");
 		header.setFont(new Font(ResourcesLoader.gothic.getName(),
@@ -248,9 +248,10 @@ public class EditorPanel extends JPanel {
 		
 
 		g2d.drawImage(ie.getImageGoat(), xImage,yCapra,(int) (WIDTHCAPRA*1.5),(int) (HEIGHTCAPRA*1.5), null);
-		g2d.drawImage(ResourcesLoader.actor_body, xImage,yTesta,(int) (WIDTHTESTA*1.5), (int)(HEIGHTESTA*1.5), null);
+		g2d.drawImage(ie.getImageHead(), xImage,yTesta,(int) (WIDTHTESTA*1.5), (int)(HEIGHTESTA*1.5), null);
 		
-		g2d.drawImage(ie.getImageBust(), xImage-17, yBusto, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
+		g2d.drawImage(ie.getImageBust(), xImage, yBusto-10, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
+		g2d.drawImage(ie.getImageBust1(), xImage, yBusto+10, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
 
 		g.setColor(Color.BLACK);
 

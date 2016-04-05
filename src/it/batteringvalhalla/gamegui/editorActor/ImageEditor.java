@@ -30,9 +30,10 @@ public ImageEditor(){
 	
 	
 
-	IndexHead=ManagerFilePlayer.getTop();
-	IndexBust=ManagerFilePlayer.getMid();
-	IndexGoat=ManagerFilePlayer.getBot();
+//	IndexHead=ManagerFilePlayer.getTop();
+//	IndexBust=ManagerFilePlayer.getMid();
+//	IndexGoat=ManagerFilePlayer.getBot();
+	IndexBust=IndexHead=IndexGoat=0;
 	IndexSave=IndexExit=0;
 	
 	
@@ -40,9 +41,12 @@ public ImageEditor(){
 
 }
 public Image getImageBust() {
-	return  ResourcesLoader.imageBust.get(0);
+	return  ResourcesLoader.imageBust.get(IndexBust);
 	}
 
+public Image getImageBust1() {
+	return  ResourcesLoader.imageBust.get(IndexBust+ResourcesLoader.imageBust.size()/2);
+	}
 public Image getImageGoat() {
 	 
 	return ResourcesLoader.imageGoat.get(IndexGoat);
@@ -53,9 +57,6 @@ public Image getImageHead() {
 }
 
 
-public Image getSfondo() {
-	return ResourcesLoader.Sfondo;
-}
 
 public Image getExit() {
 	return ResourcesLoader.mainmenu_images.get(IndexExit);
@@ -67,19 +68,22 @@ public Image getSave() {
 	
 
 public void spostaHead(int i){
-	
+	IndexHead=(IndexHead+i)%ResourcesLoader.imageHead.size();
+	if (IndexHead<0){
+		IndexHead=+ResourcesLoader.imageHead.size()-1;
+	}
 
 	}
 public void spostaBust(int i){
-	IndexBust=(IndexBust+i)%ResourcesLoader.actor_weapon.size();
+	IndexBust=(IndexBust+i)%ResourcesLoader.imageBust.size()/2;
 	if (IndexBust<0){
-		IndexBust=+ResourcesLoader.sizeBust-1;
+		IndexBust=+ResourcesLoader.imageBust.size()/2-1;
 	}
 }
 public void spostaGoat(int i){
-	IndexGoat=(IndexGoat+i)%ResourcesLoader.actor_mount.size();
+	IndexGoat=(IndexGoat+i)%ResourcesLoader.imageGoat.size();
 	if (IndexGoat<0){
-		IndexGoat=+ResourcesLoader.sizeGoat-1;
+		IndexGoat=+ResourcesLoader.imageGoat.size()-1;
 	}
 }
 void pushExit(){

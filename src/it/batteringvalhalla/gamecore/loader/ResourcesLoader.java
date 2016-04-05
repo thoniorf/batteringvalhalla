@@ -41,10 +41,8 @@ public class ResourcesLoader {
 	public static List<Image> imageGoat;
 	public static List<Image> rightArrow;
 	public static List<Image> leftArrow;
-	public static Image Sfondo;
-	public static int sizeHead = 4;
-	public static int sizeBust = 4;
-	public static int sizeGoat = 3;
+	
+	
 
 	public static synchronized void loadPlayerImages() throws IOException {
 		actor_head = new ArrayList<Image>();
@@ -399,23 +397,34 @@ public class ResourcesLoader {
 		// tmp.update(Direction.est);
 		// imageHead.add(tmp.getFrame());
 		// }
-		for (int i = 0; i < ResourcesLoader.actor_body.size(); i++) {
-			tmp = new Sprite(ResourcesLoader.actor_body.get(i), 103, 76, 1, 3, 0, 0, 0);
-			tmp.update(Direction.est);
-			tmp.update(Direction.est);
-
-			imageBust.add(tmp.getFrame());
-		}
+		
+//		for (int i = 0; i < ResourcesLoader.actor_head.size(); i++) {
+//			tmp = new Sprite(ResourcesLoader.actor_head.get(i), 117, 88, 1, 1, 0, 0, 0);
+//			tmp.update(Direction.est);
+//			imageHead.add(tmp.getFrame());
+//
+//		}
+		
+		
+//		for (int i = 0; i < ResourcesLoader.actor_body.size(); i++) {
+//			tmp = new Sprite(ResourcesLoader.actor_body.get(i), 103, 76, 1, 3, 0, 0, 0);
+//			tmp.update(Direction.est);
+//			
+//
+//			imageBust.add(tmp.getFrame());
+//		}
+		
+		
+		imageHead.addAll(ResourcesLoader.actor_head);
+		imageBust.addAll(actor_body);
+		
 		for (int i = 0; i < ResourcesLoader.actor_mount.size(); i++) {
 			tmp = new Sprite(ResourcesLoader.actor_mount.get(i), 117, 88, 1, 1, 0, 0, 0);
 			tmp.update(Direction.est);
 			imageGoat.add(tmp.getFrame());
 
 		}
-		Sfondo = ImageIO
-				.read(ResourcesLoader.class.getClassLoader()
-						.getResource("it/batteringvalhalla/assets/editor/sfondo.png"))
-				.getScaledInstance(123, 133, Image.SCALE_SMOOTH);
+		
 		leftArrow.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/back.png"))

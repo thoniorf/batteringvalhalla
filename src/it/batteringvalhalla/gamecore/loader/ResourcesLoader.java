@@ -41,8 +41,6 @@ public class ResourcesLoader {
 	public static List<Image> imageGoat;
 	public static List<Image> rightArrow;
 	public static List<Image> leftArrow;
-	
-	
 
 	public static synchronized void loadPlayerImages() throws IOException {
 		actor_head = new ArrayList<Image>();
@@ -162,6 +160,14 @@ public class ResourcesLoader {
 		images.put("exit_big", read(base_path, "exit_big.png"));
 		images.put("exit_big_hover", read(base_path, "exit_big_hover.png"));
 		images.put("exit_big_selected", read(base_path, "exit_big_selected.png"));
+		// save big icons
+		images.put("save", read(base_path, "save.png"));
+		images.put("save_hover", read(base_path, "save_hover.png"));
+		images.put("save_selected", read(base_path, "save_selected.png"));
+		// load big icons
+		images.put("load", read(base_path, "load.png"));
+		images.put("load_hover", read(base_path, "load_hover.png"));
+		images.put("load_selected", read(base_path, "load_selected.png"));
 
 	}
 
@@ -397,34 +403,34 @@ public class ResourcesLoader {
 		// tmp.update(Direction.est);
 		// imageHead.add(tmp.getFrame());
 		// }
-		
-//		for (int i = 0; i < ResourcesLoader.actor_head.size(); i++) {
-//			tmp = new Sprite(ResourcesLoader.actor_head.get(i), 117, 88, 1, 1, 0, 0, 0);
-//			tmp.update(Direction.est);
-//			imageHead.add(tmp.getFrame());
-//
-//		}
-		
-		
-//		for (int i = 0; i < ResourcesLoader.actor_body.size(); i++) {
-//			tmp = new Sprite(ResourcesLoader.actor_body.get(i), 103, 76, 1, 3, 0, 0, 0);
-//			tmp.update(Direction.est);
-//			
-//
-//			imageBust.add(tmp.getFrame());
-//		}
-		
-		
+
+		// for (int i = 0; i < ResourcesLoader.actor_head.size(); i++) {
+		// tmp = new Sprite(ResourcesLoader.actor_head.get(i), 117, 88, 1, 1, 0,
+		// 0, 0);
+		// tmp.update(Direction.est);
+		// imageHead.add(tmp.getFrame());
+		//
+		// }
+
+		// for (int i = 0; i < ResourcesLoader.actor_body.size(); i++) {
+		// tmp = new Sprite(ResourcesLoader.actor_body.get(i), 103, 76, 1, 3, 0,
+		// 0, 0);
+		// tmp.update(Direction.est);
+		//
+		//
+		// imageBust.add(tmp.getFrame());
+		// }
+
 		imageHead.addAll(ResourcesLoader.actor_head);
 		imageBust.addAll(actor_body);
-		
+
 		for (int i = 0; i < ResourcesLoader.actor_mount.size(); i++) {
 			tmp = new Sprite(ResourcesLoader.actor_mount.get(i), 117, 88, 1, 1, 0, 0, 0);
 			tmp.update(Direction.est);
 			imageGoat.add(tmp.getFrame());
 
 		}
-		
+
 		leftArrow.add(ImageIO
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/back.png"))

@@ -50,12 +50,12 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		this.strategy = null;
 		// sprite
 		// w=117 h=122
-		this.body = new Sprite(ResourcesLoader.actor_body.get(0), 117, 122, 3, 1, 0, 0, -45);
+		this.body = new Sprite(ResourcesLoader.actor_body.get(idBody), 117, 122, 3, 1, 0, 0, -45);
 		// w=117 h=122
-		this.arm = new Sprite(ResourcesLoader.actor_body.get(0 + 1), 117, 122, 3, 1, 0, 0, -45);
+		this.arm = new Sprite(ResourcesLoader.actor_body.get(idBody + 1), 117, 122, 3, 1, 0, 0, -45);
 		// w=117 h= 88
-		this.mount = new Sprite(ResourcesLoader.actor_mount.get(0), 117, 88, 3, 16, 0, 0, -10);
-		this.head = new Sprite(ResourcesLoader.actor_head.get(0), 117, 122, 3, 1, 0, 0, -45);
+		this.mount = new Sprite(ResourcesLoader.actor_mount.get(idMount), 117, 88, 3, 16, 0, 0, -10);
+		this.head = new Sprite(ResourcesLoader.actor_head.get(idHead), 117, 122, 3, 1, 0, 0, -45);
 		// friction
 		friction_time = 0L;
 	}

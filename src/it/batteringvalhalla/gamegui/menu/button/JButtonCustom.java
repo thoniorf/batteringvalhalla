@@ -1,5 +1,8 @@
 package it.batteringvalhalla.gamegui.menu.button;
 
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamegui.sound.Sound;
+
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -42,6 +45,10 @@ public class JButtonCustom extends JButton {
 			public void mouseReleased(MouseEvent e) {
 				super.mouseReleased(e);
 				setLocation(getBounds().x, getBounds().y - 10);
+				if (ManagerFilePlayer.soundOn()) {
+					Sound.button().setFramePosition(0);
+					Sound.button().start();
+				}
 			}
 		});
 	}

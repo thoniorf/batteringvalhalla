@@ -38,20 +38,28 @@ public class EditorMapPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private GameFrame frame;
 	private JButtonCustom sfondo1;
+	private JButtonCustom sfondo2;
+	
 	private Image imageSfondo1;
 	private Image imageSfondo2;
-	private JButtonCustom sfondo2;
+	
 	private JButtonCustom muro0;
 	private JButtonCustom muro1;
+	
 	private JCustomComboBox maps;
+	private List<VerySquareWall> wall;
+	private List<Player> players;
+	
 	private JButtonCustom carica;
+	private JButtonCustom save;
+	private JButtonCustom exit;
+	
 	private JTextField nomeMappa;
 	private Integer state;
 	private Integer attrito;
-	private List<VerySquareWall> wall;
+	
 	private static final int WIDTHSFONDO = 1174;
 	private static int HEIGHTSFONDO = 720;
-	private JButtonRound exit;
 	private int height = 50;
 	private int width = 50;
 	private VerySquareWall tmp;
@@ -64,12 +72,9 @@ public class EditorMapPanel extends JPanel {
 	
 
 
-	private JButtonRound save;
 	private JLabel header;
 	private VerySquareWall nuovoMuro;
 	private Arena a;
-	
-	private List<Player> players;
 	private int indexSpwan;
 
 	public EditorMapPanel() {
@@ -93,17 +98,27 @@ public class EditorMapPanel extends JPanel {
 		
 		a = new Arena(sfondoSelezionato);
 		imageSfondo2 = ResourcesLoader.mainmenu_images.get(10);
-		sfondo2 = new JButtonCustom(imageSfondo2, imageSfondo2, imageSfondo2);
+		sfondo2 = new JButtonCustom(imageSfondo2.getScaledInstance(width, height, 0),
+									imageSfondo2.getScaledInstance(width, height, 0)
+									, imageSfondo2.getScaledInstance(width, height, 0));
 		
 		imageCubo0 = new VerySquareWall(1, 1, -1).getImage();
-		muro0 = new JButtonCustom(imageCubo0, imageCubo0, imageCubo0);
+		muro0 = new JButtonCustom(imageCubo0.getScaledInstance(width, height, 0),
+								imageCubo0.getScaledInstance(width, height, 0)
+								, imageCubo0.getScaledInstance(width, height, 0));
 		imageCubo1 = new VerySquareWall(0, 0, 1).getImage();
 
-		muro1 = new JButtonCustom(imageCubo1, imageCubo1, imageCubo1);
-		exit = new JButtonRound(ResourcesLoader.images.get("exit").getScaledInstance(width, height, 0),
-				ResourcesLoader.images.get("exit_hover").getScaledInstance(width, height, 0));
-		save = new JButtonRound(ResourcesLoader.exitmenu_images.get(5).getScaledInstance(width, height, 0),
-				ResourcesLoader.exitmenu_images.get(6).getScaledInstance(width, height, 0));
+		muro1 = new JButtonCustom(imageCubo1.getScaledInstance(width, height, 0)
+								, imageCubo1.getScaledInstance(width, height, 0)
+								, imageCubo1.getScaledInstance(width, height, 0));
+		int delta=20;
+		exit = new JButtonCustom(ResourcesLoader.images.get("exit").getScaledInstance(width+delta, height, 0),
+				ResourcesLoader.images.get("exit_hover").getScaledInstance(width+delta, height, 0),
+				ResourcesLoader.images.get("exit_selected").getScaledInstance(width+delta, height, 0));
+		
+		save = new JButtonCustom(ResourcesLoader.images.get("save").getScaledInstance(width+delta, height, 0),
+				ResourcesLoader.images.get("save_hover").getScaledInstance(width+delta, height, 0),
+				ResourcesLoader.images.get("save_selected").getScaledInstance(width+delta, height, 0));
 		nomeMappa=new  JTextField();
 		nomeMappa.setText(newNome());
 		players=new ArrayList<Player>();
@@ -116,10 +131,9 @@ public class EditorMapPanel extends JPanel {
 		
 		maps.addItem("new");
 		maps.setSelectedItem("new");
-		
-		carica = new JButtonCustom(ResourcesLoader.mainmenu_images.get(0).getScaledInstance(width, height, 0),
-				ResourcesLoader.mainmenu_images.get(1).getScaledInstance(width, height, 0),
-				ResourcesLoader.mainmenu_images.get(2).getScaledInstance(width, height, 0));
+		carica = new JButtonCustom(ResourcesLoader.images.get("load").getScaledInstance(width+delta, height, 0),
+				ResourcesLoader.images.get("load_hover").getScaledInstance(width+delta, height, 0),
+				ResourcesLoader.images.get("load_selected").getScaledInstance(width+delta, height, 0));
 
 		add(exit);
 		add(save);
@@ -136,17 +150,18 @@ public class EditorMapPanel extends JPanel {
 		setBounds(CenterComp.centerX(WIDTHSFONDO), CenterComp.centerY(HEIGHTSFONDO), WIDTHSFONDO, HEIGHTSFONDO);
 		setOpaque(false);
 
-		sfondo1.setBounds(distanzaLeft, 100, width, height);
+		sfondo1.setBounds(distanzaLeft, 100, sfondo1.getIcon().getIconWidth(), sfondo1.getIcon().getIconHeight());
 
-		sfondo2.setBounds(distanzaLeft, 160, width, height);
-		muro0.setBounds(distanzaLeft, 220, width, height);
-		muro1.setBounds(distanzaLeft, 280, width, height);
+		sfondo2.setBounds(distanzaLeft, 160, sfondo2.getIcon().getIconWidth(), sfondo2.getIcon().getIconHeight());
+		muro0.setBounds(distanzaLeft, 220,  muro0.getIcon().getIconWidth(), muro0.getIcon().getIconHeight());
+		muro1.setBounds(distanzaLeft, 280, muro1.getIcon().getIconWidth(), muro1.getIcon().getIconHeight());
 
 		maps.setBounds(distanzaLeft, 360, 200, 70);
-		carica.setBounds(distanzaLeft, 440, width + 20, height);
+		
+		carica.setBounds(distanzaLeft, 440, carica.getIcon().getIconWidth(), carica.getIcon().getIconHeight());
 		nomeMappa.setBounds(distanzaLeft,540,150,30);
-		exit.setBounds(distanzaLeft + 50, 600, width, height);
-		save.setBounds(distanzaLeft - 10, 600, width, height);
+		exit.setBounds(distanzaLeft + 50+delta, 600, exit.getIcon().getIconWidth(), exit.getIcon().getIconHeight());
+		save.setBounds(distanzaLeft - 10, 600, save.getIcon().getIconWidth(), save.getIcon().getIconHeight());
 
 		header.setBounds(distanzaLeft, 30, 700, 50);
 		setVisible(true);

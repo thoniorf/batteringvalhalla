@@ -253,7 +253,7 @@ public class EditorPanel extends JPanel {
 		g2d.drawImage(ie.getImageBust1(), xImage, yBusto+10, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
 		
 
-		g2d.drawImage(ie.getImageHead(), xImage,yTesta,(int) (WIDTHTESTA*1.5), (int)(HEIGHTESTA*1.5), null);
+		g2d.drawImage(ie.getImageHead(), xImage-5,yTesta,(int) (WIDTHTESTA*1.5), (int)(HEIGHTESTA*1.5), null);
 		
 		g.setColor(Color.BLACK);
 

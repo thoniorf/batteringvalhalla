@@ -1,8 +1,10 @@
 package it.batteringvalhalla.gamecore.vector2d;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Vector2D {
+public class Vector2D implements Serializable {
+	private static final long serialVersionUID = -355364437551971669L;
 	protected Point components;
 	protected Float lenght;
 

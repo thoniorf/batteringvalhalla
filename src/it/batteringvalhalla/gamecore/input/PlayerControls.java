@@ -11,14 +11,15 @@ public class PlayerControls extends KeyAdapter {
 
 	private static Map<String, Integer[]> key_map;
 
+	// TODO riscrivere la map , chiavi = keyevent
 	public PlayerControls() {
 		key_map = new HashMap<String, Integer[]>();
 		key_map.put("W", new Integer[] { 0, KeyEvent.VK_W });
 		key_map.put("A", new Integer[] { 0, KeyEvent.VK_A });
 		key_map.put("D", new Integer[] { 0, KeyEvent.VK_D });
 		key_map.put("S", new Integer[] { 0, KeyEvent.VK_S });
-		key_map.put("ESCAPE", new Integer[] { 0, KeyEvent.VK_ESCAPE });
 		key_map.put("SPACE", new Integer[] { 0, KeyEvent.VK_SPACE });
+		key_map.put("ESCAPE", new Integer[] { 0, KeyEvent.VK_ESCAPE });
 	}
 
 	@Override

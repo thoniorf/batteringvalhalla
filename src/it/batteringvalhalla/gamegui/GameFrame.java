@@ -15,6 +15,7 @@ import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.State;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.network.Client;
 import it.batteringvalhalla.gamegui.editorActor.EditorPanel;
 import it.batteringvalhalla.gamegui.editorMap.EditorMapPanel;
 import it.batteringvalhalla.gamegui.menu.ArcadeMenu;
@@ -205,5 +206,28 @@ public class GameFrame extends JFrame {
 		layers.remove(layers.getComponentsInLayer(2)[0]);
 		addMenu(new HostMenu(), 2);
 
+	}
+
+	public void startClient(Client client) {
+		if (!client.connect()) {
+			return;
+		}
+		// client sync
+		client.sync();
+		// remove all layers
+		layers.removeAll();
+		// paint background
+		setUiBackground();
+
+		// new Thread(client).start();
+		new Thread(GameManager.getManager()).start();
+		// play the music
+		if (ManagerFilePlayer.soundOn()) {
+			Sound.menu.stop();
+			Sound.battle.setRepeat(true);
+			Sound.battle.play();
+		} else {
+			Sound.battle.stop();
+		}
 	}
 }

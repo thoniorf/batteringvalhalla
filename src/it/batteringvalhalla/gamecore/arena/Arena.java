@@ -5,16 +5,23 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamegui.GameFrame;
 
-public class Arena {
-
+public class Arena implements Serializable {
+	private static final long serialVersionUID = 4678990743567406423L;
 	private Shape shape;
-	private Image background;
+	private transient BufferedImage background;
 	private ArrayList<Point> spawn;
 	private int x;
 	private int y;
@@ -22,7 +29,7 @@ public class Arena {
 	private int height;
 
 	public Arena(Image image) {
-		background = image;
+		background = (BufferedImage) image;
 		this.x = GameFrame.size.width / 2 - background.getWidth(null) / 2;
 		this.y = GameFrame.size.height / 2 - background.getHeight(null) / 2;
 		this.width = background.getWidth(null);
@@ -68,4 +75,14 @@ public class Arena {
 
 	}
 
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		ImageIO.write(background, "png", out);
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		background = ImageIO.read(in);
+
+	}
 }

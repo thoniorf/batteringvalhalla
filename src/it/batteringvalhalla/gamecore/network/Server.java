@@ -1,38 +1,62 @@
 package it.batteringvalhalla.gamecore.network;
 
-import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Server {
+public class Server implements Runnable {
+	protected int maxClients = 4;
+	protected ServerSocket socket;
+	protected ServerStatus status;
+	protected List<ServerDeamon> clients = new ArrayList<>();
 
-	final int port = 8183;
-	private ServerSocket serverSocket;
+	public ServerStatus getStatus() {
+		return status;
+	}
 
-	public void runServer() throws IOException {
-		serverSocket = new ServerSocket(port);
-		System.out.println("waiting");
-		while (true) {
+	public void setStatus(ServerStatus status) {
+		this.status = status;
+	}
 
-			final ServerGameManager server = new ServerGameManager();
-			final Socket s = serverSocket.accept();
-			final Client client = new Client(s, server);
-			server.add(client);
-			System.out.println("connesso 1");
-			final Socket s1 = serverSocket.accept();
-			final Client client2 = new Client(s1, server);
-			server.add(client2);
-			System.out.println("connesso 2");
-			server.run();
-			System.out.println("iniziamo");
+	public Server(ServerSocket socket) {
+		this.socket = socket;
+		status = ServerStatus.WAITING;
+	}
+
+	@Override
+	public void run() {
+		while (!ServerStatus.STOP.equals(status)) {
+			if (ServerStatus.FULL.equals(status)) {
+
+			}
+		}
+		while (ServerStatus.RUNNING.equals(status)) {
+
+		}
+		if (ServerStatus.EMPTY.equals(status)) {
+			return;
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
+	public boolean addClient(ServerDeamon deamon) {
+		if (ServerStatus.FULL.equals(status)) {
+			return false;
+		}
+		deamon.requestClientObjects();
+		clients.add(deamon);
+		new Thread(deamon).start();
+		System.out.println(deamon.username + " connected");
+		if (clients.size() == maxClients) {
+			status = ServerStatus.FULL;
+		}
+		return true;
+	}
 
-		Server server = new Server();
-		server.runServer();
-
+	public void removeClient(ServerDeamon clientDeamon) {
+		clients.remove(clientDeamon);
+		if (clients.isEmpty()) {
+			status = ServerStatus.EMPTY;
+		}
 	}
 
 }

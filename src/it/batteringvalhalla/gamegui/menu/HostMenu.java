@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.network.Client;
+import it.batteringvalhalla.gamecore.network.ConnectionManager;
 import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonCustom;
@@ -50,7 +52,9 @@ public class HostMenu extends JPanel {
 		host.addActionListener(e -> {
 			setEnabled(false);
 			GameWorld.setLevelName((String) maps.getSelectedItem());
-			// GameFrame.instance().startGame();
+			GameWorld.makeLevel(0);
+			new Thread(new ConnectionManager()).start();
+			GameFrame.instance().startClient(new Client("127.0.0.1"));
 		});
 
 		exit.addActionListener(e -> {

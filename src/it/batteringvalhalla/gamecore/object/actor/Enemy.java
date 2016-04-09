@@ -17,6 +17,11 @@ public class Enemy extends AbstractActor {
 		this.strategy = null;
 	}
 
+	public Enemy(Point point, int i, int j, int k) {
+		super(point, i, j, k);
+		this.strategy = null;
+	}
+
 	public void setStrategy(AbstractIA strategy) {
 		this.strategy = strategy;
 	}

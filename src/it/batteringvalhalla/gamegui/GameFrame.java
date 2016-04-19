@@ -29,6 +29,7 @@ import it.batteringvalhalla.gamegui.menu.OptionMenu;
 import it.batteringvalhalla.gamegui.menu.PauseMenu;
 import it.batteringvalhalla.gamegui.menu.ScoreBoard;
 import it.batteringvalhalla.gamegui.menu.UsernameMenu;
+import it.batteringvalhalla.gamegui.menu.WaitMenu;
 import it.batteringvalhalla.gamegui.progress.Loading;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
@@ -62,11 +63,11 @@ public class GameFrame extends JFrame {
 		this.setResizable(false);
 		// device.setFullScreenWindow(this);
 		this.setVisible(true);
-		layers = getLayeredPane();
+		this.layers = getLayeredPane();
 	}
 
 	public void addMenu(JPanel panel, int index) {
-		layers.add(panel, new Integer(index));
+		this.layers.add(panel, new Integer(index));
 		panel.updateUI();
 		panel.requestFocus();
 		pack();
@@ -78,7 +79,7 @@ public class GameFrame extends JFrame {
 			Sound.battle.stop();
 			Sound.menu.play();
 		}
-		layers.removeAll();
+		this.layers.removeAll();
 		GameManager.setState(State.Stop);
 		showMenu();
 	}
@@ -103,7 +104,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showEditor() {
-		layers.remove(layers.getComponentsInLayer(2)[0]);
+		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
 		addMenu(new EditorPanel(), 2);
 	}
 
@@ -112,7 +113,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showEditorMap() {
-		layers.remove(layers.getComponentsInLayer(2)[0]);
+		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
 		addMenu(new EditorMapPanel(), 2);
 	}
 
@@ -121,10 +122,10 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showLoading() {
-		panel = new Loading();
-		addMenu(panel, 0);
+		this.panel = new Loading();
+		addMenu(this.panel, 0);
 		try {
-			((Loading) panel).loadResources();
+			((Loading) this.panel).loadResources();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -155,30 +156,30 @@ public class GameFrame extends JFrame {
 		}
 
 		// remove all layers
-		layers.removeAll();
+		this.layers.removeAll();
 		// show main menu
 		showMenu();
 		// disable main menu
-		layers.getComponentsInLayer(1)[0].setEnabled(false);
+		this.layers.getComponentsInLayer(1)[0].setEnabled(false);
 		// show username box
-		panel = new UsernameMenu();
-		addMenu(panel, 2);
-		((UsernameMenu) panel).getUserfield().requestFocusInWindow();
-		((UsernameMenu) panel).getUserfield().selectAll();
+		this.panel = new UsernameMenu();
+		addMenu(this.panel, 2);
+		((UsernameMenu) this.panel).getUserfield().requestFocusInWindow();
+		((UsernameMenu) this.panel).getUserfield().selectAll();
 	}
 
 	public void startGame() {
 		// remove all layers
-		layers.removeAll();
+		this.layers.removeAll();
 		// paint background
 		setUiBackground();
 		// create game panel and add
-		panel = new GamePanel();
-		addMenu(panel, 1);
+		this.panel = new GamePanel();
+		addMenu(this.panel, 1);
 		// set viewport for the manager
 		GameManager.setState(State.Run);
 		GameWorld.makeLevel(1);
-		GameManager.getManager().setViewport(panel);
+		GameManager.getManager().setViewport(this.panel);
 		// start the game
 		new Thread(GameManager.getManager()).start();
 		// play the music
@@ -197,15 +198,20 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showJoin() {
-		layers.remove(layers.getComponentsInLayer(2)[0]);
+		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
 		addMenu(new JoinMenu(), 2);
 
 	}
 
 	public void showHost() {
-		layers.remove(layers.getComponentsInLayer(2)[0]);
+		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
 		addMenu(new HostMenu(), 2);
 
+	}
+
+	public void showWaitMenu() {
+		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
+		addMenu(new WaitMenu(), 2);
 	}
 
 	public void startClient(Client client) {
@@ -215,12 +221,9 @@ public class GameFrame extends JFrame {
 		// client sync
 		client.sync();
 		// remove all layers
-		layers.removeAll();
+		this.layers.removeAll();
 		// paint background
 		setUiBackground();
-
-		// new Thread(client).start();
-		new Thread(GameManager.getManager()).start();
 		// play the music
 		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.stop();

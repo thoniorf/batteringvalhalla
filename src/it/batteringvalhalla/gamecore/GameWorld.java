@@ -17,6 +17,7 @@ import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
 public class GameWorld {
 	private static GameWorld world;
 	private static ArrayList<Entity> objects;
+	private static ArrayList<VerySquareWall> walls;
 	private static Arena arena;
 	private static Integer max_enemy;
 	private static Integer enemies;
@@ -32,6 +33,14 @@ public class GameWorld {
 
 	public static void setArena(Arena arena) {
 		GameWorld.arena = arena;
+	}
+
+	public static ArrayList<VerySquareWall> getWalls() {
+		return walls;
+	}
+
+	public static void setWalls(ArrayList<VerySquareWall> walls) {
+		GameWorld.walls = walls;
 	}
 
 	public static Integer getFreq_friction() {
@@ -106,7 +115,7 @@ public class GameWorld {
 			objects.add(new Enemy(arena.getSpawn().get(i + 1)));
 			((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy) objects.get(i + 1), arena, objects));
 		}
-		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName,
+		walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName,
 				arena.getShape().getBounds().x, arena.getShape().getBounds().y);
 		for (int i = 0; i < walls.size(); i++) {
 			objects.add(walls.get(i));

@@ -20,34 +20,25 @@ public class NetworkProtocol {
 	}
 
 	public void send(Object obj) throws IOException {
-		out.writeObject(obj);
-		out.flush();
+		this.out.writeObject(obj);
+		this.out.flush();
 	}
 
 	public void send(List<?> objs) throws IOException {
-		out.writeObject(objs.size());
-		out.flush();
+		this.out.writeObject(objs.size());
+		this.out.flush();
 		for (Object object : objs) {
-			out.writeObject(object);
-			out.flush();
+			this.out.writeObject(object);
+			this.out.flush();
 		}
 	}
 
 	public Object request() throws ClassNotFoundException, IOException {
-		return in.readObject();
+		return this.in.readObject();
 	}
 
 	public void close() throws IOException {
-		out.close();
-		in.close();
-	}
-
-	public boolean isAvaible() {
-		try {
-			in.readByte();
-		} catch (IOException e) {
-			return false;
-		}
-		return true;
+		this.out.close();
+		this.in.close();
 	}
 }

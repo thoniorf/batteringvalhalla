@@ -30,34 +30,35 @@ public class HostMenu extends JPanel {
 		setBounds(CenterComp.centerX(size.width), CenterComp.centerY(size.height), size.width, size.height);
 		setOpaque(false);
 		// initialization
-		host = new JButtonCustom(ResourcesLoader.images.get("host"), ResourcesLoader.images.get("host_hover"),
+		this.host = new JButtonCustom(ResourcesLoader.images.get("host"), ResourcesLoader.images.get("host_hover"),
 				ResourcesLoader.images.get("host_selected"));
-		exit = new JButtonRound(ResourcesLoader.images.get("exit_round"),
+		this.exit = new JButtonRound(ResourcesLoader.images.get("exit_round"),
 				ResourcesLoader.images.get("exit_round_hover"));
-		maps = new JCustomComboBox(ManagerFilePlayer.loadNameOfMaps());
+		this.maps = new JCustomComboBox(ManagerFilePlayer.loadNameOfMaps());
 		// setting bounds
-		maps.setBounds(101, 155, 391, 60);
-		host.setBounds(108, 245, host.getWidth(), host.getHeight());
-		exit.setBounds(516, 316, exit.getWidth(), exit.getHeight());
+		this.maps.setBounds(101, 155, 391, 60);
+		this.host.setBounds(108, 245, this.host.getWidth(), this.host.getHeight());
+		this.exit.setBounds(516, 316, this.exit.getWidth(), this.exit.getHeight());
 		// adding
-		add(maps);
-		add(host);
-		add(exit);
+		add(this.maps);
+		add(this.host);
+		add(this.exit);
 
 		setVisible(true);
 		listenerLoader();
 	}
 
 	private void listenerLoader() {
-		host.addActionListener(e -> {
+		this.host.addActionListener(e -> {
 			setEnabled(false);
-			GameWorld.setLevelName((String) maps.getSelectedItem());
+			GameWorld.setLevelName((String) this.maps.getSelectedItem());
 			GameWorld.makeLevel(0);
 			new Thread(new ConnectionManager()).start();
+			GameFrame.instance().showWaitMenu();
 			GameFrame.instance().startClient(new Client("127.0.0.1"));
 		});
 
-		exit.addActionListener(e -> {
+		this.exit.addActionListener(e -> {
 			setEnabled(false);
 			GameFrame.instance().restart();
 		});
@@ -66,8 +67,8 @@ public class HostMenu extends JPanel {
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		maps.setEnabled(enabled);
-		host.setEnabled(enabled);
+		this.maps.setEnabled(enabled);
+		this.host.setEnabled(enabled);
 
 	}
 

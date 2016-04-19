@@ -12,25 +12,24 @@ public class ConnectionManager implements Runnable {
 
 	public ConnectionManager() {
 		try {
-			socket = new ServerSocket(port);
+			this.socket = new ServerSocket(port);
 		} catch (IOException e) {
 			System.err.println("Could not listen on port " + port);
 			System.err.println("Maybe the port is busy");
 			// Game Restart
 			GameFrame.instance().restart();
 		}
-		server = new Server(socket);
-		new Thread(server).start();
+		this.server = new Server(this.socket);
 	}
 
 	@Override
 	public void run() {
 
-		while (!ServerStatus.FULL.equals(server.getStatus())) {
+		while (ServerStatus.WAITING.equals(this.server.getStatus())) {
 			try {
 				// add & start new deamon
-				ServerDeamon deamon = new ServerDeamon(socket.accept(), server);
-				server.addClient(deamon);
+				ServerDeamon deamon = new ServerDeamon(this.socket.accept(), this.server);
+				this.server.addClient(deamon);
 			} catch (IOException e) {
 				System.err.println("Could not listen on port " + port + ". Maybe the port is busy");
 				// Game Restart

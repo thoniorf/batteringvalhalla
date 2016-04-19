@@ -39,7 +39,8 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		super(origin);
 		this.width = 112;
 		this.height = 50;
-		((Rectangle) shape).setBounds(origin.x - width / 2, origin.y - height / 2, width, height);
+		((Rectangle) this.shape).setBounds(origin.x - this.width / 2, origin.y - this.height / 2, this.width,
+				this.height);
 		this.velocity = new Vector2D(0, 0);
 		curret_max_velocity = max_velocity;
 		this.move_dir = Direction.stop;
@@ -57,18 +58,18 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		this.mount = new Sprite(ResourcesLoader.actor_mount.get(idMount), 117, 88, 3, 16, 0, 0, -10);
 		this.head = new Sprite(ResourcesLoader.actor_head.get(idHead), 117, 122, 3, 1, 0, 0, -45);
 		// friction
-		friction_time = 0L;
+		this.friction_time = 0L;
 	}
 
 	public Boolean canCharge() {
-		return can_charge;
+		return this.can_charge;
 	}
 
 	public void charge() {
-		if (can_charge) {
-			can_charge = Boolean.FALSE;
-			charge = Boolean.TRUE;
-			charge_time = System.currentTimeMillis();
+		if (this.can_charge) {
+			this.can_charge = Boolean.FALSE;
+			this.charge = Boolean.TRUE;
+			this.charge_time = System.currentTimeMillis();
 			curret_max_velocity = charge_velocity;
 		}
 
@@ -76,39 +77,39 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 
 	@Override
 	public Direction getFaceDirection() {
-		return face_dir;
+		return this.face_dir;
 	}
 
 	@Override
 	public Direction getMoveDirection() {
-		return move_dir;
+		return this.move_dir;
 	}
 
 	@Override
 	public Vector2D getVelocity() {
-		return velocity;
+		return this.velocity;
 	}
 
 	private void incVelX(Integer v) {
-		if (Math.abs(velocity.getComponents().x + v) <= curret_max_velocity) {
-			velocity.setX(velocity.getComponents().x + v);
+		if (Math.abs(this.velocity.getComponents().x + v) <= curret_max_velocity) {
+			this.velocity.setX(this.velocity.getComponents().x + v);
 		} else {
-			if (velocity.getComponents().x + v < 0) {
-				velocity.setX(curret_max_velocity * -1);
+			if (this.velocity.getComponents().x + v < 0) {
+				this.velocity.setX(curret_max_velocity * -1);
 			} else {
-				velocity.setX(curret_max_velocity);
+				this.velocity.setX(curret_max_velocity);
 			}
 		}
 	}
 
 	private void incVelY(Integer v) {
-		if (Math.abs(velocity.getComponents().y + v) <= curret_max_velocity) {
-			velocity.setY(velocity.getComponents().y + v);
+		if (Math.abs(this.velocity.getComponents().y + v) <= curret_max_velocity) {
+			this.velocity.setY(this.velocity.getComponents().y + v);
 		} else {
-			if (velocity.getComponents().y + v < 0) {
-				velocity.setY(curret_max_velocity * -1);
+			if (this.velocity.getComponents().y + v < 0) {
+				this.velocity.setY(curret_max_velocity * -1);
 			} else {
-				velocity.setY(curret_max_velocity);
+				this.velocity.setY(curret_max_velocity);
 			}
 
 		}
@@ -154,23 +155,24 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 	@Override
 	public void update() {
 		super.update();
-		if (strategy != null) {
-			strategy.update();
+		if (this.strategy != null) {
+			this.strategy.update();
 		}
 		// charge time
-		if (System.currentTimeMillis() - charge_time >= charge_countdown) {
-			can_charge = Boolean.TRUE;
+		if (System.currentTimeMillis() - this.charge_time >= charge_countdown) {
+			this.can_charge = Boolean.TRUE;
 		}
 		// face direction
-		face_dir = (!Direction.stop.equals(move_dir)) ? move_dir : face_dir;
+		this.face_dir = (!Direction.stop.equals(this.move_dir)) ? this.move_dir : this.face_dir;
 
 		// Charge
-		if (charge) {
-			if (velocity.getComponents().x == charge_velocity || velocity.getComponents().y == charge_velocity) {
-				charge = Boolean.FALSE;
+		if (this.charge) {
+			if (this.velocity.getComponents().x == charge_velocity
+					|| this.velocity.getComponents().y == charge_velocity) {
+				this.charge = Boolean.FALSE;
 				curret_max_velocity = max_velocity;
 			}
-			switch (face_dir) {
+			switch (this.face_dir) {
 			case est:
 				incVelX(1);
 				break;
@@ -189,7 +191,7 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 			}
 		}
 		// Movement
-		switch (move_dir) {
+		switch (this.move_dir) {
 		case est:
 			incVelX(1);
 			break;
@@ -205,10 +207,10 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		case stop:
 			// friction
 			long now = System.currentTimeMillis();
-			if (now - friction_time >= GameWorld.getFreq_friction()) {
-				friction_time = now;
-				velocity.getComponents().x *= 0.99;
-				velocity.getComponents().y *= 0.99;
+			if (now - this.friction_time >= GameWorld.getFreq_friction()) {
+				this.friction_time = now;
+				this.velocity.getComponents().x *= 0.99;
+				this.velocity.getComponents().y *= 0.99;
 			}
 			break;
 		default:
@@ -217,22 +219,27 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 		}
 
 		// move
-		origin.x += velocity.getComponents().x;
-		origin.y += velocity.getComponents().y;
+		this.origin.x += this.velocity.getComponents().x;
+		this.origin.y += this.velocity.getComponents().y;
 		// set shape bounds
-		((Rectangle) shape).setBounds(origin.x - width / 2, origin.y - height / 2, width, height);
+		((Rectangle) this.shape).setBounds(this.origin.x - this.width / 2, this.origin.y - this.height / 2, this.width,
+				this.height);
 		// sprite updates
-		arm.update(move_dir);
-		head.update(move_dir);
-		body.update(move_dir);
-		mount.update(move_dir);
+		this.arm.update(this.move_dir);
+		this.head.update(this.move_dir);
+		this.body.update(this.move_dir);
+		this.mount.update(this.move_dir);
 	}
 
 	@Override
 	public void paint(Graphics2D g) {
-		g.drawImage(mount.getFrame(), shape.getBounds().x, shape.getBounds().y + mount.getOffsetY(), null);
-		g.drawImage(body.getFrame(), shape.getBounds().x, shape.getBounds().y + body.getOffsetY(), null);
-		g.drawImage(head.getFrame(), shape.getBounds().x, shape.getBounds().y + body.getOffsetY(), null);
-		g.drawImage(arm.getFrame(), shape.getBounds().x, shape.getBounds().y + body.getOffsetY(), null);
+		g.drawImage(this.mount.getFrame(), this.shape.getBounds().x, this.shape.getBounds().y + this.mount.getOffsetY(),
+				null);
+		g.drawImage(this.body.getFrame(), this.shape.getBounds().x, this.shape.getBounds().y + this.body.getOffsetY(),
+				null);
+		g.drawImage(this.head.getFrame(), this.shape.getBounds().x, this.shape.getBounds().y + this.body.getOffsetY(),
+				null);
+		g.drawImage(this.arm.getFrame(), this.shape.getBounds().x, this.shape.getBounds().y + this.body.getOffsetY(),
+				null);
 	}
 }

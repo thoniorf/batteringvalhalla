@@ -17,7 +17,7 @@ public class Enemy extends AbstractActor {
 		this.strategy = null;
 	}
 
-	public Enemy(Point point, int i, int j, int k) {
+	public Enemy(Point point, String username, int i, int j, int k) {
 		super(point, i, j, k);
 		this.strategy = null;
 	}
@@ -27,7 +27,7 @@ public class Enemy extends AbstractActor {
 	}
 
 	public AbstractIA getStrategy() {
-		return strategy;
+		return this.strategy;
 	}
 
 }

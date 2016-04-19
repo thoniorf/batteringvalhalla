@@ -11,7 +11,7 @@ public class Server implements Runnable {
 	protected List<ServerDeamon> clients = new ArrayList<>();
 
 	public ServerStatus getStatus() {
-		return status;
+		return this.status;
 	}
 
 	public void setStatus(ServerStatus status) {
@@ -20,42 +20,54 @@ public class Server implements Runnable {
 
 	public Server(ServerSocket socket) {
 		this.socket = socket;
-		status = ServerStatus.WAITING;
+		this.status = ServerStatus.WAITING;
 	}
 
 	@Override
 	public void run() {
-		while (!ServerStatus.STOP.equals(status)) {
-			if (ServerStatus.FULL.equals(status)) {
+		while (!ServerStatus.STOP.equals(this.status)) {
+			if (ServerStatus.FULL.equals(this.status)) {
 
 			}
 		}
-		while (ServerStatus.RUNNING.equals(status)) {
 
-		}
-		if (ServerStatus.EMPTY.equals(status)) {
+		if (ServerStatus.EMPTY.equals(this.status)) {
 			return;
 		}
 	}
 
 	public boolean addClient(ServerDeamon deamon) {
-		if (ServerStatus.FULL.equals(status)) {
-			return false;
+		if (!ServerStatus.FULL.equals(this.status)) {
+			// sync client object
+			deamon.syncClient();
+			// add to clients lists
+			this.clients.add(deamon);
+			// set id for client
+			deamon.id = this.clients.size();
+			if (this.clients.size() == this.maxClients) {
+				this.status = ServerStatus.FULL;
+				syncAll();
+			}
+			return true;
 		}
-		deamon.requestClientObjects();
-		clients.add(deamon);
-		new Thread(deamon).start();
-		System.out.println(deamon.username + " connected");
-		if (clients.size() == maxClients) {
-			status = ServerStatus.FULL;
-		}
-		return true;
+
+		return false;
 	}
 
 	public void removeClient(ServerDeamon clientDeamon) {
-		clients.remove(clientDeamon);
-		if (clients.isEmpty()) {
-			status = ServerStatus.EMPTY;
+		this.clients.remove(clientDeamon);
+		if (this.clients.isEmpty()) {
+			this.status = ServerStatus.EMPTY;
+		}
+	}
+
+	public void syncAll() {
+		for (ServerDeamon deamon : this.clients) {
+			for (ServerDeamon minion : this.clients) {
+				if (deamon.id != minion.id) {
+					deamon.sendOther(minion);
+				}
+			}
 		}
 	}
 

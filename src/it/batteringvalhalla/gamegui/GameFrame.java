@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -40,7 +39,7 @@ import it.batteringvalhalla.gamegui.sound.Sound;
  */
 public class GameFrame extends JFrame {
 
-	public static final Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+	public static final Dimension size = new Dimension(1024, 768);// .getDefaultToolkit().getScreenSize();
 	public static final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 	private static final long serialVersionUID = 1L;
 	private static GameFrame frame = null;
@@ -59,8 +58,8 @@ public class GameFrame extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setPreferredSize(size);
-		this.setUndecorated(true);
-		this.setResizable(false);
+		this.setUndecorated(false);
+		this.setResizable(true);
 		// device.setFullScreenWindow(this);
 		this.setVisible(true);
 		this.layers = getLayeredPane();
@@ -224,6 +223,12 @@ public class GameFrame extends JFrame {
 		this.layers.removeAll();
 		// paint background
 		setUiBackground();
+		// create game panel and add
+		this.panel = new GamePanel();
+		addMenu(this.panel, 1);
+		client.setPanel(panel);
+		// start client
+		new Thread(client).start();
 		// play the music
 		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.stop();

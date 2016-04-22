@@ -54,7 +54,6 @@ public class HostMenu extends JPanel {
 			GameWorld.setLevelName((String) this.maps.getSelectedItem());
 			GameWorld.makeLevel(0);
 			new Thread(new ConnectionManager()).start();
-			GameFrame.instance().showWaitMenu();
 			GameFrame.instance().startClient(new Client("127.0.0.1"));
 		});
 

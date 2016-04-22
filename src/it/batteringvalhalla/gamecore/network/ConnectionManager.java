@@ -28,7 +28,7 @@ public class ConnectionManager implements Runnable {
 		while (ServerStatus.WAITING.equals(this.server.getStatus())) {
 			try {
 				// add & start new deamon
-				ServerDeamon deamon = new ServerDeamon(this.socket.accept(), this.server);
+				ServerDeamon deamon = new ServerDeamon(this.socket.accept(), this.server, this.server.clients.size());
 				this.server.addClient(deamon);
 			} catch (IOException e) {
 				System.err.println("Could not listen on port " + port + ". Maybe the port is busy");

@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.List;
+import java.net.Socket;
 
 public class NetworkProtocol {
 
@@ -24,21 +24,15 @@ public class NetworkProtocol {
 		this.out.flush();
 	}
 
-	public void send(List<?> objs) throws IOException {
-		this.out.writeObject(objs.size());
-		this.out.flush();
-		for (Object object : objs) {
-			this.out.writeObject(object);
-			this.out.flush();
-		}
-	}
-
 	public Object request() throws ClassNotFoundException, IOException {
 		return this.in.readObject();
 	}
 
-	public void close() throws IOException {
-		this.out.close();
-		this.in.close();
+	public void close(Socket socket) {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			System.err.println("Error with protocol I/O on close");
+		}
 	}
 }

@@ -16,7 +16,7 @@ import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
 
 public class GameWorld {
 	private static GameWorld world;
-	private static ArrayList<Entity> objects;
+	private static CopyOnWriteArrayList<Entity> objects;
 	private static ArrayList<VerySquareWall> walls;
 	private static Arena arena;
 	private static Integer max_enemy;
@@ -71,11 +71,19 @@ public class GameWorld {
 		}
 	}
 
-	public static ArrayList<Entity> getObjects() {
+	public static Integer getEnemies() {
+		return enemies;
+	}
+
+	public static void setEnemies(Integer enemies) {
+		GameWorld.enemies = enemies;
+	}
+
+	public static CopyOnWriteArrayList<Entity> getObjects() {
 		return objects;
 	}
 
-	public static void setObjects(ArrayList<Entity> objs) {
+	public static void setObjects(CopyOnWriteArrayList<Entity> objs) {
 		GameWorld.objects = objs;
 	}
 
@@ -106,7 +114,7 @@ public class GameWorld {
 		// level enemies number
 		enemies = max_enemy;
 		// object list
-		objects = new ArrayList<Entity>();
+		objects = new CopyOnWriteArrayList<Entity>();
 		// spawn Player
 		player = new Player(arena.getSpawn().get(0));
 		objects.add(player);

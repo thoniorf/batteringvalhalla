@@ -33,7 +33,7 @@ public class Client implements Runnable {
 
 	public Client(String hostname) {
 		this.hostname = hostname;
-		character = new OnlineCharacter(Player.getUsername(), new Point(0, 0), ManagerFilePlayer.getTop(),
+		this.character = new OnlineCharacter(Player.getUsername(), new Point(0, 0), ManagerFilePlayer.getTop(),
 				ManagerFilePlayer.getMid(), ManagerFilePlayer.getBot());
 	}
 
@@ -74,64 +74,70 @@ public class Client implements Runnable {
 
 	public void syncCharacter() throws IOException, ClassNotFoundException {
 		// send character
-		client_id = (int) this.protocol.request();
+		this.client_id = (int) this.protocol.request();
 		// set character spawn point
-		character.getOrigin().move(GameWorld.getArena().getSpawn().get(client_id - 1).x,
-				GameWorld.getArena().getSpawn().get(client_id - 1).y);
-		this.protocol.send(character);
+		this.character.getOrigin().move(GameWorld.getArena().getSpawn().get(this.client_id - 1).x,
+				GameWorld.getArena().getSpawn().get(this.client_id - 1).y);
+		this.protocol.send(this.character);
 
 	}
 
 	public void syncOpponents() throws ClassNotFoundException, IOException {
-		opponents = new ArrayList<OnlineCharacter>();
+		this.opponents = new ArrayList<OnlineCharacter>();
 		// sync other players
 		for (int i = 1; i < 2; i++) {
-			opponents.add(new OnlineCharacter((OnlineCharacter) protocol.request()));
+			this.opponents.add(new OnlineCharacter((OnlineCharacter) this.protocol.request()));
 		}
 	}
 
 	public void warmUpLevel() {
 		// set level vars
-		GameWorld.setMax_enemy(opponents.size());
-		GameWorld.setEnemies(opponents.size());
+		GameWorld.setMax_enemy(this.opponents.size());
+		GameWorld.setEnemies(this.opponents.size());
 		GameWorld.setObjects(new CopyOnWriteArrayList<>());
-		GameWorld.getObjects().add(character);
-		GameWorld.getObjects().addAll(opponents);
+		GameWorld.getObjects().add(this.character);
+		GameWorld.getObjects().addAll(this.opponents);
+		GameWorld.getObjects().addAll(GameWorld.getWalls());
 	}
 
 	public void sync() {
 		try {
-			syncLevel();
-			syncCharacter();
-			syncOpponents();
+			this.syncLevel();
+			this.syncCharacter();
+			this.syncOpponents();
 		} catch (IOException e) {
 			System.err.println("Error with server I/O during sync");
-			this.protocol.close(socket);
+			this.protocol.close(this.socket);
 		} catch (ClassNotFoundException e) {
 			System.err.println("Class not found during sync in client");
-			this.protocol.close(socket);
+			this.protocol.close(this.socket);
 		}
 	}
 
 	@Override
 	public void run() {
-		warmUpLevel();
-		System.out.println(client_id + " is ready");
+		this.warmUpLevel();
+		System.out.println(this.client_id + " is ready");
 		while (!this.socket.isClosed()) {
 			try {
-				getInput();
-				OnlineCharacter request = (OnlineCharacter) protocol.request();
+				this.getInput();
+				OnlineCharacter request = (OnlineCharacter) this.protocol.request();
+				System.out.println(request);
 				for (Entity opponent : GameWorld.getObjects()) {
-					if (opponent instanceof OnlineCharacter
-							&& request.getOnline_user().equals(((OnlineCharacter) opponent).getOnline_user())) {
-						((OnlineCharacter) opponent).setMoveDirection(request.getMoveDirection());
+					if (opponent instanceof OnlineCharacter) {
+						OnlineCharacter current_opponent = (OnlineCharacter) opponent;
+						System.out.println(current_opponent);
+						if (current_opponent.getOnline_user().equals(request.getOnline_user())) {
+							current_opponent = new OnlineCharacter(request);
+						}
 					}
 				}
 				GameWorld.update();
-				panel.repaint();
+				this.panel.repaint();
 			} catch (IOException e) {
 				System.err.println("Error with server connection I/O on update");
 				return;
+
 			} catch (ClassNotFoundException e) {
 				System.err.println("Class not found");
 			}
@@ -140,7 +146,7 @@ public class Client implements Runnable {
 	}
 
 	public JPanel getPanel() {
-		return panel;
+		return this.panel;
 	}
 
 	public void setPanel(JPanel panel) {
@@ -148,7 +154,7 @@ public class Client implements Runnable {
 	}
 
 	public OnlineCharacter getCharacter() {
-		return character;
+		return this.character;
 	}
 
 	public void setCharacter(OnlineCharacter character) {
@@ -156,26 +162,20 @@ public class Client implements Runnable {
 	}
 
 	public void getInput() throws IOException {
-		protocol.send(Direction.stop);
-		character.setMoveDirection(Direction.stop);
 		if (PlayerControls.getKeys().get("W")[0] == 1) {
-			protocol.send(Direction.nord);
-			character.setMoveDirection(Direction.nord);
+			this.protocol.send(Direction.nord);
 		}
 		if (PlayerControls.getKeys().get("A")[0] == 1) {
-			protocol.send(Direction.ovest);
-			character.setMoveDirection(Direction.ovest);
+			this.protocol.send(Direction.ovest);
 		}
 		if (PlayerControls.getKeys().get("S")[0] == 1) {
-			protocol.send(Direction.sud);
-			character.setMoveDirection(Direction.sud);
+			this.protocol.send(Direction.sud);
 		}
 		if (PlayerControls.getKeys().get("D")[0] == 1) {
-			protocol.send(Direction.est);
-			character.setMoveDirection(Direction.est);
+			this.protocol.send(Direction.est);
 		}
 		if (PlayerControls.getKeys().get("SPACE")[0] == 1) {
-			character.charge();
+			this.character.charge();
 		}
 	}
 }

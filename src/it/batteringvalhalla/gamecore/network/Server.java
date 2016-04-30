@@ -23,10 +23,10 @@ public class Server implements Runnable {
 
 	public void warmUpLevel() {
 		// set level vars
-		GameWorld.setMax_enemy(maxClients);
-		GameWorld.setEnemies(maxClients);
+		GameWorld.setMax_enemy(this.maxClients);
+		GameWorld.setEnemies(this.maxClients);
 		GameWorld.setObjects(new CopyOnWriteArrayList<>());
-		for (ServerDeamon serverDeamon : clients) {
+		for (ServerDeamon serverDeamon : this.clients) {
 			GameWorld.getObjects().add(serverDeamon.client);
 		}
 		GameWorld.getObjects().addAll(GameWorld.getWalls());
@@ -36,27 +36,27 @@ public class Server implements Runnable {
 	public void run() {
 		while (!ServerStatus.STOP.equals(this.status)) {
 			if (ServerStatus.FULL.equals(this.status)) {
-				warmUpLevel();
-				status = ServerStatus.RUNNING;
+				this.warmUpLevel();
+				this.status = ServerStatus.RUNNING;
 			}
 			if (ServerStatus.RUNNING.equals(this.status)) {
-				for (ServerDeamon serverDeamon : clients) {
+				for (ServerDeamon serverDeamon : this.clients) {
 					for (Entity entity : GameWorld.getObjects()) {
-						if (entity instanceof OnlineCharacter && ((OnlineCharacter) entity)
-								.getOnline_user() == serverDeamon.client.getOnline_user()) {
+						if ((entity instanceof OnlineCharacter) && (((OnlineCharacter) entity)
+								.getOnline_user() == serverDeamon.client.getOnline_user())) {
 							entity = serverDeamon.client;
 						}
 					}
 				}
 				GameWorld.update();
 				CollisionHandler.check();
-				for (ServerDeamon deamon : clients) {
-					for (ServerDeamon minion : clients) {
+				for (ServerDeamon deamon : this.clients) {
+					for (ServerDeamon minion : this.clients) {
 						deamon.send(minion.client);
 					}
 				}
 				try {
-					Thread.sleep(30);
+					Thread.sleep(60);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -89,7 +89,7 @@ public class Server implements Runnable {
 			deamon.syncClient();
 			if (this.clients.size() == this.maxClients) {
 				this.status = ServerStatus.FULL;
-				syncAll();
+				this.syncAll();
 				new Thread(this).start();
 			}
 			return true;

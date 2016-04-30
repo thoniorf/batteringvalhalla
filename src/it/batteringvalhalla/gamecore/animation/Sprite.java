@@ -6,6 +6,8 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -120,18 +122,30 @@ public class Sprite implements Serializable {
 	}
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.flush();
 		out.defaultWriteObject();
 		out.flush();
-		ImageIO.write(frame, "png", out);
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		ImageIO.write(frame, "png", buffer);
+		out.writeInt(buffer.size());
+		out.write(buffer.toByteArray());
 		out.flush();
-		ImageIO.write(img, "png", out);
-		out.flush();
+		buffer = new ByteArrayOutputStream();
+		ImageIO.write(img, "png", buffer);
+		out.writeInt(buffer.size());
+		out.write(buffer.toByteArray());
 	}
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		frame = ImageIO.read(in);
-		img = ImageIO.read(in);
+		int length = in.readInt();
+		byte[] buffer = new byte[length];
+		in.readFully(buffer);
+		frame = ImageIO.read(new ByteArrayInputStream(buffer));
+		length = in.readInt();
+		buffer = new byte[length];
+		in.readFully(buffer);
+		img = ImageIO.read(new ByteArrayInputStream(buffer));
 
 	}
 

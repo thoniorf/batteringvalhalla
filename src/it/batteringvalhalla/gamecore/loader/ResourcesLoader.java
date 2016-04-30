@@ -425,7 +425,7 @@ public class ResourcesLoader {
 		imageBust.addAll(actor_body);
 
 		for (int i = 0; i < ResourcesLoader.actor_mount.size(); i++) {
-			tmp = new Sprite(ResourcesLoader.actor_mount.get(i), 117, 88, 1, 1, 0, 0, 0);
+			tmp = new Sprite(ResourcesLoader.actor_mount.get(i), 117, 88, 1, 1, 0);
 			tmp.update(Direction.est);
 			imageGoat.add(tmp.getFrame());
 

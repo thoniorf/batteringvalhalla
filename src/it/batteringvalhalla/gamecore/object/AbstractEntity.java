@@ -17,7 +17,7 @@ public abstract class AbstractEntity implements Entity, Comparable<Entity> {
 		this.origin = origin;
 		this.width = 50;
 		this.height = 50;
-		this.shape = new Rectangle(origin.x - width / 2, origin.y - height / 2, width, height);
+		this.shape = new Rectangle(origin.x - (width / 2), origin.y - (height / 2), width, height);
 
 	}
 

@@ -34,12 +34,11 @@ public class Server implements Runnable {
 
 	@Override
 	public void run() {
+		this.syncAll();
+		this.warmUpLevel();
+		this.status = ServerStatus.RUNNING;
 		while (!ServerStatus.STOP.equals(this.status)) {
-			if (ServerStatus.FULL.equals(this.status)) {
-				this.warmUpLevel();
-				this.status = ServerStatus.RUNNING;
-			}
-			if (ServerStatus.RUNNING.equals(this.status)) {
+			while (ServerStatus.RUNNING.equals(this.status)) {
 				for (ServerDeamon serverDeamon : this.clients) {
 					for (Entity entity : GameWorld.getObjects()) {
 						if ((entity instanceof OnlineCharacter) && (((OnlineCharacter) entity)
@@ -49,6 +48,7 @@ public class Server implements Runnable {
 					}
 				}
 				GameWorld.update();
+				CollisionHandler.setObjects(GameWorld.getObjects());
 				CollisionHandler.check();
 				for (ServerDeamon deamon : this.clients) {
 					for (ServerDeamon minion : this.clients) {
@@ -88,8 +88,6 @@ public class Server implements Runnable {
 			// sync client object
 			deamon.syncClient();
 			if (this.clients.size() == this.maxClients) {
-				this.status = ServerStatus.FULL;
-				this.syncAll();
 				new Thread(this).start();
 			}
 			return true;

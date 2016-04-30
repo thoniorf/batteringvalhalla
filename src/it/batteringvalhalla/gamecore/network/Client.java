@@ -86,7 +86,7 @@ public class Client implements Runnable {
 		this.opponents = new ArrayList<OnlineCharacter>();
 		// sync other players
 		for (int i = 1; i < 2; i++) {
-			this.opponents.add(new OnlineCharacter((OnlineCharacter) this.protocol.request()));
+			this.opponents.add((OnlineCharacter) this.protocol.request());
 		}
 	}
 
@@ -122,18 +122,16 @@ public class Client implements Runnable {
 			try {
 				this.getInput();
 				OnlineCharacter request = (OnlineCharacter) this.protocol.request();
-				System.out.println(request);
 				for (Entity opponent : GameWorld.getObjects()) {
 					if (opponent instanceof OnlineCharacter) {
 						OnlineCharacter current_opponent = (OnlineCharacter) opponent;
-						System.out.println(current_opponent);
 						if (current_opponent.getOnline_user().equals(request.getOnline_user())) {
-							current_opponent = new OnlineCharacter(request);
+							current_opponent = request;
 						}
 					}
 				}
 				GameWorld.update();
-				this.panel.repaint();
+				panel.repaint();
 			} catch (IOException e) {
 				System.err.println("Error with server connection I/O on update");
 				return;

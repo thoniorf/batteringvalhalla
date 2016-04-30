@@ -70,7 +70,7 @@ public class ServerDeamon implements Runnable {
 	public void syncCharacter() {
 		// send character
 		send(server.clients.size());
-		client = new OnlineCharacter((OnlineCharacter) this.request());
+		client = (OnlineCharacter) this.request();
 	}
 
 	public void syncClient() {
@@ -85,7 +85,6 @@ public class ServerDeamon implements Runnable {
 				// update the client player
 				Direction d = (Direction) this.protocol.request();
 				client.setMoveDirection(d);
-				// server.syncAll();
 			} catch (ClassNotFoundException e) {
 				System.err.println("Class not found on update");
 				break;

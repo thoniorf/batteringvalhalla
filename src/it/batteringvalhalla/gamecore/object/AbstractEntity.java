@@ -36,6 +36,14 @@ public abstract class AbstractEntity implements Entity, Comparable<Entity> {
 		return origin;
 	}
 
+	public int getX() {
+		return origin.x;
+	}
+
+	public int getY() {
+		return origin.y;
+	}
+
 	@Override
 	public Shape getShape() {
 		return shape;

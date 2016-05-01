@@ -105,6 +105,7 @@ public class GameManager implements Runnable {
 				// main cycle
 				GameManager.getInput();
 				GameWorld.update();
+				CollisionHandler.setObjects(GameWorld.getObjects());
 				CollisionHandler.check();
 				this.viewport.setCharge(GameWorld.getPlayer().canCharge());
 				this.viewport.repaint();

@@ -19,7 +19,7 @@ public class CollisionHandler {
 
 	public static void check() {
 		// check loop
-		for (int i = 0; i < objects.size(); i++) {
+		for (int i = 0; i < (objects.size() - 1); i++) {
 			for (int j = i + 1; j < objects.size(); j++) {
 				if (objects.get(i).getAlive() && objects.get(j).getAlive()) {
 					// detect collision
@@ -45,25 +45,25 @@ public class CollisionHandler {
 		// penetration side
 		if (first.getOrigin().x <= second.getOrigin().x) {
 			// LEFT
-			x_depth = second.getOrigin().x - (first.getOrigin().x + first.getWidth()) - 1;
+			x_depth = ((second.getX() - (second.getWidth() / 2)) - (first.getX() + (first.getWidth() / 2))) - 1;
 		} else {
 			// RIGHT
-			x_depth = (second.getOrigin().x + second.getWidth()) - first.getOrigin().x + 1;
+			x_depth = ((second.getX() + (second.getWidth() / 2)) - (first.getX() - (first.getWidth() / 2))) + 1;
 		}
 		if (first.getOrigin().y <= second.getOrigin().y) {
 			// TOP
-			y_depth = second.getOrigin().y - (first.getOrigin().y + first.getHeight()) - 1;
+			y_depth = (second.getY() - (second.getHeight() / 2)) - (first.getY() + (first.getHeight() / 2)) - 1;
 		} else {
 			// BOTTOM
-			y_depth = (second.getOrigin().y + second.getHeight()) - first.getOrigin().y + 1;
+			y_depth = (second.getY() + (second.getHeight() / 2)) - (first.getY() - (first.getHeight() / 2)) + 1;
 		}
-
+		System.out.println(x_depth + " " + y_depth);
 		return new Vector2D(x_depth, y_depth);
 	}
 
 	private static Vector2D computeMtd(AbstractEntity first, AbstractEntity second) {
 		// init minimum translation distance vector
-		Vector2D mtd = new Vector2D(0, 0);
+		Vector2D mtd = new Vector2D();
 		// compute penetration depth
 		Vector2D depth = penetrationDepth(first, second);
 		// set mtd values
@@ -73,63 +73,66 @@ public class CollisionHandler {
 		if (Math.abs(depth.getComponents().y) <= Math.abs(depth.getComponents().x)) {
 			mtd.setY(depth.getComponents().y);
 		}
+		System.out.println(mtd.getComponents().x + " " + mtd.getComponents().y);
 		// return the mtd vector
 		return mtd;
 	}
 
-	private static Vector2D fixOverlap(AbstractEntity first, AbstractEntity second) {
-		// compute mtd;
-		Vector2D mtd = computeMtd(first, second);
-		// translate
-		first.getOrigin().move(first.getOrigin().x + mtd.getComponents().x,
-				first.getOrigin().y + mtd.getComponents().y);
-		// return again the mtd vector
-		return mtd;
-	}
-
 	private static void resolve(AbstractEntity first, AbstractEntity second) {
+		if (!(first instanceof AbstractActor)) {
+			return;
+		}
 		// TODO add sound effect
-		// fix overlap an get the mtd vector
-		Vector2D response = fixOverlap(first, second);
+		// get the mtd vector
+		Vector2D mtd = computeMtd(first, second);
 
 		// old velocity
-		Vector2D oldVel_first = new Vector2D(0, 0);
-		Vector2D oldVel_second = new Vector2D(0, 0);
+		Vector2D oldVel_first = new Vector2D();
+		Vector2D oldVel_second = new Vector2D();
+		Vector2D newVel_first = new Vector2D();
+		Vector2D newVel_second = new Vector2D();
+		AbstractActor a1 = (AbstractActor) first;
 
-		if (first instanceof AbstractActor && second instanceof AbstractActor) {
-			// cast
-			AbstractActor a1 = (AbstractActor) first;
+		if (second instanceof AbstractActor) {
+			// fix overlap
+			first.getOrigin().translate(mtd.getComponents().x, mtd.getComponents().y);
+			// second.getOrigin().translate((1 + (mtd.getComponents().x / 2)) *
+			// -1,(1 + (mtd.getComponents().y / 2)) * -1);
+
 			AbstractActor a2 = (AbstractActor) second;
 			// TODO actor->actor
-			oldVel_first = new Vector2D(a1.getVelocity().getComponents().x, a1.getVelocity().getComponents().y);
-			oldVel_second = new Vector2D(a2.getVelocity().getComponents().x, a2.getVelocity().getComponents().y);
+			oldVel_first = new Vector2D(a1.getVelocity());
+			oldVel_second = new Vector2D(a2.getVelocity());
 
 			// check if mtd is along x-axis
-			if (response.getComponents().x != 0) {
-				a1.setVelocity(new Vector2D((oldVel_first.getComponents().x + 2 * oldVel_second.getComponents().x) * -1,
-						a1.getVelocity().getComponents().y));
-				a2.setVelocity(new Vector2D(oldVel_second.getComponents().x + 2 * oldVel_first.getComponents().x,
-						a2.getVelocity().getComponents().y));
+			if (mtd.getComponents().x != 0) {
+				newVel_first = new Vector2D((oldVel_first.getX() + (2 * oldVel_second.getX())) * -1,
+						a1.getVelocity().getY());
+				newVel_second = new Vector2D(oldVel_second.getX() + (2 * oldVel_first.getX()), a2.getVelocity().getY());
+				a1.setVelocity(newVel_first);
+				a2.setVelocity(newVel_second);
 			}
 			// check if mtd is along y-axis
-			if (response.getComponents().y != 0) {
-				a1.setVelocity(new Vector2D(a1.getVelocity().getComponents().x,
-						(oldVel_first.getComponents().y + 2 * oldVel_second.getComponents().y) * -1));
-				a2.setVelocity(new Vector2D(a2.getVelocity().getComponents().x,
-						oldVel_second.getComponents().y + 2 * oldVel_first.getComponents().y));
+			if (mtd.getComponents().y != 0) {
+				newVel_first = new Vector2D(a1.getVelocity().getX(),
+						(oldVel_first.getY() + (2 * oldVel_second.getY())) * -1);
+				newVel_second = new Vector2D(a2.getVelocity().getX(), oldVel_second.getY() + (2 * oldVel_first.getY()));
+				a1.setVelocity(newVel_first);
+				a2.setVelocity(newVel_second);
 			}
 
-		} else if (first instanceof AbstractActor && second instanceof VerySquareWall) {
-			AbstractActor a1 = (AbstractActor) first;
+		} else if (second instanceof VerySquareWall) {
+			// fix overlap
+			first.getOrigin().translate(mtd.getComponents().x, mtd.getComponents().y);
 			oldVel_first = new Vector2D(a1.getVelocity().getComponents().x, a1.getVelocity().getComponents().y);
 
 			// check if mtd is along x-axis
-			if (response.getComponents().x != 0) {
+			if (mtd.getComponents().x != 0) {
 				a1.setVelocity(new Vector2D((oldVel_first.getComponents().x) * -1, a1.getVelocity().getComponents().y));
 
 			}
 			// check if mtd is along y-axis
-			if (response.getComponents().y != 0) {
+			if (mtd.getComponents().y != 0) {
 				a1.setVelocity(new Vector2D(a1.getVelocity().getComponents().x, (oldVel_first.getComponents().y) * -1));
 
 			}
@@ -137,6 +140,6 @@ public class CollisionHandler {
 
 	}
 
-	private CollisionHandler() {
+	public CollisionHandler() {
 	}
 }

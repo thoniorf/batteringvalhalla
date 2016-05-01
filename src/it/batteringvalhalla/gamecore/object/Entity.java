@@ -14,6 +14,10 @@ public interface Entity extends Serializable {
 
 	public Point getOrigin();
 
+	public int getX();
+
+	public int getY();
+
 	public Integer getWidth();
 
 	public Integer getHeight();

@@ -1,5 +1,7 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -37,7 +39,7 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 
 	public AbstractActor(Point origin, int idHead, int idBody, int idMount) {
 		super(origin);
-		this.width = 112;
+		this.width = 110;
 		this.height = 50;
 		((Rectangle) this.shape).setBounds(origin.x - (this.width / 2), origin.y - (this.height / 2), this.width,
 				this.height);
@@ -167,11 +169,7 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 
 		// Charge
 		if (this.charge) {
-			if ((this.velocity.getComponents().x == charge_velocity)
-					|| (this.velocity.getComponents().y == charge_velocity)) {
-				this.charge = Boolean.FALSE;
-				curret_max_velocity = max_velocity;
-			}
+
 			switch (this.face_dir) {
 			case est:
 				this.incVelX(1);
@@ -188,6 +186,11 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 			default:
 				break;
 
+			}
+			if ((Math.abs(velocity.getComponents().x) == charge_velocity)
+					|| (Math.abs(velocity.getComponents().y) == charge_velocity)) {
+				charge = Boolean.FALSE;
+				curret_max_velocity = max_velocity;
 			}
 		}
 		// Movement
@@ -243,5 +246,9 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 				null);
 		g.drawImage(this.arm.getFrame(), this.shape.getBounds().x, this.shape.getBounds().y + this.body.getOffsetY(),
 				null);
+		g.draw(shape);
+		g.draw(new Rectangle(new Point(origin), new Dimension(1, 1)));
+		g.setColor(Color.white);
+		g.drawString(origin.x + " " + origin.y, origin.x, origin.y + 8);
 	}
 }

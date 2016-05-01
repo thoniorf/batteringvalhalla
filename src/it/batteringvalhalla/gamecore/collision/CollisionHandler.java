@@ -106,7 +106,7 @@ public class CollisionHandler {
 
 			// check if mtd is along x-axis
 			if (mtd.getComponents().x != 0) {
-				newVel_first = new Vector2D((oldVel_first.getX() + (2 * oldVel_second.getX())) * -1,
+				newVel_first = new Vector2D((oldVel_first.getX() + (2 * oldVel_second.getX())),
 						a1.getVelocity().getY());
 				newVel_second = new Vector2D(oldVel_second.getX() + (2 * oldVel_first.getX()), a2.getVelocity().getY());
 				a1.setVelocity(newVel_first);
@@ -115,7 +115,7 @@ public class CollisionHandler {
 			// check if mtd is along y-axis
 			if (mtd.getComponents().y != 0) {
 				newVel_first = new Vector2D(a1.getVelocity().getX(),
-						(oldVel_first.getY() + (2 * oldVel_second.getY())) * -1);
+						(oldVel_first.getY() + (2 * oldVel_second.getY())));
 				newVel_second = new Vector2D(a2.getVelocity().getX(), oldVel_second.getY() + (2 * oldVel_first.getY()));
 				a1.setVelocity(newVel_first);
 				a2.setVelocity(newVel_second);

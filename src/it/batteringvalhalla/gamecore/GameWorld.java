@@ -15,7 +15,8 @@ import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
 
 public class GameWorld {
 	private static GameWorld world;
-	private static ArrayList<Entity> objects;
+	private static CopyOnWriteArrayList<Entity> objects;
+	private static ArrayList<VerySquareWall> walls;
 	private static Arena arena;
 	private static Integer max_enemy;
 	private static Integer enemies;
@@ -25,32 +26,72 @@ public class GameWorld {
 	// custom level
 	private static String levelName = "";
 
-	private static void drawOrder() {
-		objects.sort(null);
-	}
-
 	public static Arena getArena() {
 		return arena;
+	}
+
+	public static void setArena(Arena arena) {
+		GameWorld.arena = arena;
+	}
+
+	public static ArrayList<VerySquareWall> getWalls() {
+		return walls;
+	}
+
+	public static void setWalls(ArrayList<VerySquareWall> walls) {
+		GameWorld.walls = walls;
 	}
 
 	public static Integer getFreq_friction() {
 		return freq_friction;
 	}
 
+	public static void setFreq_friction(Integer freq_friction) {
+		GameWorld.freq_friction = freq_friction;
+	}
+
 	public static String getLevelName() {
 		return levelName;
+	}
+
+	public static void setLevelName(String name) {
+		levelName = name;
 	}
 
 	public static Integer getMax_enemy() {
 		return max_enemy;
 	}
 
-	public static ArrayList<Entity> getObjects() {
+	public static void setMax_enemy(Integer max_enemies) {
+		if (max_enemies > (arena.getSpawn().size() - 1)) {
+			max_enemy = arena.getSpawn().size() - 1;
+		} else {
+			max_enemy = max_enemies;
+		}
+	}
+
+	public static Integer getEnemies() {
+		return enemies;
+	}
+
+	public static void setEnemies(Integer enemies) {
+		GameWorld.enemies = enemies;
+	}
+
+	public static CopyOnWriteArrayList<Entity> getObjects() {
 		return objects;
+	}
+
+	public static void setObjects(CopyOnWriteArrayList<Entity> objs) {
+		GameWorld.objects = objs;
 	}
 
 	public static Player getPlayer() {
 		return player;
+	}
+
+	public static void setPlayer(Player player) {
+		GameWorld.player = player;
 	}
 
 	public static GameWorld getWorld() {
@@ -72,7 +113,7 @@ public class GameWorld {
 		// level enemies number
 		enemies = max_enemy;
 		// object list
-		objects = new ArrayList<Entity>();
+		objects = new CopyOnWriteArrayList<Entity>();
 		// spawn Player
 		player = new Player(arena.getSpawn().get(0));
 		objects.add(player);
@@ -82,7 +123,7 @@ public class GameWorld {
 			// ((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy)
 			// objects.get(i + 1), arena, objects));
 		}
-		ArrayList<VerySquareWall> walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName,
+		walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName,
 				arena.getShape().getBounds().x, arena.getShape().getBounds().y);
 		for (int i = 0; i < walls.size(); i++) {
 			objects.add(walls.get(i));
@@ -101,24 +142,8 @@ public class GameWorld {
 		}
 	}
 
-	public static void setArena(Arena arena) {
-		GameWorld.arena = arena;
-	}
-
-	public static void setFreq_friction(Integer freq_friction) {
-		GameWorld.freq_friction = freq_friction;
-	}
-
-	public static void setLevelName(String name) {
-		levelName = name;
-	}
-
-	public static void setMax_enemy(Integer max_enemies) {
-		if (max_enemies > arena.getSpawn().size() - 1) {
-			max_enemy = arena.getSpawn().size() - 1;
-		} else {
-			max_enemy = max_enemies;
-		}
+	private static void drawOrder() {
+		objects.sort(null);
 	}
 
 	public static void update() {
@@ -148,4 +173,5 @@ public class GameWorld {
 
 	public GameWorld() {
 	}
+
 }

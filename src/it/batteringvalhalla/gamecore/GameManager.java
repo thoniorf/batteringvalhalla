@@ -16,12 +16,11 @@ public class GameManager implements Runnable {
 	private static GameManager manager;
 	private static Integer round = new Integer(1);
 	private static State state;
-
 	private GamePanel viewport;
 
 	public static void main(String[] args) {
 		// game frame
-		GameFrame frame = GameFrame.instance();
+		final GameFrame frame = GameFrame.instance();
 		// game world
 		GameWorld.getWorld();
 		// game manager
@@ -38,7 +37,6 @@ public class GameManager implements Runnable {
 		if (manager == null) {
 			manager = new GameManager();
 		}
-
 		return manager;
 	}
 
@@ -59,7 +57,7 @@ public class GameManager implements Runnable {
 	}
 
 	public JPanel getViewport() {
-		return viewport;
+		return this.viewport;
 	}
 
 	public void setViewport(JPanel viewport) {
@@ -70,7 +68,6 @@ public class GameManager implements Runnable {
 	}
 
 	public static void getInput() {
-		GameWorld.getPlayer().setMoveDirection(Direction.stop);
 		if (PlayerControls.getKeys().get("W")[0] == 1) {
 			GameWorld.getPlayer().setMoveDirection(Direction.nord);
 		}
@@ -92,7 +89,7 @@ public class GameManager implements Runnable {
 	public void run() {
 		GameManager.setState(State.Run);
 		GameManager.setRound(1);
-		viewport.setScore(round.toString());
+		this.viewport.setScore(round.toString());
 		// set times and frames for constant FPS
 		long beginTime = 0; // the time when the cycle begun
 		long timeDiff = 0; // the time it took for the cycle to execute
@@ -100,18 +97,18 @@ public class GameManager implements Runnable {
 		int framesSkipped = 0; // number of frames being skipped
 		// main loop
 		while (!state.equals(State.Stop)) {
-			viewport.requestFocus();
+			this.viewport.requestFocus();
 			while (state.equals(State.Run)) {
 				// frame start time
 				beginTime = System.currentTimeMillis();
 				framesSkipped = 0;
 				// main cycle
-				// viewport.requestFocusInWindow();
 				GameManager.getInput();
 				GameWorld.update();
+				CollisionHandler.setObjects(GameWorld.getObjects());
 				CollisionHandler.check();
-				viewport.setCharge(GameWorld.getPlayer().canCharge());
-				viewport.repaint();
+				this.viewport.setCharge(GameWorld.getPlayer().canCharge());
+				this.viewport.repaint();
 				// frame diff after cycle
 				timeDiff = System.currentTimeMillis() - beginTime;
 				sleepTime = (int) (FRAME_PERIOD - timeDiff);
@@ -125,7 +122,7 @@ public class GameManager implements Runnable {
 						e.printStackTrace();
 					}
 				}
-				while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIP) {
+				while ((sleepTime < 0) && (framesSkipped < MAX_FRAME_SKIP)) {
 					GameWorld.update();
 					sleepTime += FRAME_PERIOD;
 					framesSkipped++;
@@ -133,7 +130,7 @@ public class GameManager implements Runnable {
 			}
 			if (state.equals(State.Next)) {
 				GameManager.setRound(GameManager.getRound() + 1);
-				viewport.setScore(round.toString());
+				this.viewport.setScore(round.toString());
 				GameWorld.makeLevel(GameWorld.getMax_enemy() + 1);
 				GameManager.setState(State.Run);
 			} else if (state.equals(State.Over)) {

@@ -116,7 +116,7 @@ public class ScoreBoard extends JPanel {
 
 	private void listenerLoader() {
 		restart.addActionListener(e -> {
-			GameManager.setState(State.Stop);
+
 			frame.startGame();
 		});
 		exit.addActionListener(e -> {

@@ -1,10 +1,17 @@
 package it.batteringvalhalla.gamecore.vector2d;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Vector2D {
+public class Vector2D implements Serializable {
+	private static final long serialVersionUID = -355364437551971669L;
 	protected Point components;
 	protected Float lenght;
+
+	public Vector2D() {
+		this.lenght = 0f;
+		this.components = new Point(0, 0);
+	}
 
 	public Vector2D(Integer x, Integer y) {
 		this.components = new Point(x, y);
@@ -14,6 +21,11 @@ public class Vector2D {
 	public Vector2D(Point origin) {
 		this.components = origin;
 		this.lenght = getLenght();
+	}
+
+	public Vector2D(Vector2D vector) {
+		this.lenght = vector.lenght;
+		this.components = vector.components;
 	}
 
 	public Point getComponents() {
@@ -54,6 +66,14 @@ public class Vector2D {
 
 	public void setComponents(Point origin) {
 		this.components = origin;
+	}
+
+	public int getX() {
+		return this.components.x;
+	}
+
+	public int getY() {
+		return this.components.y;
 	}
 
 	public void setX(Integer x) {

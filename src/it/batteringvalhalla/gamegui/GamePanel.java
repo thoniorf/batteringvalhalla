@@ -41,7 +41,7 @@ public class GamePanel extends JPanel {
 
 		charge = new JLabel();
 		charge.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 36));
-		charge.setText("Charge: Not Ready");
+		charge.setText("Charge: Ready");
 
 		pause = new JButtonRound(ResourcesLoader.images.get("pause"), ResourcesLoader.images.get("pause_hover"));
 		// setting bounds
@@ -86,11 +86,9 @@ public class GamePanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
 		Graphics2D g2d = (Graphics2D) g;
 		// paint World
 		GameWorld.paint(g2d);
-
 		g.drawImage(ResourcesLoader.images.get("game_header"),
 				CenterComp.centerX(ResourcesLoader.images.get("game_header").getWidth(null)), 10, null);
 	}

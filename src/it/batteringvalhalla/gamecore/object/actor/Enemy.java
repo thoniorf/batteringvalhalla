@@ -17,12 +17,17 @@ public class Enemy extends AbstractActor {
 		this.strategy = null;
 	}
 
+	public Enemy(Point point, String username, int i, int j, int k) {
+		super(point, i, j, k);
+		this.strategy = null;
+	}
+
 	public void setStrategy(AbstractIA strategy) {
 		this.strategy = strategy;
 	}
 
 	public AbstractIA getStrategy() {
-		return strategy;
+		return this.strategy;
 	}
 
 }

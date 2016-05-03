@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.network.Client;
 import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonCustom;
@@ -52,7 +53,8 @@ public class JoinMenu extends JPanel {
 	private void listenerLoader() {
 		join.addActionListener(e -> {
 			setEnabled(false);
-			GameFrame.instance().startGame();
+			GameFrame.instance().startClient(new Client(hostname.getText()));
+
 		});
 
 		exit.addActionListener(e -> {

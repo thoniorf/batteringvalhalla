@@ -3,8 +3,9 @@ package it.batteringvalhalla.gamecore.object;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
+import java.io.Serializable;
 
-public interface Entity {
+public interface Entity extends Serializable {
 	public Boolean getAlive();
 
 	public Shape getShape();
@@ -12,6 +13,10 @@ public interface Entity {
 	public void setAlive(Boolean alive);
 
 	public Point getOrigin();
+
+	public int getX();
+
+	public int getY();
 
 	public Integer getWidth();
 

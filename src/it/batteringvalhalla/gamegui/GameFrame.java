@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -15,6 +14,7 @@ import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.State;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.network.Client;
 import it.batteringvalhalla.gamegui.editorActor.EditorPanel;
 import it.batteringvalhalla.gamegui.editorMap.EditorMapPanel;
 import it.batteringvalhalla.gamegui.menu.ArcadeMenu;
@@ -38,12 +38,12 @@ import it.batteringvalhalla.gamegui.sound.Sound;
  */
 public class GameFrame extends JFrame {
 
-	public static final Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+	public static final Dimension size = new Dimension(1024, 768);// .getDefaultToolkit().getScreenSize();
 	public static final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 	private static final long serialVersionUID = 1L;
 	private static GameFrame frame = null;
 	private JPanel panel;
-	private JLayeredPane layers;
+	private final JLayeredPane layers;
 
 	public static GameFrame instance() {
 		if (frame == null) {
@@ -57,19 +57,19 @@ public class GameFrame extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setPreferredSize(size);
-		this.setUndecorated(true);
-		this.setResizable(false);
+		this.setUndecorated(false);
+		this.setResizable(true);
 		// device.setFullScreenWindow(this);
 		this.setVisible(true);
-		layers = getLayeredPane();
+		this.layers = this.getLayeredPane();
 	}
 
 	public void addMenu(JPanel panel, int index) {
-		layers.add(panel, new Integer(index));
+		this.layers.add(panel, new Integer(index));
 		panel.updateUI();
 		panel.requestFocus();
-		pack();
-		setLocationRelativeTo(null);
+		this.pack();
+
 	}
 
 	public void restart() {
@@ -77,13 +77,13 @@ public class GameFrame extends JFrame {
 			Sound.battle.stop();
 			Sound.menu.play();
 		}
-		layers.removeAll();
+		this.layers.removeAll();
 		GameManager.setState(State.Stop);
-		showMenu();
+		this.showMenu();
 	}
 
 	private void setUiBackground() {
-		JPanel background = new JPanel() {
+		final JPanel background = new JPanel() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -94,57 +94,58 @@ public class GameFrame extends JFrame {
 		};
 		background.setBounds(0, 0, size.width, size.height);
 		background.setVisible(true);
-		addMenu(background, 0);
+		this.addMenu(background, 0);
 	}
 
 	public void showArcadeEditor() {
-		addMenu(new ArcadeMenu(), 2);
+		this.addMenu(new ArcadeMenu(), 2);
 	}
 
 	public void showEditor() {
-		layers.remove(layers.getComponentsInLayer(2)[0]);
-		addMenu(new EditorPanel(), 2);
+		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
+		this.addMenu(new EditorPanel(), 2);
 	}
 
 	public void showEditorsMenu() {
-		addMenu(new EditorsMenu(), 2);
+		this.addMenu(new EditorsMenu(), 2);
 	}
 
 	public void showEditorMap() {
-		layers.remove(layers.getComponentsInLayer(2)[0]);
-		addMenu(new EditorMapPanel(), 2);
+		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
+		this.addMenu(new EditorMapPanel(), 2);
 	}
 
 	public void showExit() {
-		addMenu(new ExitMenu(), 3);
+		this.addMenu(new ExitMenu(), 3);
 	}
 
 	public void showLoading() {
-		panel = new Loading();
-		addMenu(panel, 0);
+		this.panel = new Loading();
+		this.addMenu(this.panel, 0);
+		this.setLocationRelativeTo(null);
 		try {
-			((Loading) panel).loadResources();
-		} catch (InterruptedException e) {
+			((Loading) this.panel).loadResources();
+		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void showMenu() {
-		setUiBackground();
-		addMenu(new MainMenu(), 1);
+		this.setUiBackground();
+		this.addMenu(new MainMenu(), 1);
 
 	}
 
 	public void showOptions() {
-		addMenu(new OptionMenu(), 2);
+		this.addMenu(new OptionMenu(), 2);
 	}
 
 	public void showScores() {
-		addMenu(new ScoreBoard(), 2);
+		this.addMenu(new ScoreBoard(), 2);
 	}
 
 	public void showOnline() {
-		addMenu(new OnlineMenu(), 2);
+		this.addMenu(new OnlineMenu(), 2);
 	}
 
 	public void start() {
@@ -154,30 +155,30 @@ public class GameFrame extends JFrame {
 		}
 
 		// remove all layers
-		layers.removeAll();
+		this.layers.removeAll();
 		// show main menu
-		showMenu();
+		this.showMenu();
 		// disable main menu
-		layers.getComponentsInLayer(1)[0].setEnabled(false);
+		this.layers.getComponentsInLayer(1)[0].setEnabled(false);
 		// show username box
-		panel = new UsernameMenu();
-		addMenu(panel, 2);
-		((UsernameMenu) panel).getUserfield().requestFocusInWindow();
-		((UsernameMenu) panel).getUserfield().selectAll();
+		this.panel = new UsernameMenu();
+		this.addMenu(this.panel, 2);
+		((UsernameMenu) this.panel).getUserfield().requestFocusInWindow();
+		((UsernameMenu) this.panel).getUserfield().selectAll();
 	}
 
 	public void startGame() {
 		// remove all layers
-		layers.removeAll();
+		this.layers.removeAll();
 		// paint background
-		setUiBackground();
+		this.setUiBackground();
 		// create game panel and add
-		panel = new GamePanel();
-		addMenu(panel, 1);
+		this.panel = new GamePanel();
+		this.addMenu(this.panel, 1);
 		// set viewport for the manager
 		GameManager.setState(State.Run);
 		GameWorld.makeLevel(1);
-		GameManager.getManager().setViewport(panel);
+		GameManager.getManager().setViewport(this.panel);
 		// start the game
 		new Thread(GameManager.getManager()).start();
 		// play the music
@@ -192,18 +193,44 @@ public class GameFrame extends JFrame {
 	}
 
 	public void showPause() {
-		addMenu(new PauseMenu(), 3);
+		this.addMenu(new PauseMenu(), 3);
 	}
 
 	public void showJoin() {
-		layers.remove(layers.getComponentsInLayer(2)[0]);
-		addMenu(new JoinMenu(), 2);
+		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
+		this.addMenu(new JoinMenu(), 2);
 
 	}
 
 	public void showHost() {
-		layers.remove(layers.getComponentsInLayer(2)[0]);
-		addMenu(new HostMenu(), 2);
+		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
+		this.addMenu(new HostMenu(), 2);
 
+	}
+
+	public void startClient(Client client) {
+		if (!client.connect()) {
+			return;
+		}
+		// client sync
+		client.sync();
+		// remove all layers
+		this.layers.removeAll();
+		// paint background
+		this.setUiBackground();
+		// create game panel and add
+		this.panel = new GamePanel();
+		this.addMenu(this.panel, 1);
+		client.setPanel(this.panel);
+		// start client
+		new Thread(client).start();
+		// play the music
+		if (ManagerFilePlayer.soundOn()) {
+			Sound.menu.stop();
+			Sound.battle.setRepeat(true);
+			Sound.battle.play();
+		} else {
+			Sound.battle.stop();
+		}
 	}
 }

@@ -57,7 +57,6 @@ public class CollisionHandler {
 			// BOTTOM
 			y_depth = (second.getY() + (second.getHeight() / 2)) - (first.getY() - (first.getHeight() / 2)) + 1;
 		}
-		System.out.println(x_depth + " " + y_depth);
 		return new Vector2D(x_depth, y_depth);
 	}
 
@@ -73,7 +72,6 @@ public class CollisionHandler {
 		if (Math.abs(depth.getComponents().y) <= Math.abs(depth.getComponents().x)) {
 			mtd.setY(depth.getComponents().y);
 		}
-		System.out.println(mtd.getComponents().x + " " + mtd.getComponents().y);
 		// return the mtd vector
 		return mtd;
 	}

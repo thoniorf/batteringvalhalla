@@ -33,9 +33,11 @@ public class ServerDeamon implements Runnable {
 			this.protocol.send(obj);
 		} catch (SocketTimeoutException e) {
 			System.err.println("Timeout during sync");
+			protocol.close(socket);
 			this.server.removeClient(this);
 		} catch (IOException e) {
 			System.err.println("Error with client I/O during sync");
+			protocol.close(socket);
 			this.server.removeClient(this);
 		}
 	}
@@ -45,19 +47,17 @@ public class ServerDeamon implements Runnable {
 			return this.protocol.request();
 		} catch (ClassNotFoundException e) {
 			System.err.println("Class not found during sync in server");
+			protocol.close(socket);
 			this.server.removeClient(this);
 		} catch (IOException e) {
 			System.err.println("Error with client I/O during sync");
+			protocol.close(socket);
 			this.server.removeClient(this);
 		}
 		return null;
 	}
 
-	public void sendOther(ServerDeamon minion) {
-		send(minion.client);
-	}
-
-	public void syncLevel() {
+	public void syncClient() {
 		// send arena
 		this.send(GameWorld.getArena());
 		// send walls
@@ -65,31 +65,23 @@ public class ServerDeamon implements Runnable {
 		for (VerySquareWall wall : GameWorld.getWalls()) {
 			this.send(wall);
 		}
-	}
-
-	public void syncCharacter() {
 		// send character
 		send(server.clients.size());
 		client = (OnlineCharacter) this.request();
 	}
 
-	public void syncClient() {
-		syncLevel();
-		syncCharacter();
-	}
-
 	@Override
 	public void run() {
-		while (true) {
+		while (!socket.isClosed()) {
 			try {
-				// update the client player
-				Direction d = (Direction) this.protocol.request();
-				client.setMoveDirection(d);
+				client.setMoveDirection((Direction) this.protocol.request());
 			} catch (ClassNotFoundException e) {
 				System.err.println("Class not found on update");
+				protocol.close(socket);
 				break;
 			} catch (IOException e) {
 				System.err.println("Error with client connection I/O on update");
+				protocol.close(socket);
 				break;
 			}
 		}

@@ -1,11 +1,16 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.io.Serializable;
 
-public class OnlineCharacter extends AbstractActor {
+public class OnlineCharacter extends AbstractActor implements Serializable {
 
-	private static final long serialVersionUID = 3864857680898817354L;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -7053714459623673342L;
 	private static final int font_size = 8;
 	private String online_user;
 	private int headIndex;
@@ -38,7 +43,7 @@ public class OnlineCharacter extends AbstractActor {
 
 	@Override
 	public void paint(Graphics2D g) {
-
+		g.setColor(Color.RED);
 		g.drawString(this.online_user, this.shape.getBounds().x + (this.width / 2),
 				(this.shape.getBounds().y + this.body.getOffsetY()) - font_size);
 		super.paint(g);
@@ -46,7 +51,12 @@ public class OnlineCharacter extends AbstractActor {
 
 	@Override
 	public String toString() {
-		return "OnlineCharacter [online_user=" + this.online_user + "]";
+		return this.online_user + " [" + headIndex + " " + bodyIndex + " " + mountIndex + "] " + super.toString();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return ((OnlineCharacter) obj).online_user.equals(online_user);
 	}
 
 }

@@ -1,10 +1,14 @@
 package it.batteringvalhalla.gamecore.vector2d;
 
 import java.awt.Point;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Vector2D implements Serializable {
-	private static final long serialVersionUID = -355364437551971669L;
+
+	private static final long serialVersionUID = -6491072769000654057L;
 	protected Point components;
 	protected Float lenght;
 
@@ -84,4 +88,17 @@ public class Vector2D implements Serializable {
 		this.components.y = y;
 	}
 
+	@Override
+	public String toString() {
+		return "[" + lenght + "]" + components.x + " " + components.y;
+	}
+
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeUnshared(components);
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		components = (Point) in.readUnshared();
+		lenght = getLenght();
+	}
 }

@@ -1,10 +1,9 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.animation.Sprite;
@@ -14,12 +13,15 @@ import it.batteringvalhalla.gamecore.object.AbstractEntity;
 import it.batteringvalhalla.gamecore.object.direction.Direction;
 import it.batteringvalhalla.gamecore.vector2d.Vector2D;
 
-public abstract class AbstractActor extends AbstractEntity implements Actor {
-	private static final long serialVersionUID = -9187125124331413775L;
+public abstract class AbstractActor extends AbstractEntity implements Actor, Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -859980732544455845L;
 	protected static final int max_velocity = 4;
 	protected static final int charge_velocity = 10;
 	protected static final long charge_countdown = 5000;
-	protected static int curret_max_velocity = max_velocity;
+	protected int curret_max_velocity = max_velocity;
 
 	protected Vector2D velocity;
 	protected Direction face_dir;
@@ -27,13 +29,13 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 	protected Boolean can_charge;
 	protected Boolean charge;
 	protected long charge_time;
-	protected AbstractIA strategy;
+	protected transient AbstractIA strategy;
 	// sprite images
 	protected Sprite head, body, arm, mount;
 	// friction time
 	protected long friction_time;
 
-	public static int getMaxVelocity() {
+	public int getMaxVelocity() {
 		return curret_max_velocity;
 	}
 
@@ -64,7 +66,7 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 	}
 
 	public Boolean canCharge() {
-		return this.can_charge;
+		return can_charge;
 	}
 
 	public void charge() {
@@ -79,17 +81,25 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 
 	@Override
 	public Direction getFaceDirection() {
-		return this.face_dir;
+		return face_dir;
 	}
 
 	@Override
 	public Direction getMoveDirection() {
-		return this.move_dir;
+		return move_dir;
+	}
+
+	public int getCurretMaxVelocity() {
+		return curret_max_velocity;
+	}
+
+	public void setCurretMaxVelocity(int curret_max_velocity) {
+		this.curret_max_velocity = curret_max_velocity;
 	}
 
 	@Override
 	public Vector2D getVelocity() {
-		return this.velocity;
+		return velocity;
 	}
 
 	private void incVelX(Integer v) {
@@ -131,10 +141,10 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 
 	@Override
 	public void setVelocity(Vector2D velocity) {
-		if (Math.abs(velocity.getComponents().x) <= curret_max_velocity) {
-			this.velocity.setX(velocity.getComponents().x);
+		if (Math.abs(velocity.getX()) <= curret_max_velocity) {
+			this.velocity.setX(velocity.getX());
 		} else {
-			if (velocity.getComponents().x < 0) {
+			if (velocity.getX() < 0) {
 				this.velocity.setX(curret_max_velocity * -1);
 			} else {
 				this.velocity.setX(curret_max_velocity);
@@ -142,16 +152,33 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 
 		}
 
-		if (Math.abs(velocity.getComponents().y) <= curret_max_velocity) {
-			this.velocity.setY(velocity.getComponents().y);
+		if (Math.abs(velocity.getY()) <= curret_max_velocity) {
+			this.velocity.setY(velocity.getY());
 		} else {
-			if (velocity.getComponents().y < 0) {
+			if (velocity.getY() < 0) {
 				this.velocity.setY(curret_max_velocity * -1);
 			} else {
 				this.velocity.setY(curret_max_velocity);
 			}
 
 		}
+	}
+
+	public long getCharge_time() {
+		return charge_time;
+	}
+
+	public void setCharge_time(long charge_time) {
+		this.charge_time = charge_time;
+	}
+
+	public Boolean getCharge() {
+		return charge;
+	}
+
+	public void setCharge(Boolean charge) {
+		this.charge = charge;
+		this.can_charge = !charge;
 	}
 
 	@Override
@@ -246,9 +273,11 @@ public abstract class AbstractActor extends AbstractEntity implements Actor {
 				null);
 		g.drawImage(this.arm.getFrame(), this.shape.getBounds().x, this.shape.getBounds().y + this.body.getOffsetY(),
 				null);
-		g.draw(shape);
-		g.draw(new Rectangle(new Point(origin), new Dimension(1, 1)));
-		g.setColor(Color.white);
-		g.drawString(origin.x + " " + origin.y, origin.x, origin.y + 8);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "[velocity=" + velocity + ", face_dir=" + face_dir + ", move_dir=" + move_dir
+				+ ", can_charge=" + can_charge + ", charge=" + charge + "]";
 	}
 }

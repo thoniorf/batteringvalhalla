@@ -210,9 +210,8 @@ public class GameFrame extends JFrame {
 
 	public void startClient(Client client) {
 		if (!client.connect()) {
-			return;
+			client.close();
 		}
-		// client sync
 		client.sync();
 		// remove all layers
 		this.layers.removeAll();

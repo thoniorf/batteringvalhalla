@@ -12,6 +12,8 @@ public interface Entity extends Serializable {
 
 	public void setAlive(Boolean alive);
 
+	public void setOrigin(Point p);
+
 	public Point getOrigin();
 
 	public int getX();

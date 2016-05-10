@@ -7,8 +7,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
-import it.batteringvalhalla.gamecore.object.Entity;
-import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
 
 public class Server implements Runnable {
 	protected int maxClients = 2;
@@ -39,27 +37,18 @@ public class Server implements Runnable {
 		this.status = ServerStatus.RUNNING;
 		while (!ServerStatus.STOP.equals(this.status)) {
 			while (ServerStatus.RUNNING.equals(this.status)) {
-				for (ServerDeamon serverDeamon : this.clients) {
-					for (Entity entity : GameWorld.getObjects()) {
-						if ((entity instanceof OnlineCharacter) && (((OnlineCharacter) entity)
-								.getOnline_user() == serverDeamon.client.getOnline_user())) {
-							entity = serverDeamon.client;
-						}
-					}
-				}
-				GameWorld.update();
 				CollisionHandler.setObjects(GameWorld.getObjects());
 				CollisionHandler.check();
-				for (ServerDeamon deamon : this.clients) {
-					for (ServerDeamon minion : this.clients) {
-						deamon.send(minion.client);
-					}
-				}
 				try {
 					Thread.sleep(60);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+				for (ServerDeamon serverDeamon : clients) {
+					for (ServerDeamon minion : clients) {
+						CharacterMessage message = new CharacterMessage(minion.client);
+						serverDeamon.send(message);
+					}
 				}
 			}
 
@@ -74,7 +63,7 @@ public class Server implements Runnable {
 		for (ServerDeamon deamon : this.clients) {
 			for (ServerDeamon minion : this.clients) {
 				if (deamon.id != minion.id) {
-					deamon.sendOther(minion);
+					deamon.send(minion.client);
 				}
 			}
 			new Thread(deamon).start();
@@ -82,18 +71,11 @@ public class Server implements Runnable {
 	}
 
 	public boolean addClient(ServerDeamon deamon) {
-		if (!ServerStatus.FULL.equals(this.status)) {
-			// add to clients lists
-			this.clients.add(deamon);
-			// sync client object
-			deamon.syncClient();
-			if (this.clients.size() == this.maxClients) {
-				new Thread(this).start();
-			}
-			return true;
-		}
-
-		return false;
+		// add to clients lists
+		this.clients.add(deamon);
+		// sync client object
+		deamon.syncClient();
+		return true;
 	}
 
 	public void removeClient(ServerDeamon clientDeamon) {

@@ -1,9 +1,11 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
+import java.io.Serializable;
+
 import it.batteringvalhalla.gamecore.object.direction.Direction;
 import it.batteringvalhalla.gamecore.vector2d.Vector2D;
 
-public interface Actor {
+public interface Actor extends Serializable {
 
 	public Vector2D getVelocity();
 

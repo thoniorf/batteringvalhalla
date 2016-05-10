@@ -2,6 +2,7 @@ package it.batteringvalhalla.gamecore;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import it.batteringvalhalla.gamecore.arena.Arena;
@@ -15,7 +16,7 @@ import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
 
 public class GameWorld {
 	private static GameWorld world;
-	private static CopyOnWriteArrayList<Entity> objects;
+	private static List<Entity> objects;
 	private static ArrayList<VerySquareWall> walls;
 	private static Arena arena;
 	private static Integer max_enemy;
@@ -78,12 +79,12 @@ public class GameWorld {
 		GameWorld.enemies = enemies;
 	}
 
-	public static CopyOnWriteArrayList<Entity> getObjects() {
+	public static List<Entity> getObjects() {
 		return objects;
 	}
 
-	public static void setObjects(CopyOnWriteArrayList<Entity> objs) {
-		GameWorld.objects = objs;
+	public static void setObjects(List<Entity> list) {
+		GameWorld.objects = list;
 	}
 
 	public static Player getPlayer() {
@@ -113,7 +114,7 @@ public class GameWorld {
 		// level enemies number
 		enemies = max_enemy;
 		// object list
-		objects = new CopyOnWriteArrayList<Entity>();
+		objects = new ArrayList<Entity>();
 		// spawn Player
 		player = new Player(arena.getSpawn().get(0));
 		objects.add(player);
@@ -143,7 +144,9 @@ public class GameWorld {
 	}
 
 	private static void drawOrder() {
-		objects.sort(null);
+		synchronized (objects) {
+			objects.sort(null);
+		}
 	}
 
 	public static void update() {

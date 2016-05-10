@@ -122,14 +122,11 @@ public class Sprite implements Serializable {
 	}
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.flush();
 		out.defaultWriteObject();
-		out.flush();
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		ImageIO.write(frame, "png", buffer);
 		out.writeInt(buffer.size());
 		out.write(buffer.toByteArray());
-		out.flush();
 		buffer = new ByteArrayOutputStream();
 		ImageIO.write(img, "png", buffer);
 		out.writeInt(buffer.size());

@@ -20,16 +20,19 @@ public class NetworkProtocol {
 	}
 
 	public void send(Object obj) throws IOException {
-		this.out.writeObject(obj);
+		this.out.writeUnshared(obj);
 		this.out.flush();
 	}
 
 	public Object request() throws ClassNotFoundException, IOException {
-		return this.in.readObject();
+		return this.in.readUnshared();
 	}
 
 	public void close(Socket socket) {
 		try {
+			out.flush();
+			out.close();
+			in.close();
 			socket.close();
 		} catch (IOException e) {
 			System.err.println("Error with protocol I/O on close");

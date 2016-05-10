@@ -3,7 +3,6 @@ package it.batteringvalhalla.gamecore.ia;
 import java.util.Random;
 
 import it.batteringvalhalla.gamecore.arena.Arena;
-import it.batteringvalhalla.gamecore.object.actor.AbstractActor;
 import it.batteringvalhalla.gamecore.object.actor.Enemy;
 import it.batteringvalhalla.gamecore.object.direction.Direction;
 
@@ -40,21 +39,22 @@ public class AbstractIA {
 	}
 
 	protected boolean canMove(float x, float y) {
-		if (arena.getShape().contains(x, y))
+		if (arena.getShape().contains(x, y)) {
 			return true;
+		}
 		return false;
 	}
 
 	protected boolean rightDir(int dir) {
 		switch (dir) {
 		case 1:
-			return canMove(npc.getOrigin().x, npc.getOrigin().y - AbstractActor.getMaxVelocity());
+			return canMove(npc.getOrigin().x, npc.getOrigin().y - npc.getMaxVelocity());
 		case 2:
-			return canMove(npc.getOrigin().x, npc.getOrigin().y + AbstractActor.getMaxVelocity());
+			return canMove(npc.getOrigin().x, npc.getOrigin().y + npc.getMaxVelocity());
 		case 3:
-			return canMove(npc.getOrigin().x + AbstractActor.getMaxVelocity(), npc.getOrigin().y);
+			return canMove(npc.getOrigin().x + npc.getMaxVelocity(), npc.getOrigin().y);
 		case 4:
-			return canMove(npc.getOrigin().x - AbstractActor.getMaxVelocity(), npc.getOrigin().y);
+			return canMove(npc.getOrigin().x - npc.getMaxVelocity(), npc.getOrigin().y);
 		default:
 			break;
 		}

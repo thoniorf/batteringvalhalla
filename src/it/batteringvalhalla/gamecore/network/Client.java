@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JPanel;
 
@@ -66,9 +65,7 @@ public class Client implements Runnable {
 		int wallsize = (int) this.protocol.request();
 		GameWorld.setWalls(new ArrayList<VerySquareWall>());
 		for (int i = 0; i < wallsize; i++) {
-			Object req = this.protocol.request();
-			GameWorld.getWalls().add(new VerySquareWall(((Entity) req).getOrigin().x, ((Entity) req).getOrigin().y,
-					((VerySquareWall) req).getLife()));
+			GameWorld.getWalls().add((VerySquareWall) protocol.request());
 		}
 	}
 
@@ -90,16 +87,6 @@ public class Client implements Runnable {
 		}
 	}
 
-	public void warmUpLevel() {
-		// set level vars
-		GameWorld.setMax_enemy(this.opponents.size());
-		GameWorld.setEnemies(this.opponents.size());
-		GameWorld.setObjects(new CopyOnWriteArrayList<>());
-		GameWorld.getObjects().add(this.character);
-		GameWorld.getObjects().addAll(this.opponents);
-		GameWorld.getObjects().addAll(GameWorld.getWalls());
-	}
-
 	public void sync() {
 		try {
 			this.syncLevel();
@@ -114,19 +101,28 @@ public class Client implements Runnable {
 		}
 	}
 
+	public void warmUpLevel() {
+		// set level vars
+		GameWorld.setMax_enemy(this.opponents.size());
+		GameWorld.setEnemies(this.opponents.size());
+		GameWorld.setObjects(new ArrayList<Entity>());
+		GameWorld.getObjects().add(this.character);
+		GameWorld.getObjects().addAll(this.opponents);
+		GameWorld.getObjects().addAll(GameWorld.getWalls());
+	}
+
 	@Override
 	public void run() {
 		this.warmUpLevel();
-		System.out.println(this.client_id + " is ready");
+		System.out.println("Client: " + this.character.getOnline_user() + " is ready");
 		while (!this.socket.isClosed()) {
 			try {
 				this.getInput();
-				OnlineCharacter request = (OnlineCharacter) this.protocol.request();
-				for (Entity opponent : GameWorld.getObjects()) {
-					if (opponent instanceof OnlineCharacter) {
-						OnlineCharacter current_opponent = (OnlineCharacter) opponent;
-						if (current_opponent.getOnline_user().equals(request.getOnline_user())) {
-							current_opponent = request;
+				CharacterMessage message = (CharacterMessage) this.protocol.request();
+				if (!message.syncCharacter(character)) {
+					for (int i = 0; i < opponents.size(); i++) {
+						if (message.syncCharacter(opponents.get(i))) {
+							break;
 						}
 					}
 				}
@@ -134,10 +130,13 @@ public class Client implements Runnable {
 				panel.repaint();
 			} catch (IOException e) {
 				System.err.println("Error with server connection I/O on update");
+				protocol.close(socket);
 				return;
 
 			} catch (ClassNotFoundException e) {
 				System.err.println("Class not found");
+				protocol.close(socket);
+				return;
 			}
 		}
 		System.out.println("End");
@@ -175,5 +174,9 @@ public class Client implements Runnable {
 		if (PlayerControls.getKeys().get("SPACE")[0] == 1) {
 			this.character.charge();
 		}
+	}
+
+	public void close() {
+		protocol.close(socket);
 	}
 }

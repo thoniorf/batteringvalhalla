@@ -3,9 +3,14 @@ package it.batteringvalhalla.gamecore.object;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.io.Serializable;
 
-public abstract class AbstractEntity implements Entity, Comparable<Entity> {
-	private static final long serialVersionUID = -7137071641988898113L;
+public abstract class AbstractEntity implements Entity, Comparable<Entity>, Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -9007792955311174228L;
 	protected int width;
 	protected int height;
 	protected Boolean alive;
@@ -32,14 +37,21 @@ public abstract class AbstractEntity implements Entity, Comparable<Entity> {
 	}
 
 	@Override
+	public void setOrigin(Point p) {
+		origin = new Point(p);
+	}
+
+	@Override
 	public Point getOrigin() {
 		return origin;
 	}
 
+	@Override
 	public int getX() {
 		return origin.x;
 	}
 
+	@Override
 	public int getY() {
 		return origin.y;
 	}
@@ -78,4 +90,10 @@ public abstract class AbstractEntity implements Entity, Comparable<Entity> {
 		}
 
 	}
+
+	@Override
+	public String toString() {
+		return "[origin=" + origin + ", alive=" + alive + ", width=" + width + ", height=" + height + "]";
+	}
+
 }

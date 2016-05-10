@@ -8,13 +8,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.AbstractEntity;
 
-public class VerySquareWall extends AbstractEntity {
+public class VerySquareWall extends AbstractEntity implements Serializable {
 	private static final long serialVersionUID = 1896230426201017391L;
 	private Integer maxLife;
 	private Integer life;
@@ -24,10 +25,11 @@ public class VerySquareWall extends AbstractEntity {
 		super(new Point(x, y));
 		this.maxLife = maxLife;
 		setLife(maxLife);
-		if (maxLife > 0)
+		if (maxLife > 0) {
 			image = (BufferedImage) ResourcesLoader.walls_images.get(0);
-		else
+		} else {
 			image = (BufferedImage) ResourcesLoader.walls_images.get(1);
+		}
 	}
 
 	public Rectangle getRectangle() {

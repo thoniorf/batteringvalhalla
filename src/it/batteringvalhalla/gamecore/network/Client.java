@@ -1,16 +1,7 @@
 package it.batteringvalhalla.gamecore.network;
 
-import java.awt.Point;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
-
 import it.batteringvalhalla.gamecore.GameWorld;
+import it.batteringvalhalla.gamecore.State;
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.input.PlayerControls;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
@@ -19,6 +10,17 @@ import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
 import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamecore.object.direction.Direction;
 import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
+
+import java.awt.Point;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
 
 public class Client implements Runnable {
 	private static final int port = 46505;
@@ -29,11 +31,14 @@ public class Client implements Runnable {
 	protected JPanel panel;
 	protected OnlineCharacter character;
 	protected ArrayList<OnlineCharacter> opponents;
+	protected Player player;
 
 	public Client(String hostname) {
 		this.hostname = hostname;
 		this.character = new OnlineCharacter(Player.getUsername(), new Point(0, 0), ManagerFilePlayer.getTop(),
 				ManagerFilePlayer.getMid(), ManagerFilePlayer.getBot());
+		this.character.setState(State.Online);
+
 	}
 
 	public boolean connect() {
@@ -115,7 +120,9 @@ public class Client implements Runnable {
 	public void run() {
 		this.warmUpLevel();
 		System.out.println("Client: " + this.character.getOnline_user() + " is ready");
-		while (!this.socket.isClosed()) {
+		character.setState(State.Online);
+
+		while (!this.socket.isClosed() && !character.getState().equals(State.Over)) {
 			try {
 				this.getInput();
 				CharacterMessage message = (CharacterMessage) this.protocol.request();
@@ -126,6 +133,17 @@ public class Client implements Runnable {
 						}
 					}
 				}
+				String leave = leaveClient(GameWorld.getObjects());
+				if (leave != null) {
+					System.out.println(leave + " ha perso");
+
+				}
+				boolean won = whoWon(GameWorld.getObjects());
+				if (won) {
+					System.out.println(character.getOnline_user() + " won");
+					character.setState(State.Over);
+				}
+
 				GameWorld.update();
 				panel.repaint();
 			} catch (IOException e) {
@@ -139,7 +157,9 @@ public class Client implements Runnable {
 				return;
 			}
 		}
+
 		System.out.println("End");
+
 	}
 
 	public JPanel getPanel() {
@@ -178,5 +198,31 @@ public class Client implements Runnable {
 
 	public void close() {
 		protocol.close(socket);
+	}
+
+	public String leaveClient(List<Entity> s) {
+		String name = null;
+		for (int i = 0; i < s.size(); i++) {
+			if (s.get(i) instanceof OnlineCharacter && ((OnlineCharacter) s.get(i)).getState().equals(State.Over)) {
+				name = ((OnlineCharacter) s.get(i)).getOnline_user();
+				s.remove(i);
+				return name;
+			}
+		}
+		return name;
+	}
+
+	public boolean whoWon(List<Entity> s) {
+		int count = 0;
+		for (int i = 0; i < s.size(); i++) {
+			if (s.get(i) instanceof OnlineCharacter) {
+				count++;
+			}
+
+		}
+		if (count == 1) {
+			return true;
+		}
+		return false;
 	}
 }

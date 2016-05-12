@@ -1,18 +1,19 @@
 package it.batteringvalhalla.gamecore;
 
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.Entity;
 import it.batteringvalhalla.gamecore.object.actor.Enemy;
+import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
 import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
+
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameWorld {
 	private static GameWorld world;
@@ -124,8 +125,8 @@ public class GameWorld {
 			// ((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy)
 			// objects.get(i + 1), arena, objects));
 		}
-		walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName,
-				arena.getShape().getBounds().x, arena.getShape().getBounds().y);
+		walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName, arena.getShape().getBounds().x, arena
+				.getShape().getBounds().y);
 		for (int i = 0; i < walls.size(); i++) {
 			objects.add(walls.get(i));
 
@@ -157,9 +158,14 @@ public class GameWorld {
 				if (!arena.getShape().contains(objects.get(i).getOrigin())) {
 					objects.get(i).setAlive(Boolean.FALSE);
 					// game over
-					if (objects.get(i) instanceof Player) {
+					// System.out.println("boh");
+					if (objects.get(i) instanceof OnlineCharacter) {
+						((OnlineCharacter) objects.get(i)).setState(State.Over);
+						return;
+					} else if (objects.get(i) instanceof Player) {
 						GameManager.setState(State.Over);
 						return;
+
 					} else if (objects.get(i) instanceof Enemy) {
 						enemies += -1;
 					}

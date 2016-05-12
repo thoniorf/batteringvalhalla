@@ -1,13 +1,13 @@
 package it.batteringvalhalla.gamecore.network;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
-
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
 import it.batteringvalhalla.gamecore.object.direction.Direction;
 import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class ServerDeamon implements Runnable {
 	protected int id;
@@ -23,7 +23,7 @@ public class ServerDeamon implements Runnable {
 		try {
 			this.protocol = new NetworkProtocol(socket.getInputStream(), socket.getOutputStream());
 		} catch (IOException e) {
-			System.err.println("Error with client connection I/O during initialization");
+			System.err.println("Error with client connection I/O during initialization ");
 			e.printStackTrace();
 		}
 	}
@@ -80,7 +80,7 @@ public class ServerDeamon implements Runnable {
 				protocol.close(socket);
 				break;
 			} catch (IOException e) {
-				System.err.println("Error with client connection I/O on update");
+				System.err.println("Error with client connection I/O on update // si e' disconnesso " + client.getOnline_user());
 				protocol.close(socket);
 				break;
 			}

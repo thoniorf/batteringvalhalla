@@ -10,6 +10,7 @@ import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonCustom;
 import it.batteringvalhalla.gamegui.menu.customcomponents.JCustomComboBox;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -54,8 +55,8 @@ public class EditorMapPanel extends JPanel {
 	private Integer state;
 	private Integer attrito;
 
-	private static final int WIDTHSFONDO = 1174;
-	private static int HEIGHTSFONDO = 720;
+	private static final int WIDTHSFONDO = 1160;
+	private static int HEIGHTSFONDO = 768;
 	private int height = 50;
 	private int width = 50;
 	private VerySquareWall tmp;
@@ -74,7 +75,14 @@ public class EditorMapPanel extends JPanel {
 	public EditorMapPanel() {
 		super();
 		setLayout(null);
+		setBounds(CenterComp.centerX(WIDTHSFONDO),CenterComp.centerY(HEIGHTSFONDO), WIDTHSFONDO, HEIGHTSFONDO);
 		this.frame = GameFrame.instance();
+		
+		
+		this.frame.setMinimumSize(new Dimension(WIDTHSFONDO,HEIGHTSFONDO));
+		
+		
+		
 		wall = new ArrayList<VerySquareWall>();
 		state = -2;
 		attrito = 2;
@@ -113,7 +121,7 @@ public class EditorMapPanel extends JPanel {
 		nomeMappa.setText(newNome());
 		players = new ArrayList<Player>();
 		for (int i = 0; i < 4; i++) {
-			players.add(new Player(new Point((a.getSpawn().get(i).x), (a.getSpawn().get(i).y))));
+			players.add(new Player(new Point((a.getSpawn().get(i).x)+rectangle.x, (a.getSpawn().get(i).y)+rectangle.y)));
 			players.get(i).update();
 		}
 
@@ -193,8 +201,8 @@ public class EditorMapPanel extends JPanel {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-
-				clickSpawn(e.getPoint());
+				if(rectangle.contains(e.getX(),e.getY())){
+				clickSpawn(e.getPoint());}
 
 			}
 
@@ -223,26 +231,33 @@ public class EditorMapPanel extends JPanel {
 			public void mouseMoved(MouseEvent e) {
 
 				if (state >= 0) {
-					tmp.getOrigin().setLocation(e.getX(), e.getY());
+					
+					
+				
+					if (!rectangle.contains(e.getX(), e.getY())) {
+
+						if (tmp != null)
+							tmp.getOrigin().setLocation(-50, -50);
+						else
+							tmp.getOrigin().setLocation(e.getX(), e.getY());
+					}
+					
+					else{
+						tmp.getOrigin().setLocation(e.getX(), e.getY());
+					}
 					tmp.update();
-				}
-				if (!rectangle.contains(e.getX(), e.getY())) {
-
-					if (tmp != null)
-						tmp.getOrigin().setLocation(-50, -50);
-
-				}
-				repaint();
-			}
+					repaint();
+			}}
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
 
 				if (state == -1) {
-					players.get(indexSpwan).getOrigin().move(e.getX(), e.getY());
-					players.get(indexSpwan).update();
-				}
-				if (rectangle.contains(e.getX(), e.getY())) {
+					if (rectangle.contains(e.getX(), e.getY())) {
+						players.get(indexSpwan).getOrigin().move(e.getX(), e.getY());
+						players.get(indexSpwan).update();
+					}
+				
 					repaint();
 				}
 
@@ -293,8 +308,8 @@ public class EditorMapPanel extends JPanel {
 		super.paintComponent(g);
 
 		g.drawImage(ResourcesLoader.optionmenu_images.get(4), 0, 0, WIDTHSFONDO, HEIGHTSFONDO, null);
-		g.drawImage(sfondoSelezionato, (int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(),
-				(int) rectangle.getHeight(), null);
+		g.drawImage(sfondoSelezionato, (int) rectangle.getX(), (int) rectangle.getY(), 
+				(int) rectangle.getWidth(),(int) rectangle.getHeight(), null);
 		Graphics2D g2d = (Graphics2D) g;
 		for (int i = 0; i < wall.size(); i++) {
 			wall.get(i).paint(g2d);
@@ -304,6 +319,7 @@ public class EditorMapPanel extends JPanel {
 		}
 		if (state >= 0)
 			tmp.paint(g2d);
+		
 	}
 
 	@Override

@@ -29,8 +29,8 @@ public class EditorPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int HEIGHTSFONDO = 690;
-	private static final int WIDTHSFONDO = 1024;
+	private static final int HEIGHTSFONDO = 600;
+	private static final int WIDTHSFONDO = 900;
 
 	private static final int HEIGHTESTA = 100;
 	private static final int WIDTHTESTA = 100;
@@ -44,7 +44,7 @@ public class EditorPanel extends JPanel {
 	private static final int yBusto = 270;
 	private static final int yCapra = 305;
 
-	private static final int xImage = 480;
+	private static final int xImage = 400;
 
 
 //button"riga""lato"//s"inistra",d"estra"

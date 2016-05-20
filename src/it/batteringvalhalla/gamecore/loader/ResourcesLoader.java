@@ -386,10 +386,23 @@ public class ResourcesLoader {
 		images.put("host_header", read(base_path, "host_header.png"));
 		// join header
 		images.put("join_header", read(base_path, "join_header.png"));
-		// join header
+		// port header
+		images.put("port_header", read(base_path, "port_header.png"));
+		// port header
+		images.put("player_number_header", read(base_path, "player_number_header.png"));
+		// Online errors
+		// connecting header
 		images.put("connecting_header", read(base_path, "connecting_header.png"));
-		// join header
+		// disconnect error header
 		images.put("disconnected_header", read(base_path, "disconnected_header.png"));
+		// server error generic header
+		images.put("server_error_header", read(base_path, "server_error_header.png"));
+		// busy port error header
+		images.put("server_port_error_header", read(base_path, "server_port_error_header.png"));
+		// unknown host error header
+		images.put("unknownhost_header", read(base_path, "unknownhost_header.png"));
+		// server full header
+		images.put("serverfull_header", read(base_path, "serverfull_header.png"));
 	}
 
 	public static synchronized void loadEditorImages() throws IOException {

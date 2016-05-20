@@ -23,11 +23,13 @@ import it.batteringvalhalla.gamegui.menu.ExitMenu;
 import it.batteringvalhalla.gamegui.menu.HostMenu;
 import it.batteringvalhalla.gamegui.menu.JoinMenu;
 import it.batteringvalhalla.gamegui.menu.MainMenu;
+import it.batteringvalhalla.gamegui.menu.OnlineErrorMenu;
 import it.batteringvalhalla.gamegui.menu.OnlineMenu;
 import it.batteringvalhalla.gamegui.menu.OptionMenu;
 import it.batteringvalhalla.gamegui.menu.PauseMenu;
 import it.batteringvalhalla.gamegui.menu.ScoreBoard;
 import it.batteringvalhalla.gamegui.menu.UsernameMenu;
+import it.batteringvalhalla.gamegui.menu.WaitMenu;
 import it.batteringvalhalla.gamegui.progress.Loading;
 import it.batteringvalhalla.gamegui.sound.Sound;
 
@@ -64,12 +66,12 @@ public class GameFrame extends JFrame {
 		this.layers = this.getLayeredPane();
 	}
 
-	public void addMenu(JPanel panel, int index) {
+	public JPanel addMenu(JPanel panel, int index) {
 		this.layers.add(panel, new Integer(index));
 		panel.updateUI();
-		panel.requestFocus();
+		panel.requestFocusInWindow();
 		this.pack();
-
+		return panel;
 	}
 
 	public void restart() {
@@ -144,10 +146,6 @@ public class GameFrame extends JFrame {
 		this.addMenu(new ScoreBoard(), 2);
 	}
 
-	public void showOnline() {
-		this.addMenu(new OnlineMenu(), 2);
-	}
-
 	public void start() {
 		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.play();
@@ -161,8 +159,7 @@ public class GameFrame extends JFrame {
 		// disable main menu
 		this.layers.getComponentsInLayer(1)[0].setEnabled(false);
 		// show username box
-		this.panel = new UsernameMenu();
-		this.addMenu(this.panel, 2);
+		this.panel = this.addMenu(new UsernameMenu(), 2);
 		((UsernameMenu) this.panel).getUserfield().requestFocusInWindow();
 		((UsernameMenu) this.panel).getUserfield().selectAll();
 	}
@@ -196,6 +193,15 @@ public class GameFrame extends JFrame {
 		this.addMenu(new PauseMenu(), 3);
 	}
 
+	/*
+	 *
+	 * ONLINE MENUS
+	 *
+	 */
+	public void showOnline() {
+		this.addMenu(new OnlineMenu(), 2);
+	}
+
 	public void showJoin() {
 		this.layers.remove(this.layers.getComponentsInLayer(2)[0]);
 		this.addMenu(new JoinMenu(), 2);
@@ -208,11 +214,15 @@ public class GameFrame extends JFrame {
 
 	}
 
+	public void showOnlineError(String error) {
+		this.addMenu(new OnlineErrorMenu(error), 4);
+	}
+
+	public void showWaitMenu() {
+		WaitMenu.lobby = (WaitMenu) addMenu(new WaitMenu(), 3);
+	}
+
 	public void startClient(Client client) {
-		if (!client.connect()) {
-			client.close();
-		}
-		client.sync();
 		// remove all layers
 		this.layers.removeAll();
 		// paint background
@@ -221,8 +231,6 @@ public class GameFrame extends JFrame {
 		this.panel = new GamePanel();
 		this.addMenu(this.panel, 1);
 		client.setPanel(this.panel);
-		// start client
-		new Thread(client).start();
 		// play the music
 		if (ManagerFilePlayer.soundOn()) {
 			Sound.menu.stop();
@@ -231,5 +239,6 @@ public class GameFrame extends JFrame {
 		} else {
 			Sound.battle.stop();
 		}
+
 	}
 }

@@ -1,7 +1,5 @@
 package it.batteringvalhalla.gamecore.object.actor;
 
-import it.batteringvalhalla.gamecore.State;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -18,7 +16,6 @@ public class OnlineCharacter extends AbstractActor implements Serializable {
 	private int headIndex;
 	private int bodyIndex;
 	private int mountIndex;
-	private State state;
 
 	public OnlineCharacter(String user, Point origin, int idHead, int idBody, int idMount) {
 		super(origin, idHead, idBody, idMount);
@@ -42,14 +39,6 @@ public class OnlineCharacter extends AbstractActor implements Serializable {
 
 	public void setOnline_user(String online_user) {
 		this.online_user = online_user;
-	}
-
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
 	}
 
 	@Override

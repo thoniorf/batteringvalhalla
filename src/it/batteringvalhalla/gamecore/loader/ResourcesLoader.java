@@ -403,6 +403,9 @@ public class ResourcesLoader {
 		images.put("unknownhost_header", read(base_path, "unknownhost_header.png"));
 		// server full header
 		images.put("serverfull_header", read(base_path, "serverfull_header.png"));
+
+		// winner header
+		images.put("winner_header", read(base_path, "winner_header.png"));
 	}
 
 	public static synchronized void loadEditorImages() throws IOException {

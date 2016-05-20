@@ -43,7 +43,6 @@ public class Client implements Runnable {
 		this.hostname = hostname;
 		this.character = new OnlineCharacter(Player.getUsername(), new Point(0, 0), ManagerFilePlayer.getTop(),
 				ManagerFilePlayer.getMid(), ManagerFilePlayer.getBot());
-		this.character.setState(State.Online);
 
 	}
 
@@ -97,8 +96,9 @@ public class Client implements Runnable {
 		int maxOpponents = (int) this.protocol.request();
 		// sync other players
 		for (int i = 1; i < maxOpponents; i++) {
-			this.opponents.add((OnlineCharacter) this.protocol.request());
-			// WaitMenu.setPlayer(opponents.get(i).getOnline_user());
+			OnlineCharacter opponent = (OnlineCharacter) this.protocol.request();
+			this.opponents.add(opponent);
+			WaitMenu.setPlayer(opponent.getOnline_user());
 		}
 	}
 
@@ -107,16 +107,12 @@ public class Client implements Runnable {
 			this.syncLevel();
 			this.syncCharacter();
 			this.syncOpponents();
-			Thread.sleep(1250);
 		} catch (IOException e) {
 			System.err.println("Error with server I/O during sync");
 			GameFrame.instance().showOnlineError("disconnected");
 			this.protocol.close(this.socket);
 		} catch (ClassNotFoundException e) {
 			System.err.println("Class not found during sync in client");
-			GameFrame.instance().showOnlineError("disconnected");
-			this.protocol.close(this.socket);
-		} catch (InterruptedException e) {
 			GameFrame.instance().showOnlineError("disconnected");
 			this.protocol.close(this.socket);
 		}
@@ -138,9 +134,8 @@ public class Client implements Runnable {
 		connect();
 		sync();
 		warmUpLevel();
-		debugPrint();
 		GameFrame.instance().startClient(this);
-		while (!this.socket.isClosed() && !character.getState().equals(State.Over)) {
+		while (!this.socket.isClosed() && !State.Over.equals(GameManager.getState())) {
 			try {
 				this.getInput();
 				CharacterMessage message = (CharacterMessage) this.protocol.request();
@@ -150,22 +145,24 @@ public class Client implements Runnable {
 							break;
 						}
 					}
-
-				}
-				String leave = leaveClient(GameWorld.getObjects());
-				if (leave != null) {
-					System.out.println(leave + " ha perso");
-
-				}
-				boolean won = whoWon(GameWorld.getObjects());
-				if (won) {
-					System.out.println(character.getOnline_user() + " won");
-					character.setState(State.Over);
 				}
 
 				GameWorld.update();
 				if (State.Over.equals(GameManager.getState())) {
 					((GamePanel) panel).gameOver();
+				}
+				if (whoWon(GameWorld.getObjects())) {
+					GameManager.setState(State.Next);
+					protocol.close(socket);
+					panel.repaint();
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					GameFrame.instance().restart();
+					return;
 				}
 				panel.repaint();
 			} catch (IOException e) {
@@ -205,35 +202,23 @@ public class Client implements Runnable {
 		}
 	}
 
-	public String leaveClient(List<Entity> s) {
-		String name = null;
-		for (int i = 0; i < s.size(); i++) {
-			if (s.get(i) instanceof OnlineCharacter && ((OnlineCharacter) s.get(i)).getState().equals(State.Over)) {
-				name = ((OnlineCharacter) s.get(i)).getOnline_user();
-				s.remove(i);
-				return name;
-			}
-		}
-		return name;
-	}
-
 	public boolean whoWon(List<Entity> s) {
-		int count = 0;
-		for (int i = 0; i < s.size(); i++) {
-			if (s.get(i) instanceof OnlineCharacter) {
-				count++;
+		int alive = 0;
+		String winner = new String();
+		for (int i = 0; i < GameWorld.getObjects().size(); i++) {
+			if (GameWorld.getObjects().get(i) instanceof OnlineCharacter) {
+				OnlineCharacter couldWin = (OnlineCharacter) GameWorld.getObjects().get(i);
+				if (GameWorld.getObjects().get(i).getAlive()) {
+					alive++;
+					winner = couldWin.getOnline_user();
+				}
 			}
-
 		}
-		if (count == 1) {
-			return true;
+		if (alive > 1) {
+			return false;
 		}
-		return false;
+		((GamePanel) panel).winner(winner);
+		return true;
 	}
 
-	private void debugPrint() {
-		System.out.println(character.getOnline_user() + " connected");
-		System.out.println("Host: " + socket.getRemoteSocketAddress());
-		System.out.println("Opponents number: " + opponents.size());
-	}
 }

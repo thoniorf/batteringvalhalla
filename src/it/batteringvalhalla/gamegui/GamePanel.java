@@ -1,8 +1,10 @@
 package it.batteringvalhalla.gamegui;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +20,7 @@ import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButtonRound pause;
+	private String winner;
 	private JLabel username;
 	private JLabel scores;
 	private JLabel charge;
@@ -57,6 +60,7 @@ public class GamePanel extends JPanel {
 		add(charge);
 		setVisible(true);
 		listenerLoader();
+		winner = "";
 	}
 
 	private void listenerLoader() {
@@ -83,6 +87,10 @@ public class GamePanel extends JPanel {
 		}
 	}
 
+	public void winner(String winner) {
+		this.winner = winner;
+	}
+
 	public void gameOver() {
 		scores.setText("GAME OVER");
 		charge.setVisible(false);
@@ -96,6 +104,22 @@ public class GamePanel extends JPanel {
 		GameWorld.paint(g2d);
 		g.drawImage(ResourcesLoader.images.get("game_header"),
 				CenterComp.centerX(ResourcesLoader.images.get("game_header").getWidth(null)), 10, null);
+		if (winner != "") {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 56));
+			g.setColor(Color.BLACK);
+			g.drawImage(ResourcesLoader.images.get("winner_header"),
+					CenterComp.centerX(ResourcesLoader.images.get("winner_header").getWidth(null)),
+					CenterComp.centerY(ResourcesLoader.images.get("winner_header").getHeight(null)), null);
+
+			java.awt.FontMetrics metrics = g.getFontMetrics();
+			int x = (GameFrame.size.width - metrics.stringWidth(winner)) / 2;
+			int y = ((GameFrame.size.height - metrics.getHeight()) / 2) + metrics.getAscent();
+
+			g.drawString(winner, x, y - metrics.getHeight() / 2);
+			g.drawString("Win!", x, y + metrics.getHeight() / 2);
+		}
 	}
 
 }

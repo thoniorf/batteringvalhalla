@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.State;
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
-import it.batteringvalhalla.gamecore.object.Entity;
-import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
 
 public class Server implements Runnable {
 	public static int maxClients = 2;
@@ -43,16 +42,6 @@ public class Server implements Runnable {
 			while (ServerStatus.RUNNING.equals(status)) {
 				CollisionHandler.setObjects(GameWorld.getObjects());
 				CollisionHandler.check();
-				String leave = leaveClient(GameWorld.getObjects());
-				if (leave != null) {
-					System.out.println(leave + " ha perso");
-				}
-				boolean won = whoWon(GameWorld.getObjects());
-				if (won) {
-					status = ServerStatus.STOP;
-					System.out.println(won);
-				}
-
 				try {
 					Thread.sleep(60);
 				} catch (InterruptedException e) {
@@ -64,13 +53,12 @@ public class Server implements Runnable {
 						serverDeamon.send(message);
 					}
 				}
+				if (State.Next.equals(GameManager.getState())) {
+					status = ServerStatus.STOP;
+				}
 			}
-
 		}
 
-		if (ServerStatus.EMPTY.equals(status)) {
-			return;
-		}
 	}
 
 	public void syncAll() {
@@ -99,31 +87,4 @@ public class Server implements Runnable {
 			status = ServerStatus.EMPTY;
 		}
 	}
-
-	public String leaveClient(List<Entity> s) {
-		String name = null;
-		for (int i = 0; i < s.size(); i++) {
-			if (s.get(i) instanceof OnlineCharacter && ((OnlineCharacter) s.get(i)).getState().equals(State.Over)) {
-				name = ((OnlineCharacter) s.get(i)).getOnline_user();
-				s.remove(i);
-				return name;
-			}
-		}
-		return name;
-	}
-
-	public boolean whoWon(List<Entity> s) {
-		int count = 0;
-		for (int i = 0; i < s.size(); i++) {
-			if (s.get(i) instanceof OnlineCharacter) {
-				count++;
-			}
-
-		}
-		if (count == 1) {
-			return true;
-		}
-		return false;
-	}
-
 }

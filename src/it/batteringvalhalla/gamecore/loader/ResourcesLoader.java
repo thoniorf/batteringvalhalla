@@ -120,6 +120,12 @@ public class ResourcesLoader {
 
 		mainmenu_images.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
 				.getResource("it/batteringvalhalla/assets/gui/background-ui.png")));
+
+		mainmenu_images.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+				.getResource("it/batteringvalhalla/assets/arena/background2.png")));
+
+		mainmenu_images.add(ImageIO.read(ResourcesLoader.class.getClassLoader()
+				.getResource("it/batteringvalhalla/assets/arena/background3.png")));
 	}
 
 	public static synchronized void loadIcons() throws IOException {
@@ -241,11 +247,6 @@ public class ResourcesLoader {
 		// 512 x 256
 		images.put("background_5x2", read(base_path, "background_512x256.png"));
 
-	}
-
-	public static synchronized BufferedImage read(String path, String file) throws IOException {
-		return ImageIO
-				.read(ResourcesLoader.class.getClassLoader().getResource("it/batteringvalhalla/assets/" + path + file));
 	}
 
 	public static synchronized void loadOptionMenuImages() throws IOException {
@@ -385,6 +386,23 @@ public class ResourcesLoader {
 		images.put("host_header", read(base_path, "host_header.png"));
 		// join header
 		images.put("join_header", read(base_path, "join_header.png"));
+		// port header
+		images.put("port_header", read(base_path, "port_header.png"));
+		// port header
+		images.put("player_number_header", read(base_path, "player_number_header.png"));
+		// Online errors
+		// connecting header
+		images.put("connecting_header", read(base_path, "connecting_header.png"));
+		// disconnect error header
+		images.put("disconnected_header", read(base_path, "disconnected_header.png"));
+		// server error generic header
+		images.put("server_error_header", read(base_path, "server_error_header.png"));
+		// busy port error header
+		images.put("server_port_error_header", read(base_path, "server_port_error_header.png"));
+		// unknown host error header
+		images.put("unknownhost_header", read(base_path, "unknownhost_header.png"));
+		// server full header
+		images.put("serverfull_header", read(base_path, "serverfull_header.png"));
 	}
 
 	public static synchronized void loadEditorImages() throws IOException {
@@ -450,5 +468,10 @@ public class ResourcesLoader {
 				.read(ResourcesLoader.class.getClassLoader()
 						.getResource("it/batteringvalhalla/assets/gui/menu/icon/hover/h_forward.png"))
 				.getScaledInstance(123, 133, Image.SCALE_SMOOTH));
+	}
+
+	public static synchronized BufferedImage read(String path, String file) throws IOException {
+		return ImageIO
+				.read(ResourcesLoader.class.getClassLoader().getResource("it/batteringvalhalla/assets/" + path + file));
 	}
 }

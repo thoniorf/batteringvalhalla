@@ -76,66 +76,98 @@ public class CollisionHandler {
 		return mtd;
 	}
 
-	private static void resolve(AbstractEntity first, AbstractEntity second) {
-		if (!(first instanceof AbstractActor)) {
+	private static void resolve(AbstractEntity thisone, AbstractEntity otherone) {
+		if (thisone instanceof VerySquareWall && otherone instanceof VerySquareWall) {
 			return;
 		}
 		// TODO add sound effect
-		// get the mtd vector
-		Vector2D mtd = computeMtd(first, second);
 
-		// old velocity
-		Vector2D oldVel_first = new Vector2D();
-		Vector2D oldVel_second = new Vector2D();
 		Vector2D newVel_first = new Vector2D();
 		Vector2D newVel_second = new Vector2D();
-		AbstractActor a1 = (AbstractActor) first;
 
-		if (second instanceof AbstractActor) {
+		if (thisone instanceof AbstractActor) {
+			// get the mtd vector
+			Vector2D mtd = computeMtd(thisone, otherone);
+			AbstractActor a1 = (AbstractActor) thisone;
 			// fix overlap
-			first.getOrigin().translate(mtd.getComponents().x, mtd.getComponents().y);
-			// second.getOrigin().translate((1 + (mtd.getComponents().x / 2)) *
-			// -1,(1 + (mtd.getComponents().y / 2)) * -1);
+			thisone.getOrigin().translate(mtd.getComponents().x, mtd.getComponents().y);
+			// old velocity
+			Vector2D oldVel_first = new Vector2D(a1.getVelocity());
+			if (otherone instanceof AbstractActor) {
+				AbstractActor a2 = (AbstractActor) otherone;
+				// old velocity
+				Vector2D oldVel_second = new Vector2D(a2.getVelocity());
 
-			AbstractActor a2 = (AbstractActor) second;
-			// TODO actor->actor
-			oldVel_first = new Vector2D(a1.getVelocity());
-			oldVel_second = new Vector2D(a2.getVelocity());
+				// check if mtd is along x-axis
+				if (mtd.getComponents().x != 0) {
+					if (oldVel_second.getX() != 0) {
+						newVel_first = new Vector2D((oldVel_first.getX() + (2 * oldVel_second.getX())),
+								a1.getVelocity().getY());
+						newVel_second = new Vector2D(oldVel_second.getX() + (2 * oldVel_first.getX()),
+								a2.getVelocity().getY());
+					} else {
+						newVel_first = new Vector2D((oldVel_first.getX() + -1 + (2 * oldVel_second.getX())),
+								a1.getVelocity().getY());
+						newVel_second = new Vector2D(oldVel_second.getX() + (2 * oldVel_first.getX()),
+								a2.getVelocity().getY());
+					}
 
-			// check if mtd is along x-axis
-			if (mtd.getComponents().x != 0) {
-				newVel_first = new Vector2D((oldVel_first.getX() + (2 * oldVel_second.getX())),
-						a1.getVelocity().getY());
-				newVel_second = new Vector2D(oldVel_second.getX() + (2 * oldVel_first.getX()), a2.getVelocity().getY());
-				a1.setVelocity(newVel_first);
-				a2.setVelocity(newVel_second);
+					a1.setVelocity(newVel_first);
+					a2.setVelocity(newVel_second);
+				}
+				// check if mtd is along y-axis
+				if (mtd.getComponents().y != 0) {
+					if (oldVel_second.getY() != 0) {
+						newVel_first = new Vector2D(a1.getVelocity().getX(),
+								(oldVel_first.getY() + (2 * oldVel_second.getY())));
+						newVel_second = new Vector2D(a2.getVelocity().getX(),
+								oldVel_second.getY() + (2 * oldVel_first.getY()));
+					} else {
+						newVel_first = new Vector2D(a1.getVelocity().getX(),
+								(oldVel_first.getY() * -1 + (2 * oldVel_second.getY())));
+						newVel_second = new Vector2D(a2.getVelocity().getX(),
+								oldVel_second.getY() + (2 * oldVel_first.getY()));
+					}
+					a1.setVelocity(newVel_first);
+					a2.setVelocity(newVel_second);
+				}
+			} else if (otherone instanceof VerySquareWall) {
+				// check if mtd is along x-axis
+				if (mtd.getComponents().x != 0) {
+					a1.setVelocity(
+							new Vector2D((oldVel_first.getComponents().x) * -1, a1.getVelocity().getComponents().y));
+
+				}
+				// check if mtd is along y-axis
+				if (mtd.getComponents().y != 0) {
+					a1.setVelocity(
+							new Vector2D(a1.getVelocity().getComponents().x, (oldVel_first.getComponents().y) * -1));
+
+				}
 			}
-			// check if mtd is along y-axis
-			if (mtd.getComponents().y != 0) {
-				newVel_first = new Vector2D(a1.getVelocity().getX(),
-						(oldVel_first.getY() + (2 * oldVel_second.getY())));
-				newVel_second = new Vector2D(a2.getVelocity().getX(), oldVel_second.getY() + (2 * oldVel_first.getY()));
-				a1.setVelocity(newVel_first);
-				a2.setVelocity(newVel_second);
-			}
+		} else if (thisone instanceof VerySquareWall) {
+			if (otherone instanceof AbstractActor) {
+				// get the mtd vector
+				Vector2D mtd = computeMtd(otherone, thisone);
+				AbstractActor a2 = (AbstractActor) otherone;
+				// fix overlap
+				otherone.getOrigin().translate(mtd.getComponents().x, mtd.getComponents().y);
+				// old velocity
+				Vector2D oldVel_second = new Vector2D(a2.getVelocity());
+				// check if mtd is along x-axis
+				if (mtd.getComponents().x != 0) {
+					a2.setVelocity(
+							new Vector2D((oldVel_second.getComponents().x) * -1, a2.getVelocity().getComponents().y));
 
-		} else if (second instanceof VerySquareWall) {
-			// fix overlap
-			first.getOrigin().translate(mtd.getComponents().x, mtd.getComponents().y);
-			oldVel_first = new Vector2D(a1.getVelocity().getComponents().x, a1.getVelocity().getComponents().y);
+				}
+				// check if mtd is along y-axis
+				if (mtd.getComponents().y != 0) {
+					a2.setVelocity(
+							new Vector2D(a2.getVelocity().getComponents().x, (oldVel_second.getComponents().y) * -1));
 
-			// check if mtd is along x-axis
-			if (mtd.getComponents().x != 0) {
-				a1.setVelocity(new Vector2D((oldVel_first.getComponents().x) * -1, a1.getVelocity().getComponents().y));
-
-			}
-			// check if mtd is along y-axis
-			if (mtd.getComponents().y != 0) {
-				a1.setVelocity(new Vector2D(a1.getVelocity().getComponents().x, (oldVel_first.getComponents().y) * -1));
-
+				}
 			}
 		}
-
 	}
 
 	public CollisionHandler() {

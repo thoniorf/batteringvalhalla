@@ -1,16 +1,5 @@
 package it.batteringvalhalla.gamecore.network;
 
-import it.batteringvalhalla.gamecore.GameWorld;
-import it.batteringvalhalla.gamecore.State;
-import it.batteringvalhalla.gamecore.arena.Arena;
-import it.batteringvalhalla.gamecore.input.PlayerControls;
-import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
-import it.batteringvalhalla.gamecore.object.Entity;
-import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
-import it.batteringvalhalla.gamecore.object.actor.player.Player;
-import it.batteringvalhalla.gamecore.object.direction.Direction;
-import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
-
 import java.awt.Point;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -22,8 +11,23 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import it.batteringvalhalla.gamecore.GameManager;
+import it.batteringvalhalla.gamecore.GameWorld;
+import it.batteringvalhalla.gamecore.State;
+import it.batteringvalhalla.gamecore.arena.Arena;
+import it.batteringvalhalla.gamecore.input.PlayerControls;
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
+import it.batteringvalhalla.gamecore.object.Entity;
+import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
+import it.batteringvalhalla.gamecore.object.actor.player.Player;
+import it.batteringvalhalla.gamecore.object.direction.Direction;
+import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
+import it.batteringvalhalla.gamegui.GameFrame;
+import it.batteringvalhalla.gamegui.GamePanel;
+import it.batteringvalhalla.gamegui.menu.WaitMenu;
+
 public class Client implements Runnable {
-	private static final int port = 46505;
+	public static int port = 46505;
 	protected NetworkProtocol protocol;
 	protected String hostname;
 	protected Socket socket;
@@ -32,8 +36,10 @@ public class Client implements Runnable {
 	protected OnlineCharacter character;
 	protected ArrayList<OnlineCharacter> opponents;
 	protected Player player;
+	protected boolean synced;
 
 	public Client(String hostname) {
+		synced = false;
 		this.hostname = hostname;
 		this.character = new OnlineCharacter(Player.getUsername(), new Point(0, 0), ManagerFilePlayer.getTop(),
 				ManagerFilePlayer.getMid(), ManagerFilePlayer.getBot());
@@ -50,13 +56,15 @@ public class Client implements Runnable {
 			this.socket.setSoTimeout(0);
 		} catch (UnknownHostException e) {
 			System.err.println("Host is unreacheable");
+			GameFrame.instance().showOnlineError("unknownhost");
 			return false;
 		} catch (SocketTimeoutException e) {
 			System.err.println("Connection timeout. Maybe the server is full");
+			GameFrame.instance().showOnlineError("serverfull");
 			return false;
 		} catch (IOException e) {
 			System.err.println("Error with server connection I/O on initialization");
-			e.printStackTrace();
+			GameFrame.instance().showOnlineError("disconnected");
 			return false;
 		}
 		return true;
@@ -81,14 +89,16 @@ public class Client implements Runnable {
 		this.character.getOrigin().move(GameWorld.getArena().getSpawn().get(this.client_id - 1).x,
 				GameWorld.getArena().getSpawn().get(this.client_id - 1).y);
 		this.protocol.send(this.character);
-
+		WaitMenu.setPlayer(character.getOnline_user());
 	}
 
 	public void syncOpponents() throws ClassNotFoundException, IOException {
 		this.opponents = new ArrayList<OnlineCharacter>();
+		int maxOpponents = (int) this.protocol.request();
 		// sync other players
-		for (int i = 1; i < 2; i++) {
+		for (int i = 1; i < maxOpponents; i++) {
 			this.opponents.add((OnlineCharacter) this.protocol.request());
+			// WaitMenu.setPlayer(opponents.get(i).getOnline_user());
 		}
 	}
 
@@ -97,17 +107,24 @@ public class Client implements Runnable {
 			this.syncLevel();
 			this.syncCharacter();
 			this.syncOpponents();
+			Thread.sleep(1250);
 		} catch (IOException e) {
 			System.err.println("Error with server I/O during sync");
+			GameFrame.instance().showOnlineError("disconnected");
 			this.protocol.close(this.socket);
 		} catch (ClassNotFoundException e) {
 			System.err.println("Class not found during sync in client");
+			GameFrame.instance().showOnlineError("disconnected");
+			this.protocol.close(this.socket);
+		} catch (InterruptedException e) {
+			GameFrame.instance().showOnlineError("disconnected");
 			this.protocol.close(this.socket);
 		}
 	}
 
 	public void warmUpLevel() {
 		// set level vars
+		GameWorld.setPlayer(character);
 		GameWorld.setMax_enemy(this.opponents.size());
 		GameWorld.setEnemies(this.opponents.size());
 		GameWorld.setObjects(new ArrayList<Entity>());
@@ -118,10 +135,11 @@ public class Client implements Runnable {
 
 	@Override
 	public void run() {
-		this.warmUpLevel();
-		System.out.println("Client: " + this.character.getOnline_user() + " is ready");
-		character.setState(State.Online);
-
+		connect();
+		sync();
+		warmUpLevel();
+		debugPrint();
+		GameFrame.instance().startClient(this);
 		while (!this.socket.isClosed() && !character.getState().equals(State.Over)) {
 			try {
 				this.getInput();
@@ -132,6 +150,7 @@ public class Client implements Runnable {
 							break;
 						}
 					}
+
 				}
 				String leave = leaveClient(GameWorld.getObjects());
 				if (leave != null) {
@@ -145,37 +164,27 @@ public class Client implements Runnable {
 				}
 
 				GameWorld.update();
+				if (State.Over.equals(GameManager.getState())) {
+					((GamePanel) panel).gameOver();
+				}
 				panel.repaint();
 			} catch (IOException e) {
 				System.err.println("Error with server connection I/O on update");
+				GameFrame.instance().showOnlineError("disconnected");
 				protocol.close(socket);
 				return;
 
 			} catch (ClassNotFoundException e) {
 				System.err.println("Class not found");
+				GameFrame.instance().showOnlineError("disconnected");
 				protocol.close(socket);
 				return;
 			}
 		}
-
-		System.out.println("End");
-
-	}
-
-	public JPanel getPanel() {
-		return this.panel;
 	}
 
 	public void setPanel(JPanel panel) {
 		this.panel = panel;
-	}
-
-	public OnlineCharacter getCharacter() {
-		return this.character;
-	}
-
-	public void setCharacter(OnlineCharacter character) {
-		this.character = character;
 	}
 
 	public void getInput() throws IOException {
@@ -194,10 +203,6 @@ public class Client implements Runnable {
 		if (PlayerControls.getKeys().get("SPACE")[0] == 1) {
 			this.character.charge();
 		}
-	}
-
-	public void close() {
-		protocol.close(socket);
 	}
 
 	public String leaveClient(List<Entity> s) {
@@ -224,5 +229,11 @@ public class Client implements Runnable {
 			return true;
 		}
 		return false;
+	}
+
+	private void debugPrint() {
+		System.out.println(character.getOnline_user() + " connected");
+		System.out.println("Host: " + socket.getRemoteSocketAddress());
+		System.out.println("Opponents number: " + opponents.size());
 	}
 }

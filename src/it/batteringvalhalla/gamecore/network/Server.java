@@ -1,31 +1,32 @@
 package it.batteringvalhalla.gamecore.network;
 
+import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.State;
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
 import it.batteringvalhalla.gamecore.object.Entity;
 import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
 
-import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 public class Server implements Runnable {
-	protected int maxClients = 2;
+	public static int maxClients = 2;
 	protected ServerSocket socket;
-	protected ServerStatus status;
-	protected List<ServerDeamon> clients = new ArrayList<>();
+	public static ServerStatus status;
+	protected List<ServerDeamon> clients;
 
 	public Server(ServerSocket socket) {
 		this.socket = socket;
-		this.status = ServerStatus.WAITING;
+		clients = new ArrayList<>();
+		status = ServerStatus.WAITING;
 	}
 
 	public void warmUpLevel() {
 		// set level vars
-		GameWorld.setMax_enemy(this.maxClients);
-		GameWorld.setEnemies(this.maxClients);
+		GameWorld.setMax_enemy(maxClients);
+		GameWorld.setEnemies(maxClients);
 		GameWorld.setObjects(new CopyOnWriteArrayList<>());
 		for (ServerDeamon serverDeamon : this.clients) {
 			GameWorld.getObjects().add(serverDeamon.client);
@@ -37,9 +38,9 @@ public class Server implements Runnable {
 	public void run() {
 		this.syncAll();
 		this.warmUpLevel();
-		this.status = ServerStatus.RUNNING;
-		while (!ServerStatus.STOP.equals(this.status)) {
-			while (ServerStatus.RUNNING.equals(this.status)) {
+		status = ServerStatus.RUNNING;
+		while (!ServerStatus.STOP.equals(status)) {
+			while (ServerStatus.RUNNING.equals(status)) {
 				CollisionHandler.setObjects(GameWorld.getObjects());
 				CollisionHandler.check();
 				String leave = leaveClient(GameWorld.getObjects());
@@ -48,7 +49,7 @@ public class Server implements Runnable {
 				}
 				boolean won = whoWon(GameWorld.getObjects());
 				if (won) {
-					this.status = ServerStatus.STOP;
+					status = ServerStatus.STOP;
 					System.out.println(won);
 				}
 
@@ -67,13 +68,14 @@ public class Server implements Runnable {
 
 		}
 
-		if (ServerStatus.EMPTY.equals(this.status)) {
+		if (ServerStatus.EMPTY.equals(status)) {
 			return;
 		}
 	}
 
 	public void syncAll() {
 		for (ServerDeamon deamon : this.clients) {
+			deamon.send(maxClients);
 			for (ServerDeamon minion : this.clients) {
 				if (deamon.id != minion.id) {
 					deamon.send(minion.client);
@@ -88,13 +90,13 @@ public class Server implements Runnable {
 		this.clients.add(deamon);
 		// sync client object
 		deamon.syncClient();
-		return true;
+		return deamon.synced;
 	}
 
 	public void removeClient(ServerDeamon clientDeamon) {
 		this.clients.remove(clientDeamon);
 		if (this.clients.isEmpty()) {
-			this.status = ServerStatus.EMPTY;
+			status = ServerStatus.EMPTY;
 		}
 	}
 
@@ -122,14 +124,6 @@ public class Server implements Runnable {
 			return true;
 		}
 		return false;
-	}
-
-	public ServerStatus getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(ServerStatus status) {
-		this.status = status;
 	}
 
 }

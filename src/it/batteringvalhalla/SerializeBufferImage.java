@@ -3,22 +3,24 @@ package it.batteringvalhalla;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.imageio.ImageIO;
 
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.network.CharacterMessage;
+import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
+import it.batteringvalhalla.gamecore.object.direction.Direction;
+import it.batteringvalhalla.gamecore.vector2d.Vector2D;
 
 public class SerializeBufferImage implements Serializable {
 	private static final long serialVersionUID = 395576690695662956L;
@@ -62,23 +64,30 @@ public class SerializeBufferImage implements Serializable {
 
 	public static void main(String[] args) {
 		try {
-			Image body = ImageIO.read(ResourcesLoader.class.getClassLoader()
-					.getResource("it/batteringvalhalla/assets/actor/bodies/body_1.png"));
-			SerializeBufferImage obj = new SerializeBufferImage(body, 200, 200);
-			SerializeBufferImage obj1 = new SerializeBufferImage(body, 50, 50);
+			ResourcesLoader.loadPlayerImages();
 			Socket socket = new Socket(InetAddress.getLocalHost(), 8020);
-			OutputStream o = socket.getOutputStream();
-			ObjectOutput s = new ObjectOutputStream(o);
-			s.writeObject(obj);
+			ObjectOutputStream s = new ObjectOutputStream(socket.getOutputStream());
+
+			OnlineCharacter player = new OnlineCharacter("Player", new Point(50, 50), 1, 0, 1);
+			System.out.println(player);
+			s.writeUnshared(player);
+
 			s.flush();
-			s.writeObject(obj1);
+			player.setOrigin(new Point(25, 25));
+			player.setVelocity(new Vector2D(new Point(1, 1)));
+			player.setMoveDirection(Direction.nord);
+			s.writeUnshared(player);
+
 			s.flush();
+			CharacterMessage message = new CharacterMessage(player);
+
+			s.writeUnshared(message);
+			System.out.println(message);
+			s.flush();
+
 			s.close();
-			o.close();
 			socket.close();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

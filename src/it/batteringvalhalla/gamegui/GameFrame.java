@@ -1,15 +1,5 @@
 package it.batteringvalhalla.gamegui;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-
 import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.GameWorld;
 import it.batteringvalhalla.gamecore.State;
@@ -33,6 +23,16 @@ import it.batteringvalhalla.gamegui.menu.UsernameMenu;
 import it.batteringvalhalla.gamegui.menu.WaitMenu;
 import it.batteringvalhalla.gamegui.progress.Loading;
 import it.batteringvalhalla.gamegui.sound.Sound;
+
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 /*	0			0			1			2			2			  2				3
  * Loading -> Background -> MainMenu -> UserMenu -> OptionMenu -> EditorMenu -> Exit Menu
@@ -78,7 +78,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void restart() {
-		if (ManagerFilePlayer.soundOn()) {
+		if (ManagerFilePlayer.soundOn() && (Sound.menu.isStopped())) {
 			Sound.battle.stop();
 			Sound.menu.play();
 		}
@@ -197,9 +197,8 @@ public class GameFrame extends JFrame {
 	}
 
 	/*
-	 *
+	 * 
 	 * ONLINE MENUS
-	 *
 	 */
 	public void showOnline() {
 		this.addMenu(new OnlineMenu(), 2);

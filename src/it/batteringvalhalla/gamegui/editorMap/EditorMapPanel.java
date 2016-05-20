@@ -21,6 +21,7 @@ import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +72,8 @@ public class EditorMapPanel extends JPanel {
 	private VerySquareWall nuovoMuro;
 	private Arena a;
 	private int indexSpwan;
-
+	private Point lastPosition;
+	
 	public EditorMapPanel() {
 		super();
 		setLayout(null);
@@ -121,10 +123,10 @@ public class EditorMapPanel extends JPanel {
 		nomeMappa.setText(newNome());
 		players = new ArrayList<Player>();
 		for (int i = 0; i < 4; i++) {
-			players.add(new Player(new Point((a.getSpawn().get(i).x)+rectangle.x, (a.getSpawn().get(i).y)+rectangle.y)));
+			players.add(new Player(new Point((a.getSpawn().get(i).x+50), (a.getSpawn().get(i).y))));
 			players.get(i).update();
-		}
-
+			}
+		
 		maps = new JCustomComboBox(ManagerFilePlayer.loadNameOfMaps());
 
 		maps.addItem("new");
@@ -166,6 +168,8 @@ public class EditorMapPanel extends JPanel {
 		listenerLoader();
 		addMouseListener(new MouseListener() {
 
+			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
@@ -176,13 +180,15 @@ public class EditorMapPanel extends JPanel {
 							if (state == 2)
 								nuovoMuro = new VerySquareWall(e.getX(), e.getY(), 2);
 
-							if (canAdd()) {
+							if (canAddWall()) {
 								wall.add(nuovoMuro);
 								repaint();
 							}
-						} else if (state == -1) {
-							clickSpawn(e.getPoint());
-
+						} else if (state == -1 ) {
+							if(canMovePlayer())
+								clickSpawn(e.getPoint());
+							else
+								clickSpawn(lastPosition);
 							state = -2;
 						}
 					}
@@ -199,10 +205,12 @@ public class EditorMapPanel extends JPanel {
 				}
 			}
 
+			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if(rectangle.contains(e.getX(),e.getY())){
-				clickSpawn(e.getPoint());}
+					clickSpawn(e.getPoint());}
 
 			}
 
@@ -273,6 +281,7 @@ public class EditorMapPanel extends JPanel {
 				if (players.get(i).getShape().contains(p)) {
 					indexSpwan = i;
 					state = -1;
+					lastPosition=players.get(i).getOrigin();
 				}
 			}
 		} else {
@@ -316,6 +325,7 @@ public class EditorMapPanel extends JPanel {
 		}
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).paint(g2d);
+
 		}
 		if (state >= 0)
 			tmp.paint(g2d);
@@ -343,11 +353,12 @@ public class EditorMapPanel extends JPanel {
 
 	}
 
-	private boolean canAdd() {
+	private boolean canAddWall() {
 		for (int i = 0; i < wall.size(); i++) {
 			if (wall.get(i).getRectangle().intersects(nuovoMuro.getRectangle()))
 				return false;
 		}
+	
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getShape().intersects((nuovoMuro.getRectangle())))
 				return false;
@@ -357,7 +368,14 @@ public class EditorMapPanel extends JPanel {
 
 		return true;
 	}
-
+	
+	private boolean canMovePlayer(){
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getShape().intersects(players.get(indexSpwan).getShape().getBounds2D())&&i!=indexSpwan)
+				return false;
+		}
+		return true;
+	}
 	private void listenerLoader() {
 		muro0.addActionListener(e -> {
 			state = 0;
@@ -429,7 +447,6 @@ public class EditorMapPanel extends JPanel {
 	}
 
 	public void Chiudere() {
-
 		frame.getLayeredPane().getComponentsInLayer(1)[0].setEnabled(true);
 		frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(2)[0]);
 

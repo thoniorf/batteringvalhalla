@@ -1,19 +1,20 @@
 package it.batteringvalhalla.gamecore;
 
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.Entity;
+import it.batteringvalhalla.gamecore.object.actor.AbstractActor;
 import it.batteringvalhalla.gamecore.object.actor.Enemy;
 import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
 import it.batteringvalhalla.gamecore.object.actor.player.Player;
 import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
-
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameWorld {
 	private static GameWorld world;
@@ -22,7 +23,7 @@ public class GameWorld {
 	private static Arena arena;
 	private static Integer max_enemy;
 	private static Integer enemies;
-	private static Player player;
+	private static AbstractActor player;
 	// friction time in ms
 	private static Integer freq_friction = 250;
 	// custom level
@@ -89,11 +90,15 @@ public class GameWorld {
 	}
 
 	public static Player getPlayer() {
-		return player;
+		return (Player) player;
 	}
 
 	public static void setPlayer(Player player) {
 		GameWorld.player = player;
+	}
+
+	public static void setPlayer(OnlineCharacter character) {
+		GameWorld.player = character;
 	}
 
 	public static GameWorld getWorld() {
@@ -125,8 +130,8 @@ public class GameWorld {
 			// ((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy)
 			// objects.get(i + 1), arena, objects));
 		}
-		walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName, arena.getShape().getBounds().x, arena
-				.getShape().getBounds().y);
+		walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName,
+				arena.getShape().getBounds().x, arena.getShape().getBounds().y);
 		for (int i = 0; i < walls.size(); i++) {
 			objects.add(walls.get(i));
 
@@ -157,15 +162,13 @@ public class GameWorld {
 				objects.get(i).update();
 				if (!arena.getShape().contains(objects.get(i).getOrigin())) {
 					objects.get(i).setAlive(Boolean.FALSE);
-					// game over
-					// System.out.println("boh");
 					if (objects.get(i) instanceof OnlineCharacter) {
-						((OnlineCharacter) objects.get(i)).setState(State.Over);
-						return;
+						if (((OnlineCharacter) objects.get(i)).getOnline_user().equals(Player.getUsername())) {
+							GameManager.setState(State.Over);
+						}
 					} else if (objects.get(i) instanceof Player) {
 						GameManager.setState(State.Over);
 						return;
-
 					} else if (objects.get(i) instanceof Enemy) {
 						enemies += -1;
 					}

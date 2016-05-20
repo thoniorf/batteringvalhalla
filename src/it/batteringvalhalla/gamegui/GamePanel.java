@@ -83,6 +83,11 @@ public class GamePanel extends JPanel {
 		}
 	}
 
+	public void gameOver() {
+		scores.setText("GAME OVER");
+		charge.setVisible(false);
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

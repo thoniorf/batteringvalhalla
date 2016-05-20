@@ -74,7 +74,7 @@ public class ServerDeamon implements Runnable {
 
 	@Override
 	public void run() {
-		while (!socket.isClosed()) {
+		while (!socket.isClosed() && !ServerStatus.STOP.equals(Server.status)) {
 			try {
 				client.setMoveDirection((Direction) this.protocol.request());
 			} catch (ClassNotFoundException e) {

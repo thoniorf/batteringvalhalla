@@ -93,6 +93,8 @@ public class GamePanel extends JPanel {
 
 	public void gameOver() {
 		scores.setText("GAME OVER");
+		java.awt.FontMetrics metrics = GameFrame.instance().getGraphics().getFontMetrics();
+		scores.setBounds(username.getX() + username.getWidth() + 24, 24, metrics.stringWidth(scores.getText()), 38);
 		charge.setVisible(false);
 	}
 

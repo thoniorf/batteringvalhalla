@@ -31,14 +31,14 @@ public class CharacterMessage implements Serializable {
 
 	public CharacterMessage(OnlineCharacter character) {
 		username = new String(character.getOnline_user());
-		alive = new Boolean(character.getAlive());
+		alive = character.getAlive();
 		origin = new Point(character.getOrigin());
 		curret_max_velocity = character.getMaxVelocity();
 		velocity = new Vector2D(character.getVelocity());
 		face_dir = character.getFaceDirection();
 		move_dir = character.getMoveDirection();
-		can_charge = new Boolean(character.canCharge());
-		charge = new Boolean(character.getCharge());
+		can_charge = character.canCharge();
+		charge = character.getCharge();
 		charge_time = new Long(character.getCharge_time());
 	}
 
@@ -72,14 +72,14 @@ public class CharacterMessage implements Serializable {
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		username = new String((String) in.readUnshared());
-		alive = new Boolean((Boolean) in.readUnshared());
+		alive = (Boolean) in.readUnshared();
 		origin = new Point((Point) in.readUnshared());
 		curret_max_velocity = (int) in.readUnshared();
 		velocity = new Vector2D((Vector2D) in.readUnshared());
 		face_dir = (Direction) in.readUnshared();
 		move_dir = (Direction) in.readUnshared();
-		can_charge = new Boolean((Boolean) in.readUnshared());
-		charge = new Boolean((Boolean) in.readUnshared());
+		can_charge = (Boolean) in.readUnshared();
+		charge = (Boolean) in.readUnshared();
 		charge_time = new Long((long) in.readUnshared());
 	}
 

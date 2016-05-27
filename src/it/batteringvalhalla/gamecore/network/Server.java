@@ -13,7 +13,7 @@ import it.batteringvalhalla.gamecore.collision.CollisionHandler;
 public class Server implements Runnable {
 	public static int maxClients = 2;
 	protected ServerSocket socket;
-	public static ServerStatus status;
+	public static ServerStatus status = ServerStatus.WAITING;
 	protected List<ServerDeamon> clients;
 
 	public Server(ServerSocket socket) {

@@ -25,7 +25,7 @@ public class ConnectionManager implements Runnable {
 
 	@Override
 	public void run() {
-		while (!ServerStatus.STOP.equals(Server.status) && !(server.clients.size() == Server.maxClients)) {
+		while (!ServerStatus.STOP.equals(Server.status) && server.clients.size() != Server.maxClients) {
 			try {
 				// add & start new deamon
 				ServerDeamon deamon = new ServerDeamon(this.socket.accept(), this.server, this.server.clients.size());

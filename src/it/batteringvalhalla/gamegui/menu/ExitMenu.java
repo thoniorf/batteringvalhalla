@@ -47,7 +47,7 @@ public class ExitMenu extends JPanel {
 	private void listenerLoader() {
 		yes.addActionListener(e -> {
 			if (frame.getLayeredPane().getComponentsInLayer(1)[0] instanceof MainMenu) {
-				System.exit(0);
+				Runtime.getRuntime().exit(0);
 			} else {
 				GameManager.setState(State.Stop);
 				frame.restart();

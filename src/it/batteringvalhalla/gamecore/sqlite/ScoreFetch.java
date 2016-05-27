@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class ScoreFetch {
 
-	Connection con;
-	String dbpath = ScoreFetch.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+	private Connection con;
+	private String dbpath = ScoreFetch.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
 	public ScoreFetch() {
 		try {

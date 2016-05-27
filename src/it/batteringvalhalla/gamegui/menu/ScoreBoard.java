@@ -29,8 +29,8 @@ public class ScoreBoard extends JPanel {
 	private JButtonRound restart;
 	private JButtonRound exit;
 
-	ArrayList<String> scores;
-	ArrayList<JLabel> labels;
+	private ArrayList<String> scores;
+	private ArrayList<JLabel> labels;
 
 	private int width = 768;
 	private int height = 640;

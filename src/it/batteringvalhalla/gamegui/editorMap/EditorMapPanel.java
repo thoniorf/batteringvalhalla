@@ -21,7 +21,6 @@ import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,7 +119,7 @@ public class EditorMapPanel extends JPanel {
 				ResourcesLoader.images.get("save_hover").getScaledInstance(width + delta, height, 0), ResourcesLoader.images.get(
 						"save_selected").getScaledInstance(width + delta, height, 0));
 		nomeMappa = new JTextField();
-		nomeMappa.setText(newNome());
+		nomeMappa.setText(newName());
 		players = new ArrayList<Player>();
 		for (int i = 0; i < 4; i++) {
 			players.add(new Player(new Point((a.getSpawn().get(i).x+50), (a.getSpawn().get(i).y))));
@@ -186,9 +185,11 @@ public class EditorMapPanel extends JPanel {
 							}
 						} else if (state == -1 ) {
 							if(canMovePlayer())
-								clickSpawn(e.getPoint());
-							else
-								clickSpawn(lastPosition);
+								releasedSpawn(e.getPoint());
+							else{
+								System.out.println(e.getPoint().toString()+":::"+lastPosition.toString());
+								releasedSpawn(lastPosition);
+								}
 							state = -2;
 						}
 					}
@@ -210,7 +211,7 @@ public class EditorMapPanel extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if(rectangle.contains(e.getX(),e.getY())){
-					clickSpawn(e.getPoint());}
+					pressedSpawn(e.getPoint());}
 
 			}
 
@@ -262,9 +263,11 @@ public class EditorMapPanel extends JPanel {
 
 				if (state == -1) {
 					if (rectangle.contains(e.getX(), e.getY())) {
-						players.get(indexSpwan).getOrigin().move(e.getX(), e.getY());
-						players.get(indexSpwan).update();
+					
+							players.get(indexSpwan).getOrigin().move(e.getX(), e.getY());
+							players.get(indexSpwan).update();
 					}
+			
 				
 					repaint();
 				}
@@ -273,24 +276,25 @@ public class EditorMapPanel extends JPanel {
 		});
 
 	}
-
-	private void clickSpawn(Point p) {
-
-		if (state != -1) {
-			for (int i = 0; i < players.size(); i++) {
-				if (players.get(i).getShape().contains(p)) {
-					indexSpwan = i;
-					state = -1;
-					lastPosition=players.get(i).getOrigin();
-				}
+	private void pressedSpawn(Point p){
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getShape().contains(p)) {
+				indexSpwan = i;
+				state = -1;
+				System.out.println("modifico");
+				lastPosition=new Point(players.get(i).getOrigin());
 			}
-		} else {
-			players.get(indexSpwan).getOrigin().move(p.x, p.y);
-			players.get(indexSpwan).update();
-			rimuoviOstacoli(players.get(indexSpwan).getShape());
-			repaint();
 		}
+		
 	}
+	
+	private void releasedSpawn(Point p){
+		players.get(indexSpwan).getOrigin().move(p.x, p.y);
+		players.get(indexSpwan).update();
+		rimuoviOstacoli(players.get(indexSpwan).getShape());
+		repaint();
+	}
+	
 
 	private void rimuoviOstacoli(Shape shape) {
 		for (int i = 0; i < wall.size(); i++) {
@@ -301,7 +305,7 @@ public class EditorMapPanel extends JPanel {
 
 	}
 
-	private String newNome() {
+	private String newName() {
 		int i = 0;
 
 		while (ManagerFilePlayer.mapExist("new" + i)) {
@@ -347,11 +351,7 @@ public class EditorMapPanel extends JPanel {
 		nomeMappa.setVisible(aFlag);
 	}
 
-	public void showExitConfirm() {
-
-		System.exit(0);
-
-	}
+	
 
 	private boolean canAddWall() {
 		for (int i = 0; i < wall.size(); i++) {

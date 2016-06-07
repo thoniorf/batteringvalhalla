@@ -29,8 +29,8 @@ public class EditorPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int HEIGHTSFONDO = 690;
-	private static final int WIDTHSFONDO = 1024;
+	private static final int HEIGHTSFONDO = 600;
+	private static final int WIDTHSFONDO = 900;
 
 	private static final int HEIGHTESTA = 100;
 	private static final int WIDTHTESTA = 100;
@@ -44,7 +44,7 @@ public class EditorPanel extends JPanel {
 	private static final int yBusto = 270;
 	private static final int yCapra = 305;
 
-	private static final int xImage = 480;
+	private static final int xImage = 400;
 
 
 //button"riga""lato"//s"inistra",d"estra"
@@ -78,17 +78,17 @@ public class EditorPanel extends JPanel {
 		setBackground(Color.PINK);
 		constraints = new GridBagConstraints();
 		int sizeButtom=80;
-		Image frecciaSinistra1=ResourcesLoader.leftArrow.get(0).getScaledInstance(sizeButtom,sizeButtom, 0);
-		Image frecciaSinistra2=ResourcesLoader.leftArrow.get(1).getScaledInstance(sizeButtom,sizeButtom, 0);
-		Image frecciaDestra1=ResourcesLoader.rightArrow.get(0).getScaledInstance(sizeButtom,sizeButtom, 0);
-		Image frecciaDestra2=ResourcesLoader.rightArrow.get(1).getScaledInstance(sizeButtom,sizeButtom, 0);
+		Image leftArrow=ResourcesLoader.leftArrow.get(0).getScaledInstance(sizeButtom,sizeButtom, 0);
+		Image leftArrowHover=ResourcesLoader.leftArrow.get(1).getScaledInstance(sizeButtom,sizeButtom, 0);
+		Image rightArrow=ResourcesLoader.rightArrow.get(0).getScaledInstance(sizeButtom,sizeButtom, 0);
+		Image rightArrowHover=ResourcesLoader.rightArrow.get(1).getScaledInstance(sizeButtom,sizeButtom, 0);
 		
-		button1s=new JButtonRound(frecciaSinistra1, frecciaSinistra2);
-		button1d=new JButtonRound(frecciaDestra1, frecciaDestra2);
-		button2s=new JButtonRound(frecciaSinistra1, frecciaSinistra2);
-		button2d=new JButtonRound(frecciaDestra1, frecciaDestra2);
-		button3s=new JButtonRound(frecciaSinistra1, frecciaSinistra2);
-		button3d=new JButtonRound(frecciaDestra1, frecciaDestra2);
+		button1s=new JButtonRound(leftArrow, leftArrowHover);
+		button1d=new JButtonRound(rightArrow, rightArrowHover);
+		button2s=new JButtonRound(leftArrow, leftArrowHover);
+		button2d=new JButtonRound(rightArrow, rightArrowHover);
+		button3s=new JButtonRound(leftArrow, leftArrowHover);
+		button3d=new JButtonRound(rightArrow, rightArrowHover);
 		exit=new JButtonRound(ResourcesLoader.images.get("exit"),
 				ResourcesLoader.images.get("exit_hover"));
 		
@@ -189,9 +189,9 @@ public class EditorPanel extends JPanel {
 
 	
 	private void save(){
-		ManagerFilePlayer.setTop(ImageEditor.getIndexTesta());
-		ManagerFilePlayer.setMid(ImageEditor.getIndexBusto());
-		ManagerFilePlayer.setBot(ImageEditor.getIndexCapra());
+		ManagerFilePlayer.setTop(ImageEditor.getIndexHead());
+		ManagerFilePlayer.setMid(ImageEditor.getIndexBody());
+		ManagerFilePlayer.setBot(ImageEditor.getIndexRam());
 		ManagerFilePlayer.save();
 	}
 	
@@ -205,19 +205,19 @@ public class EditorPanel extends JPanel {
 			repaint();
 		});
 		button2d.addActionListener(e->{
-			ie.spostaBust(1);
+			ie.spostaBody(1);
 			repaint();
 		});
 		button2s.addActionListener(e->{
-			ie.spostaBust(-1);
+			ie.spostaBody(-1);
 			repaint();
 		});
 		button3d.addActionListener(e->{
-			ie.spostaGoat(1);
+			ie.spostaRam(1);
 			repaint();
 		});
 		button3s.addActionListener(e->{
-			ie.spostaGoat(-1);
+			ie.spostaRam(-1);
 			repaint();
 		});
 		
@@ -247,10 +247,10 @@ public class EditorPanel extends JPanel {
 		
 		
 
-		g2d.drawImage(ie.getImageGoat(), xImage,yCapra,(int) (WIDTHCAPRA*1.5),(int) (HEIGHTCAPRA*1.5), null);
+		g2d.drawImage(ie.getImageRam(), xImage,yCapra,(int) (WIDTHCAPRA*1.5),(int) (HEIGHTCAPRA*1.5), null);
 		
-		g2d.drawImage(ie.getImageBust(), xImage, yBusto, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
-		g2d.drawImage(ie.getImageBust1(), xImage, yBusto+10, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
+		g2d.drawImage(ie.getImageBody(), xImage, yBusto, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
+		g2d.drawImage(ie.getImageBody1(), xImage, yBusto+10, (int)(WIDTHBUSTO*1.5),(int) (HEIGHTBUSTO*1.5), null);
 		
 
 		g2d.drawImage(ie.getImageHead(), xImage-5,yTesta,(int) (WIDTHTESTA*1.5), (int)(HEIGHTESTA*1.5), null);
@@ -266,9 +266,5 @@ public class EditorPanel extends JPanel {
 		frame.getLayeredPane().remove(frame.getLayeredPane().getComponentsInLayer(2)[0]);
 	}
 
-	public void showExitConfirm() {
 
-		System.exit(0);
-
-	}
 }

@@ -1,14 +1,16 @@
 package it.batteringvalhalla.gamecore.collision;
 
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
-
+import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.object.AbstractEntity;
 import it.batteringvalhalla.gamecore.object.Entity;
 import it.batteringvalhalla.gamecore.object.actor.AbstractActor;
 import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
 import it.batteringvalhalla.gamecore.vector2d.Vector2D;
+import it.batteringvalhalla.gamegui.sound.Sound;
+
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollisionHandler {
 	private static List<Entity> objects = null;
@@ -80,7 +82,10 @@ public class CollisionHandler {
 		if (thisone instanceof VerySquareWall && otherone instanceof VerySquareWall) {
 			return;
 		}
-		// TODO add sound effect
+		if (ManagerFilePlayer.soundOn()) {
+			Sound.collision().setFramePosition(0);
+			Sound.collision().start();
+		}
 
 		Vector2D newVel_first = new Vector2D();
 		Vector2D newVel_second = new Vector2D();
@@ -101,15 +106,12 @@ public class CollisionHandler {
 				// check if mtd is along x-axis
 				if (mtd.getComponents().x != 0) {
 					if (oldVel_second.getX() != 0) {
-						newVel_first = new Vector2D((oldVel_first.getX() + (2 * oldVel_second.getX())),
-								a1.getVelocity().getY());
-						newVel_second = new Vector2D(oldVel_second.getX() + (2 * oldVel_first.getX()),
-								a2.getVelocity().getY());
+						newVel_first = new Vector2D((oldVel_first.getX() + (2 * oldVel_second.getX())), a1.getVelocity().getY());
+						newVel_second = new Vector2D(oldVel_second.getX() + (2 * oldVel_first.getX()), a2.getVelocity().getY());
 					} else {
-						newVel_first = new Vector2D((oldVel_first.getX() + -1 + (2 * oldVel_second.getX())),
-								a1.getVelocity().getY());
-						newVel_second = new Vector2D(oldVel_second.getX() + (2 * oldVel_first.getX()),
-								a2.getVelocity().getY());
+						newVel_first = new Vector2D((oldVel_first.getX() + -1 + (2 * oldVel_second.getX())), a1.getVelocity()
+								.getY());
+						newVel_second = new Vector2D(oldVel_second.getX() + (2 * oldVel_first.getX()), a2.getVelocity().getY());
 					}
 
 					a1.setVelocity(newVel_first);
@@ -118,15 +120,12 @@ public class CollisionHandler {
 				// check if mtd is along y-axis
 				if (mtd.getComponents().y != 0) {
 					if (oldVel_second.getY() != 0) {
-						newVel_first = new Vector2D(a1.getVelocity().getX(),
-								(oldVel_first.getY() + (2 * oldVel_second.getY())));
-						newVel_second = new Vector2D(a2.getVelocity().getX(),
-								oldVel_second.getY() + (2 * oldVel_first.getY()));
+						newVel_first = new Vector2D(a1.getVelocity().getX(), (oldVel_first.getY() + (2 * oldVel_second.getY())));
+						newVel_second = new Vector2D(a2.getVelocity().getX(), oldVel_second.getY() + (2 * oldVel_first.getY()));
 					} else {
 						newVel_first = new Vector2D(a1.getVelocity().getX(),
 								(oldVel_first.getY() * -1 + (2 * oldVel_second.getY())));
-						newVel_second = new Vector2D(a2.getVelocity().getX(),
-								oldVel_second.getY() + (2 * oldVel_first.getY()));
+						newVel_second = new Vector2D(a2.getVelocity().getX(), oldVel_second.getY() + (2 * oldVel_first.getY()));
 					}
 					a1.setVelocity(newVel_first);
 					a2.setVelocity(newVel_second);
@@ -134,14 +133,12 @@ public class CollisionHandler {
 			} else if (otherone instanceof VerySquareWall) {
 				// check if mtd is along x-axis
 				if (mtd.getComponents().x != 0) {
-					a1.setVelocity(
-							new Vector2D((oldVel_first.getComponents().x) * -1, a1.getVelocity().getComponents().y));
+					a1.setVelocity(new Vector2D((oldVel_first.getComponents().x) * -1, a1.getVelocity().getComponents().y));
 
 				}
 				// check if mtd is along y-axis
 				if (mtd.getComponents().y != 0) {
-					a1.setVelocity(
-							new Vector2D(a1.getVelocity().getComponents().x, (oldVel_first.getComponents().y) * -1));
+					a1.setVelocity(new Vector2D(a1.getVelocity().getComponents().x, (oldVel_first.getComponents().y) * -1));
 
 				}
 			}
@@ -156,14 +153,12 @@ public class CollisionHandler {
 				Vector2D oldVel_second = new Vector2D(a2.getVelocity());
 				// check if mtd is along x-axis
 				if (mtd.getComponents().x != 0) {
-					a2.setVelocity(
-							new Vector2D((oldVel_second.getComponents().x) * -1, a2.getVelocity().getComponents().y));
+					a2.setVelocity(new Vector2D((oldVel_second.getComponents().x) * -1, a2.getVelocity().getComponents().y));
 
 				}
 				// check if mtd is along y-axis
 				if (mtd.getComponents().y != 0) {
-					a2.setVelocity(
-							new Vector2D(a2.getVelocity().getComponents().x, (oldVel_second.getComponents().y) * -1));
+					a2.setVelocity(new Vector2D(a2.getVelocity().getComponents().x, (oldVel_second.getComponents().y) * -1));
 
 				}
 			}

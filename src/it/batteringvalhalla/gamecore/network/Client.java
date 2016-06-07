@@ -43,7 +43,7 @@ public class Client implements Runnable {
 	this.hostname = hostname;
 	this.character = new OnlineCharacter(Player.getUsername(), new Point(0, 0), ManagerFilePlayer.getTop(),
 		ManagerFilePlayer.getMid(), ManagerFilePlayer.getBot());
-
+	Server.status = ServerStatus.WAITING;
     }
 
     public boolean connect() {
@@ -97,7 +97,6 @@ public class Client implements Runnable {
 	warmUpLevel();
 	GameFrame.instance().startClient(this);
 	while (!this.socket.isClosed() && !ServerStatus.STOP.equals(Server.status)) {
-
 	    try {
 		this.getInput();
 		CharacterMessage message = (CharacterMessage) this.protocol.request();

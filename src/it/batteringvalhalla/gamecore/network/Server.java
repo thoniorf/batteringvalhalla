@@ -26,7 +26,6 @@ public class Server implements Runnable {
 	this.clients.add(deamon);
 	// sync client object
 	deamon.syncClient();
-	System.out.println("New Client");
 	return deamon.synced;
     }
 

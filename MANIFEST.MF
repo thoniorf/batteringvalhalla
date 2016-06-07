@@ -1,4 +1,3 @@
 Manifest-Version: 1.0
 Sealed: true
-Main-Class: it.batteringvalhalla.gamegui.GameManager
-
+Main-Class: it.batteringvalhalla.gamecore.GameManager

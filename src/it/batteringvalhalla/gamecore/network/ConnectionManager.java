@@ -16,7 +16,7 @@ public class ConnectionManager implements Runnable {
 	    this.server = new Server(this.socket);
 
 	} catch (IOException e) {
-	    System.err.println("Could not listen on port " + port);
+	    System.err.println("Could not listen on port during inizialization" + port);
 	    System.err.println("Maybe the port is busy");
 	    Server.status = ServerStatus.STOP;
 	    GameFrame.instance().showOnlineError("server_port_error");

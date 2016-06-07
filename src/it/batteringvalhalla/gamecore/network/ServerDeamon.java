@@ -94,5 +94,6 @@ public class ServerDeamon implements Runnable {
 	// send character
 	send(server.clients.size());
 	client = (OnlineCharacter) this.request();
+	synced = true;
     }
 }

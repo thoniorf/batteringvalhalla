@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-import it.batteringvalhalla.gamecore.GameManager;
 import it.batteringvalhalla.gamecore.GameWorld;
-import it.batteringvalhalla.gamecore.State;
 import it.batteringvalhalla.gamecore.object.actor.OnlineCharacter;
 import it.batteringvalhalla.gamecore.object.direction.Direction;
 import it.batteringvalhalla.gamecore.object.wall.VerySquareWall;
@@ -49,8 +47,7 @@ public class ServerDeamon implements Runnable {
 
     @Override
     public void run() {
-	while (!socket.isClosed() && !ServerStatus.STOP.equals(Server.status)
-		&& !State.Over.equals(GameManager.getState())) {
+	while (!socket.isClosed() && !ServerStatus.STOP.equals(Server.status)) {
 	    try {
 		client.setMoveDirection((Direction) this.protocol.request());
 	    } catch (ClassNotFoundException e) {

@@ -66,7 +66,6 @@ public class Server implements Runnable {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-	System.out.println("Fine");
     }
 
     public void syncAll() {

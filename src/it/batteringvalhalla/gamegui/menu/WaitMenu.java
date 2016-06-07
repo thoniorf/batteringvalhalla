@@ -11,6 +11,8 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.network.Server;
+import it.batteringvalhalla.gamecore.network.ServerStatus;
 import it.batteringvalhalla.gamegui.CenterComp;
 import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
@@ -49,6 +51,7 @@ public class WaitMenu extends JPanel {
 
 	this.exit.addActionListener(e -> {
 	    setEnabled(false);
+	    Server.status = ServerStatus.STOP;
 	    GameFrame.instance().restart();
 	});
     }

@@ -38,36 +38,30 @@ public class Client implements Runnable {
     protected Player player;
     protected boolean synced;
 
-    public Client(String hostname)
-    {
+    public Client(String hostname) {
 	synced = false;
 	this.hostname = hostname;
 	this.character = new OnlineCharacter(Player.getUsername(), new Point(0, 0), ManagerFilePlayer.getTop(),
-	        ManagerFilePlayer.getMid(), ManagerFilePlayer.getBot());
+		ManagerFilePlayer.getMid(), ManagerFilePlayer.getBot());
 
     }
 
-    public boolean connect()
-    {
-	try
-	{
+    public boolean connect() {
+	try {
 	    this.socket = new Socket();
-	    this.socket.setSoTimeout(500);
-	    this.socket.connect(new InetSocketAddress(this.hostname, port), 500);
+	    // this.socket.setSoTimeout(3000);
+	    this.socket.connect(new InetSocketAddress(this.hostname, port), 3000);
 	    this.protocol = new NetworkProtocol(this.socket.getInputStream(), this.socket.getOutputStream());
-	    this.socket.setSoTimeout(0);
-	} catch (UnknownHostException e)
-	{
+	    // this.socket.setSoTimeout(0);
+	} catch (UnknownHostException e) {
 	    System.err.println("Host is unreacheable");
 	    GameFrame.instance().showOnlineError("unknownhost");
 	    return false;
-	} catch (SocketTimeoutException e)
-	{
+	} catch (SocketTimeoutException e) {
 	    System.err.println("Connection timeout. Maybe the server is full");
 	    GameFrame.instance().showOnlineError("serverfull");
 	    return false;
-	} catch (IOException e)
-	{
+	} catch (IOException e) {
 	    System.err.println("Error with server connection I/O on initialization");
 	    GameFrame.instance().showOnlineError("disconnected");
 	    return false;
@@ -76,72 +70,56 @@ public class Client implements Runnable {
 
     }
 
-    public void getInput() throws IOException
-    {
-	if (PlayerControls.getKeys().get("W")[0] == 1)
-	{
+    public void getInput() throws IOException {
+	if (PlayerControls.getKeys().get("W")[0] == 1) {
 	    this.protocol.send(Direction.nord);
 	}
-	if (PlayerControls.getKeys().get("A")[0] == 1)
-	{
+	if (PlayerControls.getKeys().get("A")[0] == 1) {
 	    this.protocol.send(Direction.ovest);
 	}
-	if (PlayerControls.getKeys().get("S")[0] == 1)
-	{
+	if (PlayerControls.getKeys().get("S")[0] == 1) {
 	    this.protocol.send(Direction.sud);
 	}
-	if (PlayerControls.getKeys().get("D")[0] == 1)
-	{
+	if (PlayerControls.getKeys().get("D")[0] == 1) {
 	    this.protocol.send(Direction.est);
 	}
-	if (PlayerControls.getKeys().get("SPACE")[0] == 1)
-	{
+	if (PlayerControls.getKeys().get("SPACE")[0] == 1) {
 	    this.character.charge();
 	}
     }
 
     @Override
-    public void run()
-    {
-	if (!connect())
-	{
+    public void run() {
+	if (!connect()) {
 	    return;
 	}
 	sync();
 	warmUpLevel();
 	GameFrame.instance().startClient(this);
-	while (!this.socket.isClosed() && !State.Over.equals(GameManager.getState()))
-	{
-	    try
-	    {
+	while (!this.socket.isClosed() && !ServerStatus.STOP.equals(Server.status)) {
+
+	    try {
 		this.getInput();
 		CharacterMessage message = (CharacterMessage) this.protocol.request();
-		if (!message.syncCharacter(character))
-		{
-		    for (int i = 0; i < opponents.size(); i++)
-		    {
-			if (message.syncCharacter(opponents.get(i)))
-			{
+		if (!message.syncCharacter(character)) {
+		    for (int i = 0; i < opponents.size(); i++) {
+			if (message.syncCharacter(opponents.get(i))) {
 			    break;
 			}
 		    }
 		}
 
 		GameWorld.update();
-		if (State.Over.equals(GameManager.getState()))
-		{
+		if (State.Over.equals(GameManager.getState())) {
 		    ((GamePanel) panel).gameOver();
 		}
-		if (whoWon(GameWorld.getObjects()))
-		{
-		    GameManager.setState(State.Next);
+		if (whoWon(GameWorld.getObjects())) {
+		    Server.status = ServerStatus.STOP;
 		    protocol.close(socket);
 		    panel.repaint();
-		    try
-		    {
+		    try {
 			Thread.sleep(3000);
-		    } catch (InterruptedException e)
-		    {
+		    } catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		    }
@@ -149,15 +127,13 @@ public class Client implements Runnable {
 		    return;
 		}
 		panel.repaint();
-	    } catch (IOException e)
-	    {
+	    } catch (IOException e) {
 		System.err.println("Error with server connection I/O on update");
 		GameFrame.instance().showOnlineError("disconnected");
 		protocol.close(socket);
 		return;
 
-	    } catch (ClassNotFoundException e)
-	    {
+	    } catch (ClassNotFoundException e) {
 		System.err.println("Class not found");
 		GameFrame.instance().showOnlineError("disconnected");
 		protocol.close(socket);
@@ -166,70 +142,61 @@ public class Client implements Runnable {
 	}
     }
 
-    public void setPanel(JPanel panel)
-    {
+    public void setPanel(JPanel panel) {
 	this.panel = panel;
     }
 
-    public void sync()
-    {
-	try
-	{
+    public void sync() {
+	try {
 	    this.syncLevel();
 	    this.syncCharacter();
 	    this.syncOpponents();
-	} catch (IOException e)
-	{
+	} catch (IOException e) {
 	    System.err.println("Error with server I/O during sync");
 	    GameFrame.instance().showOnlineError("disconnected");
 	    this.protocol.close(this.socket);
-	} catch (ClassNotFoundException e)
-	{
+	} catch (ClassNotFoundException e) {
 	    System.err.println("Class not found during sync in client");
 	    GameFrame.instance().showOnlineError("disconnected");
 	    this.protocol.close(this.socket);
 	}
     }
 
-    public void syncCharacter() throws IOException, ClassNotFoundException
-    {
+    public void syncCharacter() throws IOException, ClassNotFoundException {
 	// send character
 	this.client_id = (int) this.protocol.request();
 	// set character spawn point
 	this.character.getOrigin().move(GameWorld.getArena().getSpawn().get(this.client_id - 1).x,
-	        GameWorld.getArena().getSpawn().get(this.client_id - 1).y);
+		GameWorld.getArena().getSpawn().get(this.client_id - 1).y);
 	this.protocol.send(this.character);
 	WaitMenu.setPlayer(character.getOnline_user());
+	WaitMenu.lobby.repaint();
     }
 
-    public void syncLevel() throws ClassNotFoundException, IOException
-    {
+    public void syncLevel() throws ClassNotFoundException, IOException {
 	// receive arena
 	GameWorld.setArena((Arena) this.protocol.request());
 	// receive walls
 	int wallsize = (int) this.protocol.request();
 	GameWorld.setWalls(new ArrayList<VerySquareWall>());
-	for (int i = 0; i < wallsize; i++)
-	{
+	for (int i = 0; i < wallsize; i++) {
 	    GameWorld.getWalls().add((VerySquareWall) protocol.request());
 	}
     }
 
-    public void syncOpponents() throws ClassNotFoundException, IOException
-    {
+    public void syncOpponents() throws ClassNotFoundException, IOException {
 	this.opponents = new ArrayList<OnlineCharacter>();
 	int maxOpponents = (int) this.protocol.request();
 	// sync other players
-	for (int i = 1; i < maxOpponents; i++)
-	{
+	for (int i = 1; i < maxOpponents; i++) {
 	    OnlineCharacter opponent = (OnlineCharacter) this.protocol.request();
 	    this.opponents.add(opponent);
 	    WaitMenu.setPlayer(opponent.getOnline_user());
+	    WaitMenu.lobby.repaint();
 	}
     }
 
-    public void warmUpLevel()
-    {
+    public void warmUpLevel() {
 	// set level vars
 	GameWorld.setPlayer(character);
 	GameWorld.setMax_enemy(this.opponents.size());
@@ -240,24 +207,19 @@ public class Client implements Runnable {
 	GameWorld.getObjects().addAll(GameWorld.getWalls());
     }
 
-    public boolean whoWon(List<Entity> s)
-    {
+    public boolean whoWon(List<Entity> s) {
 	int alive = 0;
 	String winner = "";
-	for (int i = 0; i < GameWorld.getObjects().size(); i++)
-	{
-	    if (GameWorld.getObjects().get(i) instanceof OnlineCharacter)
-	    {
+	for (int i = 0; i < GameWorld.getObjects().size(); i++) {
+	    if (GameWorld.getObjects().get(i) instanceof OnlineCharacter) {
 		OnlineCharacter couldWin = (OnlineCharacter) GameWorld.getObjects().get(i);
-		if (GameWorld.getObjects().get(i).getAlive())
-		{
+		if (GameWorld.getObjects().get(i).getAlive()) {
 		    alive++;
 		    winner = couldWin.getOnline_user();
 		}
 	    }
 	}
-	if (alive > 1)
-	{
+	if (alive > 1) {
 	    return false;
 	}
 	((GamePanel) panel).winner(winner);

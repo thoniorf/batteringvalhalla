@@ -16,58 +16,60 @@ import it.batteringvalhalla.gamegui.GameFrame;
 import it.batteringvalhalla.gamegui.menu.button.JButtonRound;
 
 public class WaitMenu extends JPanel {
-	private static final long serialVersionUID = 1L;
-	private static Dimension size = new Dimension(600, 400);
-	private static List<String> players = new ArrayList<String>();
-	public static WaitMenu lobby;
-	private JButtonRound exit;
+    private static final long serialVersionUID = 1L;
+    private static Dimension size = new Dimension(600, 400);
+    private static List<String> players = new ArrayList<String>();
+    public static WaitMenu lobby;
 
-	public WaitMenu() {
-		super(null);
-		setPreferredSize(size);
-		setBounds(CenterComp.centerX(size.width), CenterComp.centerY(size.height), size.width, size.height);
-		setOpaque(false);
-		// initialization
-		this.exit = new JButtonRound(ResourcesLoader.images.get("exit_round"),
-				ResourcesLoader.images.get("exit_round_hover"));
-		// setting bounds
-		this.exit.setBounds(516, 316, this.exit.getWidth(), this.exit.getHeight());
-		// adding
-		add(this.exit);
-		setVisible(true);
-		listenerLoader();
+    public static void setPlayer(String player) {
+	players.add(player);
+	lobby.repaint();
+    }
+
+    private JButtonRound exit;
+
+    public WaitMenu() {
+	super(null);
+	setPreferredSize(size);
+	setBounds(CenterComp.centerX(size.width), CenterComp.centerY(size.height), size.width, size.height);
+	setOpaque(false);
+	// initialization
+	this.exit = new JButtonRound(ResourcesLoader.images.get("exit_round"),
+		ResourcesLoader.images.get("exit_round_hover"));
+	// setting bounds
+	this.exit.setBounds(516, 316, this.exit.getWidth(), this.exit.getHeight());
+	// adding
+	add(this.exit);
+	setVisible(true);
+	listenerLoader();
+	players = new ArrayList<String>();
+    }
+
+    private void listenerLoader() {
+
+	this.exit.addActionListener(e -> {
+	    setEnabled(false);
+	    GameFrame.instance().restart();
+	});
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+	super.paintComponent(g);
+	g.drawImage(ResourcesLoader.images.get("background_6x4"), 0, 0, null);
+	g.drawImage(ResourcesLoader.images.get("connecting_header"), 47, 20, null);
+	Graphics2D g2 = (Graphics2D) g;
+	g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+	g.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 40));
+	for (int i = 0; i < players.size(); i++) {
+	    g.drawString(players.get(i) + ", Connected !", 47, 173 + (45 * i));
 	}
+    }
 
-	private void listenerLoader() {
+    @Override
+    public void setEnabled(boolean enabled) {
+	super.setEnabled(enabled);
 
-		this.exit.addActionListener(e -> {
-			setEnabled(false);
-			GameFrame.instance().restart();
-		});
-	}
-
-	@Override
-	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-
-	}
-
-	public static void setPlayer(String player) {
-		players.add(player);
-		lobby.repaint();
-	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.drawImage(ResourcesLoader.images.get("background_6x4"), 0, 0, null);
-		g.drawImage(ResourcesLoader.images.get("connecting_header"), 47, 20, null);
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setFont(new Font(ResourcesLoader.gothic.getName(), ResourcesLoader.gothic.getStyle(), 40));
-		for (int i = 0; i < players.size(); i++) {
-			g.drawString(players.get(i) + ", Connected !", 47, 173 + (45 * i));
-		}
-	}
+    }
 
 }

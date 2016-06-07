@@ -70,7 +70,6 @@ public class HostMenu extends JPanel {
 	    GameWorld.setLevelName((String) maps.getSelectedItem());
 	    GameWorld.makeLevel(0);
 	    Server.maxClients = Integer.parseInt((String) number.getSelectedItem());
-	    System.out.println(Server.maxClients);
 	    ConnectionManager.port = Integer.parseInt(port.getText());
 	    GameFrame.instance().showWaitMenu();
 	    new Thread(new ConnectionManager()).start();

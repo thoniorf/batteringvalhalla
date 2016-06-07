@@ -192,7 +192,6 @@ public class Client implements Runnable {
 	    OnlineCharacter opponent = (OnlineCharacter) this.protocol.request();
 	    this.opponents.add(opponent);
 	    WaitMenu.setPlayer(opponent.getOnline_user());
-	    WaitMenu.lobby.repaint();
 	}
     }
 

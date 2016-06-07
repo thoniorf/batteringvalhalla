@@ -49,10 +49,10 @@ public class Client implements Runnable {
     public boolean connect() {
 	try {
 	    this.socket = new Socket();
-	    // this.socket.setSoTimeout(3000);
+	    this.socket.setSoTimeout(3000);
 	    this.socket.connect(new InetSocketAddress(this.hostname, port), 3000);
 	    this.protocol = new NetworkProtocol(this.socket.getInputStream(), this.socket.getOutputStream());
-	    // this.socket.setSoTimeout(0);
+	    this.socket.setSoTimeout(0);
 	} catch (UnknownHostException e) {
 	    System.err.println("Host is unreacheable");
 	    GameFrame.instance().showOnlineError("unknownhost");

@@ -26,13 +26,14 @@ public class Server implements Runnable {
 	this.clients.add(deamon);
 	// sync client object
 	deamon.syncClient();
+	System.out.println("New Client");
 	return deamon.synced;
     }
 
     public void removeClient(ServerDeamon clientDeamon) {
 	this.clients.remove(clientDeamon);
 	if (this.clients.isEmpty()) {
-	    status = ServerStatus.EMPTY;
+	    status = ServerStatus.STOP;
 	}
     }
 
@@ -65,7 +66,7 @@ public class Server implements Runnable {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-
+	System.out.println("Fine");
     }
 
     public void syncAll() {

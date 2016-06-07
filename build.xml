@@ -16,7 +16,7 @@
     	</javac>
         <jar destfile="${basedir}/BatteringValhalla.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="it.batteringvalhalla.gamegui.GameManager"/>
+                <attribute name="Main-Class" value="it.batteringvalhalla.gamecore.GameManager"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${basedir}/bin"/>

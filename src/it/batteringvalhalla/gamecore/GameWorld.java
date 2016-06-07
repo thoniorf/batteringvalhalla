@@ -7,6 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import it.batteringvalhalla.gamecore.arena.Arena;
 import it.batteringvalhalla.gamecore.collision.CollisionHandler;
+import it.batteringvalhalla.gamecore.ia.IAFocus;
 import it.batteringvalhalla.gamecore.loader.ManagerFilePlayer;
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
 import it.batteringvalhalla.gamecore.object.Entity;
@@ -109,7 +110,7 @@ public class GameWorld {
 	}
 
 	public static void makeLevel(int n_enemies) {
-		// freq_friction = ManagerFilePlayer.getAttritoMap(customLevel);
+		freq_friction = ManagerFilePlayer.getAttritoMap(levelName);
 		// Initialize arena
 		arena = new Arena(ResourcesLoader.mainmenu_images.get(9));
 		// get spawn point
@@ -127,8 +128,7 @@ public class GameWorld {
 		// spawn enemies
 		for (int i = 0; i < enemies; i++) {
 			objects.add(new Enemy(arena.getSpawn().get(i + 1)));
-			// ((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy)
-			// objects.get(i + 1), arena, objects));
+			((Enemy) objects.get(i + 1)).setStrategy(new IAFocus((Enemy) objects.get(i + 1), arena, objects));
 		}
 		walls = (ArrayList<VerySquareWall>) ManagerFilePlayer.getWallsInTheMap(levelName,
 				arena.getShape().getBounds().x, arena.getShape().getBounds().y);

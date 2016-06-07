@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class PlayerControls extends KeyAdapter {
 
-	private static Map<String, Integer[]> key_map;
+	private static Map<String, Integer[]> key_map = new HashMap<String, Integer[]>();
 
 	// TODO riscrivere la map , chiavi = keyevent
 	public PlayerControls() {

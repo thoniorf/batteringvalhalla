@@ -204,7 +204,7 @@ public class Client implements Runnable {
 
 	public boolean whoWon(List<Entity> s) {
 		int alive = 0;
-		String winner = new String();
+		String winner = "";
 		for (int i = 0; i < GameWorld.getObjects().size(); i++) {
 			if (GameWorld.getObjects().get(i) instanceof OnlineCharacter) {
 				OnlineCharacter couldWin = (OnlineCharacter) GameWorld.getObjects().get(i);

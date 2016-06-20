@@ -90,5 +90,6 @@ public class ServerDeamon implements Runnable {
 	send(server.clients.size());
 	client = (OnlineCharacter) this.request();
 	send(Server.maxClients);
+
     }
 }

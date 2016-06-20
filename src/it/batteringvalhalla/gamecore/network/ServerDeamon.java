@@ -15,10 +15,8 @@ public class ServerDeamon implements Runnable {
     protected Server server;
     protected NetworkProtocol protocol;
     protected OnlineCharacter client;
-    protected boolean synced;
 
     public ServerDeamon(Socket socket, Server server, int index) {
-	synced = false;
 	this.socket = socket;
 	this.server = server;
 	this.id = index;
@@ -91,6 +89,6 @@ public class ServerDeamon implements Runnable {
 	// send character
 	send(server.clients.size());
 	client = (OnlineCharacter) this.request();
-	synced = true;
+	send(Server.maxClients);
     }
 }

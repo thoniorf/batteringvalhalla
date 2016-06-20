@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import it.batteringvalhalla.gamecore.loader.ResourcesLoader;
+import it.batteringvalhalla.gamecore.network.ConnectionManager;
 import it.batteringvalhalla.gamecore.network.Server;
 import it.batteringvalhalla.gamecore.network.ServerStatus;
 import it.batteringvalhalla.gamegui.CenterComp;
@@ -52,6 +53,12 @@ public class WaitMenu extends JPanel {
 	this.exit.addActionListener(e -> {
 	    setEnabled(false);
 	    Server.status = ServerStatus.STOP;
+	    try {
+		ConnectionManager.getServerSocket().close();
+	    } catch (Exception e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	    }
 	    GameFrame.instance().restart();
 	});
     }

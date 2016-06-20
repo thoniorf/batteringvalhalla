@@ -14,18 +14,23 @@ import java.util.List;
 
 public class CollisionHandler {
 	private static List<Entity> objects = null;
+	private static boolean collisioned;
+	
 
 	public static void setObjects(List<Entity> objects) {
 		CollisionHandler.objects = new ArrayList<>(objects);
+		
 	}
 
 	public static void check() {
 		// check loop
+		collisioned=false;
 		for (int i = 0; i < (objects.size() - 1); i++) {
 			for (int j = i + 1; j < objects.size(); j++) {
 				if (objects.get(i).getAlive() && objects.get(j).getAlive()) {
 					// detect collision
 					if (detect(objects.get(i), objects.get(j))) {
+						collisioned=true;
 						// resolve
 						resolve((AbstractEntity) objects.get(i), (AbstractEntity) objects.get(j));
 					}
@@ -82,10 +87,7 @@ public class CollisionHandler {
 		if (thisone instanceof VerySquareWall && otherone instanceof VerySquareWall) {
 			return;
 		}
-		if (ManagerFilePlayer.soundOn()) {
-			Sound.collision().setFramePosition(0);
-			Sound.collision().start();
-		}
+		playCollision();
 
 		Vector2D newVel_first = new Vector2D();
 		Vector2D newVel_second = new Vector2D();
@@ -165,6 +167,17 @@ public class CollisionHandler {
 		}
 	}
 
+	public static void playCollision() {
+		if (ManagerFilePlayer.soundOn()) {
+			Sound.collision().setFramePosition(0);
+			Sound.collision().start();
+		}
+	}
+
 	public CollisionHandler() {
+	}
+
+	public static Boolean isCollisioned(){
+		return collisioned;
 	}
 }

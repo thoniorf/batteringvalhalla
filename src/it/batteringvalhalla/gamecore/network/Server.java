@@ -21,12 +21,17 @@ public class Server implements Runnable {
 	status = ServerStatus.WAITING;
     }
 
-    public boolean addClient(ServerDeamon deamon) {
+    public void addClient(ServerDeamon deamon) {
 	// add to clients lists
 	this.clients.add(deamon);
 	// sync client object
 	deamon.syncClient();
-	return deamon.synced;
+	for (ServerDeamon other : clients) {
+	    if (other.id != deamon.id) {
+		other.send(deamon.client);
+		deamon.send(other.client);
+	    }
+	}
     }
 
     public void removeClient(ServerDeamon clientDeamon) {
@@ -38,7 +43,7 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
-	this.syncAll();
+	this.startAll();
 	this.warmUpLevel();
 	Server.status = ServerStatus.RUNNING;
 	while (!ServerStatus.STOP.equals(Server.status)) {
@@ -55,15 +60,17 @@ public class Server implements Runnable {
 			CharacterMessage message = new CharacterMessage(minion.client);
 			serverDeamon.send(message);
 		    }
-		
-			serverDeamon.send(CollisionHandler.isCollisioned());
-			
-		    
+
+		    serverDeamon.send(CollisionHandler.isCollisioned());
+
 		}
-		
 
 	    }
-		}
+	}
+	for (ServerDeamon serverDeamon : clients) {
+	    serverDeamon.protocol.close(serverDeamon.socket);
+	    System.out.println(serverDeamon.client.getOnline_user() + " can't play anymore");
+	}
 	try {
 	    socket.close();
 	} catch (IOException e) {
@@ -71,14 +78,8 @@ public class Server implements Runnable {
 	}
     }
 
-    public void syncAll() {
+    public void startAll() {
 	for (ServerDeamon deamon : this.clients) {
-	    deamon.send(maxClients);
-	    for (ServerDeamon minion : this.clients) {
-		if (deamon.id != minion.id) {
-		    deamon.send(minion.client);
-		}
-	    }
 	    new Thread(deamon).start();
 	}
     }

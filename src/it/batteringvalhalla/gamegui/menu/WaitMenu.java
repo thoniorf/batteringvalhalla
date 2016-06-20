@@ -56,7 +56,6 @@ public class WaitMenu extends JPanel {
 	    try {
 		ConnectionManager.getServerSocket().close();
 	    } catch (Exception e1) {
-		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	    }
 	    GameFrame.instance().restart();

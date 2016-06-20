@@ -45,6 +45,12 @@ public class ServerDeamon implements Runnable {
 
     @Override
     public void run() {
+	try {
+	    this.protocol.send(true);
+	} catch (IOException e) {
+	    System.err.println("Error with client connection I/O with start flag");
+	    protocol.close(socket);
+	}
 	while (!socket.isClosed() && !ServerStatus.STOP.equals(Server.status)) {
 	    try {
 		client.setMoveDirection((Direction) this.protocol.request());
@@ -60,6 +66,7 @@ public class ServerDeamon implements Runnable {
 		break;
 	    }
 	}
+	client.setAlive(false);
 	this.server.removeClient(this);
 
     }

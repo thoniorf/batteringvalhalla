@@ -42,7 +42,7 @@ public class Server implements Runnable {
 	this.warmUpLevel();
 	Server.status = ServerStatus.RUNNING;
 	while (!ServerStatus.STOP.equals(Server.status)) {
-	    while (ServerStatus.RUNNING.equals(status)) {
+	    while (ServerStatus.RUNNING.equals(Server.status)) {
 		CollisionHandler.setObjects(GameWorld.getObjects());
 		CollisionHandler.check();
 		try {
@@ -59,6 +59,10 @@ public class Server implements Runnable {
 
 	    }
 
+	}
+	for (ServerDeamon serverDeamon : clients) {
+	    serverDeamon.protocol.close(serverDeamon.socket);
+	    System.out.println(serverDeamon.client.getOnline_user() + " can't play anymore");
 	}
 	try {
 	    socket.close();

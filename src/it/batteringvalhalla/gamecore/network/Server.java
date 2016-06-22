@@ -34,6 +34,12 @@ public class Server implements Runnable {
 	}
     }
 
+    public void closeAll() {
+	for (ServerDeamon deamon : clients) {
+	    deamon.protocol.close(deamon.socket);
+	}
+    }
+
     public void removeClient(ServerDeamon clientDeamon) {
 	this.clients.remove(clientDeamon);
 	if (this.clients.isEmpty()) {
@@ -67,10 +73,13 @@ public class Server implements Runnable {
 
 	    }
 	}
-	for (ServerDeamon serverDeamon : clients) {
-	    serverDeamon.protocol.close(serverDeamon.socket);
-	    System.out.println(serverDeamon.client.getOnline_user() + " can't play anymore");
+	synchronized (clients) {
+	    for (ServerDeamon serverDeamon : clients) {
+		serverDeamon.protocol.close(serverDeamon.socket);
+		System.out.println(serverDeamon.client.getOnline_user() + " can't play anymore");
+	    }
 	}
+
 	try {
 	    socket.close();
 	} catch (IOException e) {

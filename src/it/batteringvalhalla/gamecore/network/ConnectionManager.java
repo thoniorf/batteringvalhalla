@@ -37,6 +37,8 @@ public class ConnectionManager implements Runnable {
 		server.addClient(deamon);
 	    } catch (IOException e) {
 		Server.status = ServerStatus.STOP;
+		server.closeAll();
+		System.err.println("Server stopped");
 		return;
 	    }
 	}

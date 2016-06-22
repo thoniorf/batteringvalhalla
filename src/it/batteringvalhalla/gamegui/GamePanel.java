@@ -65,7 +65,7 @@ public class GamePanel extends JPanel {
 
     public void gameOver() {
 	scores.setText("GAME OVER");
-	scores.setBounds(username.getX() + username.getWidth() + 24, 24, 200, 38);
+	scores.setBounds(username.getX() + username.getWidth() + 24, 24, 400, 38);
 	charge.setVisible(false);
     }
 
